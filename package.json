@@ -9,5 +9,8 @@
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "mitt": "^3.0.1"
   }
 }
