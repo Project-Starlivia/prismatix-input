@@ -1,23 +1,25 @@
-import type { PRXMultiSubject, PRXInputEmitter, PRXInputEvent, InputActionGenerics, Subject } from "./types";
+import type { InputEmitter, PRXInputEvent, MultiSubject, Subject } from "./types";
 import { multiableToArray, type EmptyObject } from "./util";
 
-export interface PRXLogStore<G extends InputActionGenerics = InputActionGenerics> {
-	log: PRXInputEvent[];
+export interface LogStore<T extends PRXInputEvent = PRXInputEvent> {
+	log: T[];
 	clear: () => void;
-	addEmitter:  <O extends object = EmptyObject>(creator: PRXInputEmitter<G, O>, subject: PRXMultiSubject<G>, option?: O) => PRXLogStore<G>;
+	addEmitter: <O extends object = EmptyObject, E extends PRXInputEvent = PRXInputEvent>
+		(creator: InputEmitter<O, E>, subject: MultiSubject<E>, option?: O)
+		 => LogStore<T>;
 	dispose: () => void;
 }
 
-export function createPRXLogStore<G extends InputActionGenerics = InputActionGenerics>(
-	globalSubject: Subject<PRXInputEvent<G>>,
-): PRXLogStore<G> {
-	const log: PRXInputEvent<G>[] = [];
+export function createLogStore<T extends PRXInputEvent = PRXInputEvent>(
+	globalSubject: Subject<T>,
+): LogStore<T> {
+	const log: T[] = [];
 	const clear = () => {
 		log.length = 0;
 	};
-	const addEmitter = <O extends object = EmptyObject>
-		(creator: PRXInputEmitter<G, O>, s: PRXMultiSubject<G>, option?: O) => {
-			const _subjects = [...multiableToArray(s), globalSubject];
+	const addEmitter = <O extends object = EmptyObject, E extends PRXInputEvent = PRXInputEvent>
+		(creator: InputEmitter<O, E>, s: MultiSubject<E>, option?: O) => {
+			const _subjects = [...multiableToArray(s), globalSubject] as MultiSubject<E>;
 			creator(_subjects, option);
 			return { log, clear, addEmitter, dispose };
 		};

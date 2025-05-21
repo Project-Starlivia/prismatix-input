@@ -1,13 +1,13 @@
 import type { Emitter, EventType } from "mitt";
 import mitt from "mitt";
-import type { InputActionGenerics, PRXInputEmitter, PRXInputEvent, Subject } from "./types";
-import { createPRXLogStore } from "./log-store";
+import type { InputEmitter, PRXInputEvent, Subject } from "./types";
+import { createLogStore } from "./log-store";
 import type { EmptyObject } from "./util";
 
-export function createSubject<K extends keyof T, T extends Record<EventType, unknown>>(emitter: Emitter<T>, type: K): Subject<T[K]> {
-    const subscribers = new Set<(v: T[K]) => void>();
+export function createSubject<E extends Record<EventType, T>, T extends PRXInputEvent = PRXInputEvent>(emitter: Emitter<E>, type: keyof E): Subject<T> {
+    const subscribers = new Set<(v: E[keyof E]) => void>();
 
-    const subscribe = (cb: (v: T[K]) => void) => {
+    const subscribe = (cb: (v: E[keyof E]) => void) => {
         subscribers.add(cb);
         emitter.on(type, cb);
         const unsubscribe = () => {
@@ -16,15 +16,10 @@ export function createSubject<K extends keyof T, T extends Record<EventType, unk
         }
 
         return {
-            unsubscribe,
-            handler: (next: (v: T[K]) => void) => {
-                return{
-                    unsubscribe
-                }
-            },
+            unsubscribe
         };
     }
-    const next = (v: T[typeof type]) => {
+    const next = (v: E[typeof type]) => {
         emitter.emit(type, v);
     };
     const dispose = () => {
@@ -36,21 +31,32 @@ export function createSubject<K extends keyof T, T extends Record<EventType, unk
     return { subscribe, next, dispose };
 }
 
-type WithGlobal<T> = T & { global: PRXInputEvent };
-export function createStore<  E extends WithGlobal<Record<EventType, PRXInputEvent>>, G extends InputActionGenerics = InputActionGenerics>(emitter?: Emitter<E>){
+type WithGlobal<E, T extends PRXInputEvent = PRXInputEvent> = E & { global: T };
+type AcceptableKeys<E, T> = {
+  [K in keyof E]: T extends E[K] ? K : never
+}[keyof E];
+export function createStore<
+    E extends Record<string, PRXInputEvent> & {global: PRXInputEvent}>(emitter?: Emitter<E>){
     const _emitter = emitter || mitt<E>();
-    const _globalSubject = createSubject(_emitter, "global");
-    const _store = createPRXLogStore<G>(_globalSubject);
-      const _subjects = new Map<keyof E, Subject<E[keyof E]>>();
+    const _globalSubject = createSubject<E, E['global']>(_emitter, "global");
+    const _store = createLogStore<E['global']>(_globalSubject);
+    const _subjects = new Map<keyof E, Subject<PRXInputEvent>>();
     _subjects.set("global", _globalSubject);
+    
+    const getOrCreateSubject = (type: keyof E): Subject<PRXInputEvent> => {
+        if (!_subjects.has(type)) {
+            const _globalSubject = createSubject<E, PRXInputEvent>(_emitter, "global");
 
-    const addEmitter = <O extends object = EmptyObject>
-        (creator: PRXInputEmitter<G, O>, props: { actions: Exclude<keyof E, "global">[], option?: O }) => {
-            const localSubjects = props.actions.map((action) => {
-                return _subjects.get(action) || createSubject(_emitter, action);
-            });
-            _store.addEmitter(creator, localSubjects, props.option);
-            return { ..._store, ...subjectsObject, addEmitter, dispose };
+            _subjects.set(type, createSubject(_emitter, type));
+        }
+        return _subjects.get(type) as Subject<E[keyof E]>;
+    };
+
+    const addEmitterMit = <O extends object = EmptyObject, T extends PRXInputEvent = PRXInputEvent, A extends AcceptableKeys<E, T> = AcceptableKeys<E, T>>
+        (creator: InputEmitter<O, T>, props: { actions: Exclude<A, "global">[], option?: O }) => {
+            const localSubjects = props.actions.map(getOrCreateSubject) as Subject<T>[];
+            _store.addEmitter<O, T>(creator, localSubjects, props.option);
+            return api;
         };
     
     const dispose = () => {
@@ -63,5 +69,7 @@ export function createStore<  E extends WithGlobal<Record<EventType, PRXInputEve
     const subjectsObject = Object.fromEntries(
     Array.from(_subjects.entries())
     ) as { [K in keyof E]: Subject<E[K]> };
-    return { ..._store, ...subjectsObject, addEmitter, dispose };
+
+    const api = { ..._store, ...subjectsObject, addEmitterMit, dispose };
+    return api;
 }
