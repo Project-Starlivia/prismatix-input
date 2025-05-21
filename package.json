@@ -1,9 +1,15 @@
 {
   "name": "prismatix-input",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "license": "MIT",
-  "module": "index.ts",
   "type": "module",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc && bun run generate-exports.ts",
+    "test": "bun test"
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },
@@ -12,5 +18,35 @@
   },
   "dependencies": {
     "mitt": "^3.0.1"
+  },
+  "exports": {
+    "./log-store": {
+      "import": "./dist/log-store.js",
+      "types": "./dist/log-store.d.ts"
+    },
+    "./mitt-ex": {
+      "import": "./dist/mitt-ex.js",
+      "types": "./dist/mitt-ex.d.ts"
+    },
+    "./pure/drag": {
+      "import": "./dist/pure/drag.js",
+      "types": "./dist/pure/drag.d.ts"
+    },
+    "./pure/keyboard": {
+      "import": "./dist/pure/keyboard.js",
+      "types": "./dist/pure/keyboard.d.ts"
+    },
+    "./pure/mouse": {
+      "import": "./dist/pure/mouse.js",
+      "types": "./dist/pure/mouse.d.ts"
+    },
+    "./types": {
+      "import": "./dist/types.js",
+      "types": "./dist/types.d.ts"
+    },
+    "./util": {
+      "import": "./dist/util.js",
+      "types": "./dist/util.d.ts"
+    }
   }
 }
