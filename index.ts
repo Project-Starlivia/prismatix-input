@@ -1,14 +1,14 @@
-import { keyboardBasicInput, type KeyboardInputEvent, type KeyboardInputOptions } from "./src/pure/keyboard";
-import { createStore, type WithGlobal } from "./src/mitt";
-import type { MouseInputEvent } from "./src/pure/mouse";
+import { keyboardNativeInput, type KeyboardInputEvent, type KeyboardInputOptions } from "./src/web-native/keyboard";
+import { createLogStore, type WithGlobal } from "./src/mitt";
+import type { MouseInputEvent } from "./src/web-native/mouse";
 
 type Events = WithGlobal<{
   keyboard: KeyboardInputEvent;
   mouse: MouseInputEvent;
 }>;
 
-const store = createStore<Events>()
-  .addEmitter(keyboardBasicInput, { actions: ["keyboard"], option: { events: 'keydown' } as KeyboardInputOptions } )
+const store = createLogStore<Events>()
+  .addEmitter(keyboardNativeInput, { actions: ["keyboard"], option: { events: 'keydown' } as KeyboardInputOptions } )
 console.log(store, store.keyboard);
 store.keyboard.subscribe((v) => {
     console.log("keyboard", v);

@@ -1,9 +1,10 @@
 import type { Emitter, EventType } from "mitt";
 import mitt from "mitt";
-import type { InputEmitter, PRXInputEvent, Subject } from "./types";
+
+import type { Subject } from "./subject";
+import type { InputEmitter, PRXInputEvent } from "./events";
 import type { GetEvent, GetOption,  LogStore } from "./log-store";
-import { createLogStore } from "./log-store";
-import { emptyObject } from "./utils";
+import { createLogStore as createBaseLogStore } from "./log-store";
 
 export function createSubject<
   E extends Record<EventType, T>, T extends PRXInputEvent
@@ -40,7 +41,7 @@ export function createSubject<
 type AcceptableKeys<E, T> = {
   [K in keyof E]: T extends E[K] ? K : never
 }[keyof E];
-export function createStore<
+export function createLogStore<
     E extends Record<EventType, T> & { global: T },
     T extends PRXInputEvent = E[keyof E]
 >(emitter?: Emitter<E>)
@@ -50,7 +51,7 @@ export function createStore<
     const _subjects = new Map<keyof E, Subject<T>>();
     const _globalSubject = createSubject<E, T>(_emitter, "global") as Subject<T>;
     _subjects.set("global", _globalSubject);
-    const _store = createLogStore(_globalSubject);
+    const _store = createBaseLogStore(_globalSubject);
     const getOrCreateSubject = <K2 extends keyof E>(type: K2): Subject<T> => {
         let subject = _subjects.get(type) as Subject<T> | undefined;
         if (!subject) {

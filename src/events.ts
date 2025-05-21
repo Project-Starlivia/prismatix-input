@@ -1,14 +1,5 @@
-import type { EmptyObject, Multiable } from "./utils";
-
-export interface Subject<T> {
-    subscribe(cb: (v: T) => void): Subscription;
-    next(v: T): void;
-    dispose(): void;
-}
-export interface Subscription {
-  unsubscribe(): void;
-}
-export type MultiSubject<T extends PRXInputEvent = PRXInputEvent> =Multiable<Subject<T>>;
+import type { MultiSubject } from "./subject";
+import type { EmptyObject } from "./utils";
 
 export type DefaultAction = "start" | "hold" | "end";
 export type PRXInputEvent<

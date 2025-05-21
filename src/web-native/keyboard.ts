@@ -1,19 +1,20 @@
-import type { DefaultAction, InputEmitter, MultiSubject, PRXInputEvent } from "../types";
+import type { DefaultAction, InputEmitter, PRXInputEvent } from "../events";
+import type { MultiSubject } from "../subject";
 import { multiableToArray } from "../utils";
 
-export type KeyboardEventType = "keydown" | "keydown-first" | "keydown-repeat" | "keyup";
+type KeyboardNativeEvent = "keydown" | "keydown-norepeat" | "keydown-repeat" | "keyup";
 
 export type KeyboardInputOptions = {
     target?: HTMLElement | Document | Window
     keys?: string[] | undefined,
     codes?: string[] | undefined,
-    events?: KeyboardEventType[] | KeyboardEventType | undefined
+    events?: KeyboardNativeEvent[] | KeyboardNativeEvent | undefined
 }
 
 export interface KeyboardInputEvent extends PRXInputEvent {
     code: string;
 }
-export const keyboardBasicInput
+export const keyboardNativeInput
     : InputEmitter<KeyboardInputOptions, KeyboardInputEvent>
 = <T extends KeyboardInputEvent, A extends DefaultAction = DefaultAction>(
     s: MultiSubject<T>,
@@ -24,7 +25,7 @@ export const keyboardBasicInput
     const _target = target || document;
     const _keys = o?.keys ? (Array.isArray(o.keys) ? o.keys : [o.keys]) : undefined;
     const _codes = codes ? (Array.isArray(codes) ? codes : [codes]) : undefined;
-    const _events = events ? (Array.isArray(events) ? events : [events]) : ["keydown", "keydown-first", "keydown-repeat", "keyup"] as KeyboardEventType[];
+    const _events = events ? (Array.isArray(events) ? events : [events]) : ["keydown", "keydown-norepeat", "keydown-repeat", "keyup"] as KeyboardNativeEvent[];
 
     function onKeyDown(e: Event){
         if (!(e instanceof KeyboardEvent)) return;
@@ -34,7 +35,7 @@ export const keyboardBasicInput
         if (!(e instanceof KeyboardEvent)) return;
         onKeyboardEvent(e, "end" as A);
     }
-    function onKeyDownStart(e: Event){
+    function onKeyDownNoRepeat(e: Event){
         if (!(e instanceof KeyboardEvent)) return;
         if (e.repeat) return;
         onKeyboardEvent(e, "start" as A);
@@ -60,10 +61,10 @@ export const keyboardBasicInput
         }
     }
 
-    const keyboardEvents: Record<KeyboardEventType, {type: string, listener: (e: Event) => void}> = {
+    const keyboardEvents: Record<KeyboardNativeEvent, {type: string, listener: (e: Event) => void}> = {
         "keydown": { type: "keydown", listener: onKeyDown },
         "keyup": { type: "keyup", listener: onKeyUp },
-        "keydown-first": { type: "keydown", listener: onKeyDownStart },
+        "keydown-norepeat": { type: "keydown", listener: onKeyDownNoRepeat },
         "keydown-repeat": { type: "keydown", listener: onKeyDownRepeat },
     };
 

@@ -1,13 +1,18 @@
-import { disposeEmitNodes } from "typescript";
-import type { DefaultAction, MultiSubject, PRXInputEvent } from "../types";
+import type { DefaultAction, PRXInputEvent } from "../events";
+import type { MultiSubject } from "../subject";
 import { multiableToArray } from "../utils";
 
-type MouseEventType = "mousedown" | "mouseup" | "mousemove" | "mouseenter" | "mouseleave" | "mouseover" | "mouseout" | "click" | "dblclick" | "contextmenu";
+export type ClickEvent = "click" | "dblclick" | "contextmenu";
+export type ButtonEvent = "mousedown" | "mouseup";
+export type MoveEvent = "mousemove";
+export type WrapEvent = "mouseenter" | "mouseleave" | "mouseover" | "mouseout";
+
+type MouseNativeEvent = ClickEvent | ButtonEvent | MoveEvent | WrapEvent;
 
 export type MouseInputOptions = {
     target?: HTMLElement | Document | Window
     buttons?: number[] | undefined
-    types?: MouseEventType[] | MouseEventType | undefined,
+    events?: MouseNativeEvent[] | MouseNativeEvent | undefined,
 }
 
 export interface MouseInputEvent extends PRXInputEvent {
@@ -16,14 +21,14 @@ export interface MouseInputEvent extends PRXInputEvent {
     y: number;
 }
 
-export function mouseBasicInput<T extends MouseInputEvent = MouseInputEvent>(
+export function mouseNativeInput<T extends MouseInputEvent = MouseInputEvent>(
     s: MultiSubject<T>,
     o?: MouseInputOptions
 ) {
     const _subjects = multiableToArray(s);
-    const { target, buttons, types } = o || {};
+    const { target, buttons, events } = o || {};
     const _target = target || document;
-    const _types = types ? (Array.isArray(types) ? types : [types]) : undefined;
+    const _events = events ? (Array.isArray(events) ? events : [events]) : undefined;
     const _buttons = buttons ? (Array.isArray(buttons) ? buttons : [buttons]) : undefined;
 
     function onMouseDown(e: Event) {
@@ -51,7 +56,7 @@ export function mouseBasicInput<T extends MouseInputEvent = MouseInputEvent>(
         }
     }
 
-    const mouseEvents: Record<MouseEventType, (e: Event) => void> = {
+    const mouseEvents: Record<MouseNativeEvent, (e: Event) => void> = {
         "mousedown": onMouseDown,
         "mouseup": onMouseUp,
         "mousemove": onMouseMove,
@@ -64,7 +69,7 @@ export function mouseBasicInput<T extends MouseInputEvent = MouseInputEvent>(
         "contextmenu": () => { },
     };
 
-    if (!_types) {
+    if (!_events) {
         for (const type of ["mousedown", "mouseup", "mousemove"] as const) {
             _target.addEventListener(type, mouseEvents[type]);
         }
@@ -72,7 +77,7 @@ export function mouseBasicInput<T extends MouseInputEvent = MouseInputEvent>(
 
     return {
         dispose: () => {
-            for (const type of _types || ["mousedown", "mouseup", "mousemove"] as const) {
+            for (const type of _events || ["mousedown", "mouseup", "mousemove"] as const) {
                 _target.removeEventListener(type, mouseEvents[type]);
             }
         }
