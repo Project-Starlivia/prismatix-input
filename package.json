@@ -1,6 +1,6 @@
 {
   "name": "prismatix-input",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "license": "MIT",
   "module": "index.ts",
   "type": "module",
