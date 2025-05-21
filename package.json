@@ -8,11 +8,12 @@
   ],
   "scripts": {
     "dev": "vite",
-    "build": "tsc && bun run generate-exports.ts",
+    "build": "rimraf dist && tsc && bun run generate-exports.ts",
     "test": "bun test"
   },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "rimraf": "^6.0.1"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
@@ -24,10 +25,6 @@
     "./log-store": {
       "import": "./dist/log-store.js",
       "types": "./dist/log-store.d.ts"
-    },
-    "./mitt-ex": {
-      "import": "./dist/mitt-ex.js",
-      "types": "./dist/mitt-ex.d.ts"
     },
     "./mitt": {
       "import": "./dist/mitt.js",
