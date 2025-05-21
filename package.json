@@ -7,6 +7,7 @@
     "dist"
   ],
   "scripts": {
+    "dev": "vite",
     "build": "tsc && bun run generate-exports.ts",
     "test": "bun test"
   },
@@ -28,6 +29,10 @@
       "import": "./dist/mitt-ex.js",
       "types": "./dist/mitt-ex.d.ts"
     },
+    "./mitt": {
+      "import": "./dist/mitt.js",
+      "types": "./dist/mitt.d.ts"
+    },
     "./pure/drag": {
       "import": "./dist/pure/drag.js",
       "types": "./dist/pure/drag.d.ts"
@@ -44,9 +49,9 @@
       "import": "./dist/types.js",
       "types": "./dist/types.d.ts"
     },
-    "./util": {
-      "import": "./dist/util.js",
-      "types": "./dist/util.d.ts"
+    "./utils": {
+      "import": "./dist/utils.js",
+      "types": "./dist/utils.d.ts"
     }
   }
 }

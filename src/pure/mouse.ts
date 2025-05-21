@@ -1,6 +1,6 @@
 import { disposeEmitNodes } from "typescript";
 import type { DefaultAction, MultiSubject, PRXInputEvent } from "../types";
-import { multiableToArray } from "../util";
+import { multiableToArray } from "../utils";
 
 type MouseEventType = "mousedown" | "mouseup" | "mousemove" | "mouseenter" | "mouseleave" | "mouseover" | "mouseout" | "click" | "dblclick" | "contextmenu";
 

@@ -3,6 +3,7 @@ import mitt from "mitt";
 import type { InputEmitter, PRXInputEvent, Subject } from "./types";
 import type { GetEvent, GetOption,  LogStore } from "./log-store";
 import { createLogStore } from "./log-store";
+import { emptyObject } from "./utils";
 
 export function createSubject<
   E extends Record<EventType, T>, T extends PRXInputEvent
@@ -35,7 +36,7 @@ export function createSubject<
     };
     return { subscribe, next, dispose };
 }
-
+  
 type AcceptableKeys<E, T> = {
   [K in keyof E]: T extends E[K] ? K : never
 }[keyof E];
@@ -45,10 +46,11 @@ export function createStore<
 >(emitter?: Emitter<E>)
     {
     const _emitter = emitter || mitt<E>();
-    const _globalSubject = createSubject<E, T>(_emitter, "global") as Subject<T>;
-    const _store = createLogStore(_globalSubject);
+    
     const _subjects = new Map<keyof E, Subject<T>>();
+    const _globalSubject = createSubject<E, T>(_emitter, "global") as Subject<T>;
     _subjects.set("global", _globalSubject);
+    const _store = createLogStore(_globalSubject);
     const getOrCreateSubject = <K2 extends keyof E>(type: K2): Subject<T> => {
         let subject = _subjects.get(type) as Subject<T> | undefined;
         if (!subject) {
@@ -66,7 +68,7 @@ export function createStore<
         (creator: C, props: { actions: Exclude<AcceptableKeys<E, CT>, "global">[], option?: O }) => {
             const localSubjects = props.actions.map(getOrCreateSubject) as Subject<CT>[];
             _store.addEmitter<C, O, CT>(creator, localSubjects, props.option);
-            return api;
+            return { ...api, ...subjectsObject() }
         };
     
     const dispose = () => {
@@ -76,10 +78,18 @@ export function createStore<
         _subjects.clear();
         _emitter.all.clear();
     }
-    const subjectsObject = Object.fromEntries(
-    Array.from(_subjects.entries())
+    const subjectsObject = () => Object.fromEntries(
+        Array.from(_subjects.entries()).map(([key, subject]) => {
+            return [key, subject];
+        })
     ) as { [K in keyof E]: Subject<E[K]> };
-
-    const api = { ..._store, ...subjectsObject, addEmitter, dispose };
+    const api = { ..._store, ...subjectsObject(), addEmitter, dispose };
     return api;
 }
+
+type UnionOfProps<E, K extends keyof E = Exclude<keyof E, 'global'>> = E[K];
+
+export type WithGlobal<E extends Record<string, PRXInputEvent>> =
+  Omit<E, 'global'> & {
+    global: UnionOfProps<E>;
+  };

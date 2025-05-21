@@ -1,5 +1,5 @@
 import type { DefaultAction, InputEmitter, MultiSubject, PRXInputEvent } from "../types";
-import { multiableToArray } from "../util";
+import { multiableToArray } from "../utils";
 
 export type KeyboardEventType = "keydown" | "keydown-first" | "keydown-repeat" | "keyup";
 
@@ -46,9 +46,9 @@ export const keyboardBasicInput
     }
     function onKeyboardEvent(e: KeyboardEvent, action: A){
         const key = e.key;
-        if (!_keys?.includes(key)) return;
+        if (_keys && !_keys.includes(key)) return;
         const code = e.code;
-        if (!_codes?.includes(key)) return;
+        if (_codes && !_codes.includes(key)) return;
         const event = {
             key: key,
             action,

@@ -1,5 +1,5 @@
 import type { InputEmitter, PRXInputEvent, MultiSubject, Subject } from "./types";
-import { multiableToArray, type EmptyObject } from "./util";
+import { multiableToArray, type EmptyObject } from "./utils";
 
 
 export type GetOption<T> = T extends InputEmitter<infer O, PRXInputEvent> ? O : never;

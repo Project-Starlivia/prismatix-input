@@ -1,4 +1,4 @@
-import type { EmptyObject, Multiable } from "./util";
+import type { EmptyObject, Multiable } from "./utils";
 
 export interface Subject<T> {
     subscribe(cb: (v: T) => void): Subscription;
