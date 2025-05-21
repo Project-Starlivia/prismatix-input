@@ -1,7 +1,7 @@
 import type { Emitter, EventType } from "mitt";
 import mitt from "mitt";
 import type { InputEmitter, PRXInputEvent, Subject } from "./types";
-import { createLogStore } from "./log-store";
+import { createLogStore, type LogStore } from "./log-store";
 import type { EmptyObject } from "./util";
 
 export function createSubject<E extends Record<EventType, T>, T extends PRXInputEvent = PRXInputEvent>(emitter: Emitter<E>, type: keyof E): Subject<T> {
@@ -31,12 +31,29 @@ export function createSubject<E extends Record<EventType, T>, T extends PRXInput
     return { subscribe, next, dispose };
 }
 
-type WithGlobal<E, T extends PRXInputEvent = PRXInputEvent> = E & { global: T };
+export type MittLogStore<
+  E extends Record<string, PRXInputEvent> & { global: PRXInputEvent }
+> = LogStore<E[keyof E]> & {
+  [K in keyof E]: Subject<E[K]>;
+} & {
+  addEmitterMit: <
+    O extends object = EmptyObject,
+    T extends PRXInputEvent = PRXInputEvent,
+    A extends AcceptableKeys<E, T> = AcceptableKeys<E, T>
+  >(
+    creator: InputEmitter<O, T>,
+    props: { actions: Exclude<A, "global">[]; option?: O }
+  ) => MittLogStore<E>;
+}
+
 type AcceptableKeys<E, T> = {
   [K in keyof E]: T extends E[K] ? K : never
 }[keyof E];
 export function createStore<
-    E extends Record<string, PRXInputEvent> & {global: PRXInputEvent}>(emitter?: Emitter<E>){
+    E extends Record<string, PRXInputEvent> & {global: PRXInputEvent}>(emitter?: Emitter<E>
+    )
+    : MittLogStore<E>
+    {
     const _emitter = emitter || mitt<E>();
     const _globalSubject = createSubject<E, E['global']>(_emitter, "global");
     const _store = createLogStore<E['global']>(_globalSubject);
