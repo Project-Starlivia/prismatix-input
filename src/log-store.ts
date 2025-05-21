@@ -1,12 +1,21 @@
 import type { InputEmitter, PRXInputEvent, MultiSubject, Subject } from "./types";
 import { multiableToArray, type EmptyObject } from "./util";
 
+
+export type GetOption<T> = T extends InputEmitter<infer O, PRXInputEvent> ? O : never;
+export type GetEvent<T> = T extends InputEmitter<object, infer E> ? E : never;
+
 export interface LogStore<T extends PRXInputEvent = PRXInputEvent> {
 	log: T[];
 	clear: () => void;
-	addEmitter: <O extends object = EmptyObject, E extends PRXInputEvent = PRXInputEvent>
-		(creator: InputEmitter<O, E>, subject: MultiSubject<E>, option?: O)
-		 => LogStore<T>;
+	addEmitter: <
+		C extends InputEmitter<O, T>,
+		O extends object = GetOption<C>,
+		T extends PRXInputEvent = GetEvent<C>>(
+		creator: C,
+		subjects: Subject<T>[],
+  		option?: O
+	) => LogStore<T>;
 	dispose: () => void;
 }
 
@@ -17,11 +26,11 @@ export function createLogStore<T extends PRXInputEvent = PRXInputEvent>(
 	const clear = () => {
 		log.length = 0;
 	};
-	const addEmitter = <O extends object = EmptyObject, E extends PRXInputEvent = PRXInputEvent>
+	const addEmitter = <C extends InputEmitter<O, E>, O extends object = GetOption<C>, E extends PRXInputEvent = GetEvent<C>>
 		(creator: InputEmitter<O, E>, s: MultiSubject<E>, option?: O) => {
 			const _subjects = [...multiableToArray(s), globalSubject] as MultiSubject<E>;
 			creator(_subjects, option);
-			return { log, clear, addEmitter, dispose };
+			return api;
 		};
 	const sub = globalSubject.subscribe((v) => {
 		log.push(v);
@@ -29,5 +38,6 @@ export function createLogStore<T extends PRXInputEvent = PRXInputEvent>(
 	const dispose = () => {
 		sub.unsubscribe();
 	};
-	return { log, clear, addEmitter, dispose };
+	const api  = { log, clear, addEmitter, dispose} as LogStore<T>;
+	return api;
 }

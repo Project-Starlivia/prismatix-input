@@ -1,7 +1,7 @@
-import type { DefaultAction, MultiSubject, PRXInputEvent } from "../types";
+import type { DefaultAction, InputEmitter, MultiSubject, PRXInputEvent } from "../types";
 import { multiableToArray } from "../util";
 
-type KeyboardEventType = "keydown" | "keydown-first" | "keydown-repeat" | "keyup";
+export type KeyboardEventType = "keydown" | "keydown-first" | "keydown-repeat" | "keyup";
 
 export type KeyboardInputOptions = {
     target?: HTMLElement | Document | Window
@@ -13,11 +13,12 @@ export type KeyboardInputOptions = {
 export interface KeyboardInputEvent extends PRXInputEvent {
     code: string;
 }
-
-export function keyboardBasicInput<T extends KeyboardInputEvent, A extends DefaultAction = DefaultAction>(
+export const keyboardBasicInput
+    : InputEmitter<KeyboardInputOptions, KeyboardInputEvent>
+= <T extends KeyboardInputEvent, A extends DefaultAction = DefaultAction>(
     s: MultiSubject<T>,
     o?: KeyboardInputOptions
-) {
+) => {
     const _subjects = multiableToArray(s);
     const { target, codes, events } = o || {};
     const _target = target || document;
@@ -72,12 +73,16 @@ export function keyboardBasicInput<T extends KeyboardInputEvent, A extends Defau
         }
     }
 
-    return {
-        dispose: () => {
-            for (const event of _events) {
+    const dispose = () => {
+        for (const event of _events) {
+            if (keyboardEvents[event]) {
                 _target.removeEventListener(keyboardEvents[event].type, keyboardEvents[event].listener);
             }
         }
     }
-}
 
+    const api = {
+        dispose
+    };
+    return api;
+}

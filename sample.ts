@@ -7,8 +7,8 @@ type Events = {
     keyboard: KeyboardInputEvent;
 }
 
-const store = createStore()
-  .addEmitterMit<KeyboardInputOptions, KeyboardInputEvent>(keyboardBasicInput, { actions: ["fawe"], option: { events: 'keydown' } })
+const store = createStore<Events>()
+  .addEmitter(keyboardBasicInput, { actions: ["keyboard"], option: { events: 'keydown' } as KeyboardInputOptions } )
 store.keyboard.subscribe((v) => {
     console.log("mouse", v);
 });
