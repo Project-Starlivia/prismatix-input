@@ -11,23 +11,11 @@ export type WrapEvent = "mouseenter" | "mouseleave" | "mouseover" | "mouseout";
 
 type MouseNativeEvent = ClickEvent | ButtonEvent | MoveEvent | WrapEvent;
 
-export interface MouseFullInputEvent extends PRXInputEvent {
-    clientX: number;
-    clientY: number;
-    screenX: number;
-    screenY: number;
-    offsetX: number;
-    offsetY: number;
-    pageX: number;
-    pageY: number;
-    target: EventTarget;
-    buttons: number;
-}
-
 export type MouseInputOptions = {
     target?: EventTarget
-    buttons?: Multiable<number>,
     events?: Multiable<MouseNativeEvent>,
+    button?: Multiable<number>,
+    buttons?: Multiable<number>,
 }
 
 const inputTypeAction: Record<MouseNativeEvent, DefaultAction> = {
@@ -48,13 +36,14 @@ export function mouseInputBase<T extends PRXInputEvent>(
     mapEvent: (e: MouseEvent, action: DefaultAction) => T,
     o?: MouseInputOptions,
 ){
-    const { target, events, buttons } = o || {};
+    const { target, events, button, buttons } = o || {};
     const _target = target || document;
     const _events = events ? 
         multiableToArray(events) : 
             ["click", "dblclick", "contextmenu", "mousedown", "mouseup", "mouseenter", "mouseleave", "mouseover", "mouseout", "mousemove"] as MouseNativeEvent[];
+    const _button = button ? new Set(multiableToArray(button)) : undefined;
     const _buttons = buttons ? new Set(multiableToArray(buttons)) : undefined;
-    const isExec = (e: MouseEvent) => isEventBySetUndef(_buttons, e.button);
+    const isExec = (e: PointerEvent) => isEventBySetUndef(_button, e.button) && isEventBySetUndef(_buttons, e.buttons)
 
     return nativeInputBase<T, MouseNativeEvent, MouseEvent>(
         s,
@@ -66,7 +55,7 @@ export function mouseInputBase<T extends PRXInputEvent>(
     );
 }
 
-export function mouseInput(
+export function mouseInputWithPosition(
     s: MultiSubject<WithPositionInputEvent>,
     o?: MouseInputOptions
 ) {
@@ -79,24 +68,13 @@ export function mouseInput(
     }as WithPositionInputEvent) ,o)
 }
 
-export function mouseFullInput(
-    s: MultiSubject<MouseFullInputEvent>,
+export function mouseInput(
+    s: MultiSubject<PRXInputEvent>,
     o?: MouseInputOptions
 ) {
     return mouseInputBase(s, (e: MouseEvent, action: DefaultAction) => ({
-            key: e.button.toString(),
-            action,
-            time: e.timeStamp,
-            clientX: e.clientX, 
-            clientY: e.clientY, 
-            screenX: e.screenX, 
-            screenY: e.screenY, 
-            offsetX: e.offsetX, 
-            offsetY: e.offsetY, 
-            pageX: e.pageX, 
-            pageY: e.pageY, 
-            target: e.target, 
-            buttons: e.buttons, 
-        } as MouseFullInputEvent),
-    );
+        key: e.button.toString(),
+        action,
+        time: e.timeStamp,
+    }as PRXInputEvent) ,o)
 }
