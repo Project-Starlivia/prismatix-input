@@ -13,19 +13,30 @@ export function createSubject<
   type: keyof E
 ): Subject<E[keyof E]> {
     const subscribers = new Set<(v: E[keyof E]) => void>();
+    let listenerAttached = false;
 
     const subscribe = (cb: (v: E[keyof E]) => void) => {
         subscribers.add(cb);
-        emitter.on(type, cb);
-        const unsubscribe = () => {
-            subscribers.delete(cb);
-            emitter.off(type, cb);
+        if (!listenerAttached) {
+            emitter.on(type, emitToAll);
+            listenerAttached = true;
         }
 
-        return {
-            unsubscribe
+        const unsubscribe = () => {
+            subscribers.delete(cb);
+            if (subscribers.size === 0 && listenerAttached) {
+                emitter.off(type, emitToAll);
+                listenerAttached = false;
+            }
         };
-    }
+
+        return { unsubscribe };
+    };
+
+    const emitToAll = (v: E[keyof E]) => {
+        for (const cb of subscribers) cb(v);
+    };
+
     const next = (v: E[typeof type]) => {
         emitter.emit(type, v);
     };
@@ -37,7 +48,7 @@ export function createSubject<
     };
     return { subscribe, next, dispose };
 }
-  
+
 type AcceptableKeys<E, T> = {
   [K in keyof E]: T extends E[K] ? K : never
 }[keyof E];
@@ -53,14 +64,15 @@ export function createLogStore<
     _subjects.set("global", _globalSubject);
     const _store = createBaseLogStore(_globalSubject);
     const getOrCreateSubject = <K2 extends keyof E>(type: K2): Subject<T> => {
-        let subject = _subjects.get(type) as Subject<T> | undefined;
-        if (!subject) {
-            subject = createSubject<E, T>(_emitter, type) as Subject<T>;
-            _subjects.set(type, subject);
-        }
+        const subject = _subjects.get(type) ?? createAndCacheSubject(type);
+
         return subject;
     };
-
+    const createAndCacheSubject = (type: keyof E): Subject<T> => {
+        const subject = createSubject<E, T>(_emitter, type) as Subject<T>;
+        _subjects.set(type, subject);
+        return subject;
+    };
     const addEmitter = <
         C extends InputEmitter<O, CT>,
         O extends object = GetOption<C>,
@@ -77,8 +89,8 @@ export function createLogStore<
             subject.dispose();
         }
         _subjects.clear();
-        _emitter.all.clear();
     }
+    
     const subjectsObject = () => Object.fromEntries(
         Array.from(_subjects.entries()).map(([key, subject]) => {
             return [key, subject];
@@ -88,9 +100,6 @@ export function createLogStore<
     return api;
 }
 
-type UnionOfProps<E, K extends keyof E = Exclude<keyof E, 'global'>> = E[K];
-
-export type WithGlobal<E extends Record<string, PRXInputEvent>> =
-  Omit<E, 'global'> & {
-    global: UnionOfProps<E>;
-  };
+export type WithGlobal<T> = T & {
+  global: T[keyof T];
+};
