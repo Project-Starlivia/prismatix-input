@@ -1,4 +1,4 @@
-import type { DefaultAction, PRXInputEvent } from "../events";
+import type { DefaultAction, InputEmitter, PRXInputEvent } from "../events";
 import type { MultiSubject } from "../subject";
 import { multiableToArray } from "../utils";
 
@@ -9,78 +9,129 @@ export type WrapEvent = "mouseenter" | "mouseleave" | "mouseover" | "mouseout";
 
 type MouseNativeEvent = ClickEvent | ButtonEvent | MoveEvent | WrapEvent;
 
-export type MouseInputOptions = {
+export interface MouseInputFullEvent extends PRXInputEvent {
+    clientX: number;
+    clientY: number;
+    screenX: number;
+    screenY: number;
+    offsetX: number;
+    offsetY: number;
+    pageX: number;
+    pageY: number;
+    target: EventTarget;
+    buttons: number;
+}
+
+export type MouseInputOptions<T extends PRXInputEvent> = {
     target?: HTMLElement | Document | Window
     buttons?: number[] | undefined
     events?: MouseNativeEvent[] | MouseNativeEvent | undefined,
+    onMouseEvent: (e: MouseEvent, type: MouseNativeEvent ) => T
 }
 
-export interface MouseInputEvent extends PRXInputEvent {
-    button: number;
-    x: number;
-    y: number;
+
+const inputTypeAction: Record<MouseNativeEvent, DefaultAction> = {
+    "mousedown": "start",
+    "mouseup": "end",
+    "mousemove": "move",
+    "click": "start",
+    "dblclick": "start",
+    "contextmenu": "start",
+    "mouseenter": "start",
+    "mouseleave": "end",
+    "mouseover": "start",
+    "mouseout": "end",
+};
+
+export const mouseNativeBasicInput
+: InputEmitter<MouseInputOptions<WithPositionInputEvent>, WithPositionInputEvent>
+= (
+    s: MultiSubject<WithPositionInputEvent>,
+    o?: MouseInputOptions<WithPositionInputEvent>
+) => {
+    return mouseNativeInput(s, { ...o, onMouseEvent: (e: MouseEvent, type: MouseNativeEvent) => {
+            const action = inputTypeAction[type];
+            const event = {
+                x: e.clientX,
+                y: e.clientY,
+                action,
+                time: e.timeStamp,
+            } as WithPositionInputEvent;
+            return event;
+        }
+    });
 }
 
-export function mouseNativeInput<T extends MouseInputEvent = MouseInputEvent>(
-    s: MultiSubject<T>,
-    o?: MouseInputOptions
-) {
+export const mouseNativeFullInput
+: InputEmitter<MouseInputOptions<MouseInputFullEvent>, MouseInputFullEvent>
+ = (
+    s: MultiSubject<MouseInputFullEvent>,
+    o?: MouseInputOptions<MouseInputFullEvent>
+) => {
+    return mouseNativeInput(s, { ...o, onMouseEvent: (e: MouseEvent, type: MouseNativeEvent) => {
+            const action = inputTypeAction[type];
+            const event = {
+                clientX: e.clientX,
+                clientY: e.clientY,
+                screenX: e.screenX,
+                screenY: e.screenY,
+                offsetX: e.offsetX,
+                offsetY: e.offsetY,
+                pageX: e.pageX,
+                pageY: e.pageY,
+                target: e.target,
+                buttons: e.buttons,
+                action,
+                time: e.timeStamp,
+            } as MouseInputFullEvent;
+            return event;
+        }
+    });
+}
+
+export const mouseNativeInput = <T extends PRXInputEvent>(
+  s: MultiSubject<T>,
+  o?: MouseInputOptions<T>
+) => {
     const _subjects = multiableToArray(s);
-    const { target, buttons, events } = o || {};
+    const { target, buttons, events, onMouseEvent } = o || {};
     const _target = target || document;
-    const _events = events ? (Array.isArray(events) ? events : [events]) : undefined;
-    const _buttons = buttons ? (Array.isArray(buttons) ? buttons : [buttons]) : undefined;
-
-    function onMouseDown(e: Event) {
-        if (!(e instanceof MouseEvent)) return;
-        onMouseEvent(e, "start");
-    }
-    function onMouseUp(e: Event) {
-        if (!(e instanceof MouseEvent)) return;
-        onMouseEvent(e, "end");
-    }
-    function onMouseMove(e: Event) {
-        if (!(e instanceof MouseEvent)) return;
-        onMouseEvent(e, "hold");
-    }
-    function onMouseEvent(e: MouseEvent, action: DefaultAction){
-        const inputButton = e.button;
-        if (!_buttons?.includes(inputButton)) return;
+    const _events = events ? (Array.isArray(events) ? events : [events]) : ["click", "dblclick", "contextmenu", "mousedown", "mouseup", "mousemove", "mouseenter", "mouseleave", "mouseover", "mouseout"] as MouseNativeEvent[];
+    const _buttons = buttons ? new Set(Array.isArray(buttons) ? buttons : [buttons]): undefined;
+    const _onMouseEvent = onMouseEvent || ((e: MouseEvent, type: MouseNativeEvent) => {
+        const action = inputTypeAction[type];
         const event = {
-            key: inputButton.toString(),
+            key: e.button.toString(),
             action,
             time: e.timeStamp,
         } as T;
-        for (const stream of _subjects) {
-            stream.next(event);
-        }
+        return event;
+    });
+
+    const listeners = [] as (() => void)[];
+
+    const buttonFilter = _buttons ? (button: number) => _buttons.has(button): () => true;
+
+    for (const eventType of _events || []) {
+        const handler = (e: Event) => {
+            const mouseEvent = e as MouseEvent;
+            if (!buttonFilter(mouseEvent.button)) return;
+            const result = _onMouseEvent(mouseEvent, eventType) as T;
+            for (const stream of _subjects) {
+                stream.next(result);
+            }
+        };
+        _target.addEventListener(eventType, handler);
+        listeners.push(() => _target.removeEventListener(eventType, handler));
     }
 
-    const mouseEvents: Record<MouseNativeEvent, (e: Event) => void> = {
-        "mousedown": onMouseDown,
-        "mouseup": onMouseUp,
-        "mousemove": onMouseMove,
-        "mouseenter": () => { },
-        "mouseleave": () => { },
-        "mouseover": () => { },
-        "mouseout": () => { },
-        "click": () => { },
-        "dblclick": () => { },
-        "contextmenu": () => { },
-    };
-
-    if (!_events) {
-        for (const type of ["mousedown", "mouseup", "mousemove"] as const) {
-            _target.addEventListener(type, mouseEvents[type]);
+    const dispose = () => {
+        for (const remove of listeners) {
+            remove();
         }
     }
 
     return {
-        dispose: () => {
-            for (const type of _events || ["mousedown", "mouseup", "mousemove"] as const) {
-                _target.removeEventListener(type, mouseEvents[type]);
-            }
-        }
+        dispose,
     }
-
 }
