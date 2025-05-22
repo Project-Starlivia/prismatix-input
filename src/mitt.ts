@@ -5,6 +5,7 @@ import type { Subject } from "./subject";
 import type { InputEmitter, PRXInputEvent } from "./events";
 import type { GetEvent, GetOption,  LogStore } from "./log-store";
 import { createLogStore as createBaseLogStore } from "./log-store";
+import { multiableToArray } from './utils';
 
 export function createSubject<
   E extends Record<EventType, T>, T extends PRXInputEvent
@@ -78,8 +79,9 @@ export function createLogStore<
         O extends object = GetOption<C>,
         CT extends T = GetEvent<C>
     >
-        (creator: C, props: { actions: Exclude<AcceptableKeys<E, CT>, "global">[], option?: O }) => {
-            const localSubjects = props.actions.map(getOrCreateSubject) as Subject<CT>[];
+        (creator: C, props: { outEvents: Multiable<Exclude<AcceptableKeys<E, CT>, "global">>, option?: O }) => {
+            const _outEvents = multiableToArray(props.outEvents);
+            const localSubjects = _outEvents.map(getOrCreateSubject) as Subject<CT>[];
             _store.addEmitter<C, O, CT>(creator, localSubjects, props.option);
             return { ...api, ...subjectsObject() }
         };
