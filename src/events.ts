@@ -1,7 +1,7 @@
 import type { MultiSubject } from "./subject";
 import type { EmptyObject } from "./utils";
 
-export type DefaultAction = "start" | "hold" | "end";
+export type DefaultAction = "start" | "hold" | "move" | "end";
 export type PRXInputEvent<
   K extends string = string,
   A extends string = DefaultAction,
