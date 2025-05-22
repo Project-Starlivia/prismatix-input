@@ -1,6 +1,6 @@
 {
   "name": "prismatix-input",
-  "version": "0.0.41",
+  "version": "0.1.0",
   "license": "MIT",
   "type": "module",
   "files": [
@@ -23,6 +23,10 @@
     "mitt": "^3.0.1"
   },
   "exports": {
+    "./events": {
+      "import": "./dist/events.js",
+      "types": "./dist/events.d.ts"
+    },
     "./log-store": {
       "import": "./dist/log-store.js",
       "types": "./dist/log-store.d.ts"
@@ -31,25 +35,29 @@
       "import": "./dist/mitt.js",
       "types": "./dist/mitt.d.ts"
     },
-    "./pure/drag": {
-      "import": "./dist/pure/drag.js",
-      "types": "./dist/pure/drag.d.ts"
-    },
-    "./pure/keyboard": {
-      "import": "./dist/pure/keyboard.js",
-      "types": "./dist/pure/keyboard.d.ts"
-    },
-    "./pure/mouse": {
-      "import": "./dist/pure/mouse.js",
-      "types": "./dist/pure/mouse.d.ts"
-    },
-    "./types": {
-      "import": "./dist/types.js",
-      "types": "./dist/types.d.ts"
+    "./subject": {
+      "import": "./dist/subject.js",
+      "types": "./dist/subject.d.ts"
     },
     "./utils": {
       "import": "./dist/utils.js",
       "types": "./dist/utils.d.ts"
+    },
+    "./web-native/index": {
+      "import": "./dist/web-native/index.js",
+      "types": "./dist/web-native/index.d.ts"
+    },
+    "./web-native/keyboard": {
+      "import": "./dist/web-native/keyboard.js",
+      "types": "./dist/web-native/keyboard.d.ts"
+    },
+    "./web-native/mouse": {
+      "import": "./dist/web-native/mouse.js",
+      "types": "./dist/web-native/mouse.d.ts"
+    },
+    "./web-native/pointer": {
+      "import": "./dist/web-native/pointer.js",
+      "types": "./dist/web-native/pointer.d.ts"
     }
   }
 }
