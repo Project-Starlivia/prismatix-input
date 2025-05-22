@@ -14,7 +14,7 @@ export interface LogStore<T extends PRXInputEvent = PRXInputEvent> {
 		O extends object = GetOption<C>,
 		T extends PRXInputEvent = GetEvent<C>>(
 		creator: C,
-		s: Subject<T>[],
+		s: MultiSubject<T>,
 		option?: O
 	) => LogStore<T>;
 	dispose: () => void;

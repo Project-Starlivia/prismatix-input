@@ -1,5 +1,6 @@
 import type { DefaultAction, InputEmitter, PRXInputEvent } from "../events";
 import type { MultiSubject } from "../subject";
+import type { Multiable } from "../utils";
 import { multiableToArray } from "../utils";
 import { isEventBySetUndef } from ".";
 
@@ -76,7 +77,7 @@ export const keyboardInput
         if(!codeFilter(keyboardEvent.code)) return;
         onKeyboardEvent(keyboardEvent, 'end');
     }
-    
+
     if (hasKeydown) {
     _target.addEventListener("keydown", onKeydownEvent);
     }

@@ -1,4 +1,4 @@
-import type { DefaultAction } from "../events";
+import type { DefaultAction, InputEmitter, PRXInputEvent } from "../events";
 import type { MultiSubject } from "../subject";
 import { multiableToArray } from "../utils";
 import type { Multiable } from "../utils";
@@ -11,10 +11,13 @@ export type WrapEvent = 'pointerenter' | 'pointerleave' | 'pointerover' | 'point
 export type CancelEvent = 'pointercancel';
 type PointerNativeEvent = ButtonEvent | MoveEvent | WrapEvent | CancelEvent;
 
-export interface PointerInputOptions extends MouseInputOptions {
+export interface PointerInputOptions extends PRXInputEvent {
+    target?: EventTarget;
     events?: Multiable<PointerNativeEvent>;
     pointerType?: Multiable<string>;
     pointerId?: Multiable<number>;
+    button?: Multiable<number>;
+    buttons?: Multiable<number>;
 }
 
 const inputTypeAction: Record<PointerNativeEvent, DefaultAction> = {
@@ -43,12 +46,12 @@ export function pointerInputBase<T extends PRXInputEvent>(
     const _pointerType = pointerType ? new Set(multiableToArray(pointerType)) : undefined;
     const _pointerId = pointerId ? new Set(multiableToArray(pointerId)) : undefined;
     const isExec = (e: PointerEvent) => 
-        isEventBySetUndef(button, e.button) && 
+        isEventBySetUndef(_button, e.button) && 
         isEventBySetUndef(_buttons, e.buttons) && 
         isEventBySetUndef(_pointerType, e.pointerType) && 
         isEventBySetUndef(_pointerId, e.pointerId);
 
-    return nativeInputBase<T, PointerNativeEvent, MouseEvent>(
+    return nativeInputBase<T, PointerNativeEvent, PointerEvent>(
         s,
         _target,
         _events,
@@ -73,7 +76,9 @@ export const pointerInput = (
     );
 }
 
-export const pointerInputWithPosition = (
+export const pointerInputWithPosition
+: InputEmitter<PointerInputOptions, WithPositionInputEvent>
+= (
     s: MultiSubject<WithPositionInputEvent>,
     o?: PointerInputOptions
 ) => {

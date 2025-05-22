@@ -1,19 +1,17 @@
-import { KeyboardInputEvent, keyboardInput } from "./src/web-native/keyboard";
+import { keyboardInput, type KeyboardInputOptions, type KeyboardInputEvent } from "./src/web-native/keyboard";
 import { createLogStore, type WithGlobal } from "./src/mitt";
-import { pointerInput, pointerInputWithPosition } from "./src/web-native/pointer";
-import { mouseInput } from "./src/web-native/mouse";
-import type { PRXInputEvent } from "./src/events";
+import { pointerInputWithPosition } from "./src/web-native/pointer";
 import type { WithPositionInputEvent } from "./src/web-native";
 
 type Events = WithGlobal<{
-  keyboard: KeyboardInputEvent;
   mouse: WithPositionInputEvent;
+  keyboard: KeyboardInputEvent;
 }>;
 
-const h1 = document.getElementById('') as HTMLElement;
 const store = createLogStore<Events>()
-.addEmitter(pointerInputWithPosition, { outEvents: "mouse", option: {  }})
-.addEmitter(keyboardInput, { outEvents: ["keyboard"] })
+  .addEmitter(keyboardInput, { outEvents: "keyboard", option: { events: ["keydown"] } as KeyboardInputOptions })
+  .addEmitter(pointerInputWithPosition, { outEvents: ["mouse"] as const });
+
 console.log(store, store.mouse);
 store.keyboard.subscribe((v) => {
     console.log("key", v);

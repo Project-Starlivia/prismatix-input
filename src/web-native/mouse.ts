@@ -1,5 +1,5 @@
-import { isEventBySetUndef, nativeInputBase, WithPositionInputEvent } from ".";
-import type { DefaultAction, InputEmitter, PRXInputEvent } from "../events";
+import { isEventBySetUndef, nativeInputBase, type WithPositionInputEvent } from ".";
+import type { DefaultAction, PRXInputEvent } from "../events";
 import type { MultiSubject } from "../subject";
 import type { Multiable } from "../utils";
 import { multiableToArray } from "../utils";
@@ -43,7 +43,7 @@ export function mouseInputBase<T extends PRXInputEvent>(
             ["click", "dblclick", "contextmenu", "mousedown", "mouseup", "mouseenter", "mouseleave", "mouseover", "mouseout", "mousemove"] as MouseNativeEvent[];
     const _button = button ? new Set(multiableToArray(button)) : undefined;
     const _buttons = buttons ? new Set(multiableToArray(buttons)) : undefined;
-    const isExec = (e: PointerEvent) => isEventBySetUndef(_button, e.button) && isEventBySetUndef(_buttons, e.buttons)
+    const isExec = (e: MouseEvent) => isEventBySetUndef(_button, e.button) && isEventBySetUndef(_buttons, e.buttons)
 
     return nativeInputBase<T, MouseNativeEvent, MouseEvent>(
         s,
