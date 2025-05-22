@@ -11,76 +11,85 @@ export type KeyboardInputOptions = {
     events?: KeyboardNativeEvent[] | KeyboardNativeEvent | undefined
 }
 
+const inputTypeAction: Record<KeyboardNativeEvent, DefaultAction> = {
+    "keydown": "start",
+    "keydown-norepeat": "start",
+    "keydown-repeat": "hold",
+    "keyup": "end",
+};
 export interface KeyboardInputEvent extends PRXInputEvent {
     code: string;
 }
 export const keyboardNativeInput
-    : InputEmitter<KeyboardInputOptions, KeyboardInputEvent>
-= <T extends KeyboardInputEvent, A extends DefaultAction = DefaultAction>(
-    s: MultiSubject<T>,
+: InputEmitter<KeyboardInputOptions, KeyboardInputEvent> = (
+    s: MultiSubject<KeyboardInputEvent>,
     o?: KeyboardInputOptions
 ) => {
     const _subjects = multiableToArray(s);
     const { target, codes, events } = o || {};
     const _target = target || document;
-    const _keys = o?.keys ? (Array.isArray(o.keys) ? o.keys : [o.keys]) : undefined;
-    const _codes = codes ? (Array.isArray(codes) ? codes : [codes]) : undefined;
-    const _events = events ? (Array.isArray(events) ? events : [events]) : ["keydown", "keydown-norepeat", "keydown-repeat", "keyup"] as KeyboardNativeEvent[];
+    const _keys = o?.keys ? new Set((Array.isArray(o.keys) ? o.keys : [o.keys])) : undefined;
+    const _codes = codes ? new Set((Array.isArray(codes) ? codes : [codes])) : undefined;
+    const _events = new Set(
+    events
+        ? Array.isArray(events) ? events : [events]
+        : ["keydown", "keydown-norepeat", "keydown-repeat", "keyup"]
+    );
 
-    function onKeyDown(e: Event){
-        if (!(e instanceof KeyboardEvent)) return;
-        onKeyboardEvent(e, "hold" as A);
-    }
-    function onKeyUp(e: Event){
-        if (!(e instanceof KeyboardEvent)) return;
-        onKeyboardEvent(e, "end" as A);
-    }
-    function onKeyDownNoRepeat(e: Event){
-        if (!(e instanceof KeyboardEvent)) return;
-        if (e.repeat) return;
-        onKeyboardEvent(e, "start" as A);
-    }
-    function onKeyDownRepeat(e: Event){
-        if (!(e instanceof KeyboardEvent)) return;
-        if (!e.repeat) return;
-        onKeyboardEvent(e, "hold" as A);
-    }
-    function onKeyboardEvent(e: KeyboardEvent, action: A){
-        const key = e.key;
-        if (_keys && !_keys.includes(key)) return;
-        const code = e.code;
-        if (_codes && !_codes.includes(key)) return;
+    const keyFilter = _keys ? (key: string) => _keys.has(key) : () => true;
+    const codeFilter = _codes ? (code: string) => _codes.has(code) : () => true;
+    const hasEvent = (name: string) => _events.has(name);
+    const hasKeydown =
+    _events.has("keydown") ||
+    _events.has("keydown-norepeat") ||
+    _events.has("keydown-repeat");
+
+    const onKeyboardEvent = (e: KeyboardEvent, action: DefaultAction) =>{
         const event = {
-            key: key,
+            key: e.key,
             action,
             time: e.timeStamp,
-            code: code,
-        } as T;
+            code: e.code,
+        } as KeyboardInputEvent;
         for (const stream of _subjects) {
             stream.next(event);
         }
     }
 
-    const keyboardEvents: Record<KeyboardNativeEvent, {type: string, listener: (e: Event) => void}> = {
-        "keydown": { type: "keydown", listener: onKeyDown },
-        "keyup": { type: "keyup", listener: onKeyUp },
-        "keydown-norepeat": { type: "keydown", listener: onKeyDownNoRepeat },
-        "keydown-repeat": { type: "keydown", listener: onKeyDownRepeat },
-    };
+    const onKeydownEvent = (e: Event) => {
+        const keyboardEvent = e as KeyboardEvent;
+        if(!keyFilter(keyboardEvent.key)) return;
+        if(!codeFilter(keyboardEvent.code)) return;
+        const repeat = keyboardEvent.repeat;
 
-    for (const event of _events) {
-        if (keyboardEvents[event]) {
-            _target.addEventListener(keyboardEvents[event].type, keyboardEvents[event].listener);
+        if (hasEvent("keydown")) onKeyboardEvent(keyboardEvent, 'hold');
+        if (repeat ? hasEvent("keydown-repeat") : hasEvent("keydown-norepeat")) {
+            onKeyboardEvent(keyboardEvent, repeat ? 'hold' : 'start');
         }
+    }
+
+    const onKeyupEvent = (e: Event) => {
+        const keyboardEvent = e as KeyboardEvent;
+        if(!keyFilter(keyboardEvent.key)) return;
+        if(!codeFilter(keyboardEvent.code)) return;
+        onKeyboardEvent(keyboardEvent, 'end');
+    }
+    
+    if (hasKeydown) {
+    _target.addEventListener("keydown", onKeydownEvent);
+    }
+    if (_events.has("keyup")) {
+    _target.addEventListener("keyup", onKeyupEvent);
     }
 
     const dispose = () => {
-        for (const event of _events) {
-            if (keyboardEvents[event]) {
-                _target.removeEventListener(keyboardEvents[event].type, keyboardEvents[event].listener);
-            }
-        }
+    if (hasKeydown) {
+        _target.removeEventListener("keydown", onKeydownEvent);
     }
+    if (_events.has("keyup")) {
+        _target.removeEventListener("keyup", onKeyupEvent);
+    }
+    };
 
     const api = {
         dispose
