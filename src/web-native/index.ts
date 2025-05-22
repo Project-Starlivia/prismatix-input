@@ -13,12 +13,6 @@ export interface WithPositionInputEvent extends PRXInputEvent {
 export const isEventBySetUndef = <T>(set: Set<T> | undefined, value: T): boolean => {
     if (!set) return true;
     return set.has(value);
-} 
-
-export interface NativeInputOption<T extends PRXInputEvent, A extends string = DefaultAction> {
-    target?: EventTarget;
-    events?: Multiable<string>;
-    mapEvent?: (e: PointerEvent, action: A) => T;
 }
 
 export function nativeInputBase<T extends PRXInputEvent, ET extends string, EN extends Event, A extends string = DefaultAction>(
