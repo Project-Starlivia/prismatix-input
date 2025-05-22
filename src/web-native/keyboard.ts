@@ -1,17 +1,19 @@
 import type { DefaultAction, InputEmitter, PRXInputEvent } from "../events";
 import type { MultiSubject } from "../subject";
 import { multiableToArray } from "../utils";
+import { isEventBySetUndef } from ".";
 
-type KeyboardNativeEvent = "keydown" | "keydown-norepeat" | "keydown-repeat" | "keyup";
+type KeyboardNativeEvent = "keydown" | "keyup";
+type KeyboardExtensionEvent = "keydown-norepeat" | "keydown-repeat";
 
 export type KeyboardInputOptions = {
-    target?: HTMLElement | Document | Window
-    keys?: string[] | undefined,
-    codes?: string[] | undefined,
-    events?: KeyboardNativeEvent[] | KeyboardNativeEvent | undefined
+    target?: EventTarget
+    key?: Multiable<string>
+    code?: Multiable<string>
+    events?: Multiable<KeyboardNativeEvent & KeyboardExtensionEvent>
 }
 
-const inputTypeAction: Record<KeyboardNativeEvent, DefaultAction> = {
+const inputTypeAction: Record<KeyboardNativeEvent & KeyboardExtensionEvent, DefaultAction> = {
     "keydown": "start",
     "keydown-norepeat": "start",
     "keydown-repeat": "hold",
@@ -26,18 +28,18 @@ export const keyboardInput
     o?: KeyboardInputOptions
 ) => {
     const _subjects = multiableToArray(s);
-    const { target, codes, events } = o || {};
+    const { target, code, key, events } = o || {};
     const _target = target || document;
-    const _keys = o?.keys ? new Set((Array.isArray(o.keys) ? o.keys : [o.keys])) : undefined;
-    const _codes = codes ? new Set((Array.isArray(codes) ? codes : [codes])) : undefined;
+    const _key = key ? new Set(multiableToArray(key)) : undefined;
+    const _code = code ? new Set(multiableToArray(code)) : undefined;
     const _events = new Set(
     events
         ? Array.isArray(events) ? events : [events]
         : ["keydown", "keydown-norepeat", "keydown-repeat", "keyup"]
     );
 
-    const keyFilter = _keys ? (key: string) => _keys.has(key) : () => true;
-    const codeFilter = _codes ? (code: string) => _codes.has(code) : () => true;
+    const keyFilter = (key: string) => isEventBySetUndef(_key, key);
+    const codeFilter = (code: string) => isEventBySetUndef(_code, code);
     const hasEvent = (name: string) => _events.has(name);
     const hasKeydown =
     _events.has("keydown") ||
