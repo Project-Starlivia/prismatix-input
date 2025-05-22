@@ -28,7 +28,7 @@ const inputTypeAction: Record<PointerNativeEvent, DefaultAction> = {
     'pointercancel': 'end',
 };
 
-export const pointerNativeInput = (
+export const pointerInput = (
     s: MultiSubject<WithPositionInputEvent>,
     o?: PointerInputOptions
 ) => {

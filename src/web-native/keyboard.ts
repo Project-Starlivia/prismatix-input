@@ -20,7 +20,7 @@ const inputTypeAction: Record<KeyboardNativeEvent, DefaultAction> = {
 export interface KeyboardInputEvent extends PRXInputEvent {
     code: string;
 }
-export const keyboardNativeInput
+export const keyboardInput
 : InputEmitter<KeyboardInputOptions, KeyboardInputEvent> = (
     s: MultiSubject<KeyboardInputEvent>,
     o?: KeyboardInputOptions
