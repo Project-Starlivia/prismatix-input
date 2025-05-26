@@ -34,9 +34,9 @@ const inputTypeAction: Record<MouseNativeEvent, DefaultAction> = {
 export function mouseInputBase<T extends PRXInputEvent>(
     input: MultiSubject<T>,
     mapEvent: (e: MouseEvent, action: DefaultAction) => T,
-    option?: MouseInputOptions,
+    options?: MouseInputOptions,
 ){
-    const { target, events, button, buttons } = option || {};
+    const { target, events, button, buttons } = options || {};
     const _target = target || document;
     const _events = events ? 
         multiableToArray(events) : 
@@ -57,7 +57,7 @@ export function mouseInputBase<T extends PRXInputEvent>(
 
 export function mouseInputWithPosition(
     input: MultiSubject<WithPositionInputEvent>,
-    option?: MouseInputOptions
+    options?: MouseInputOptions
 ) {
     return mouseInputBase(input, (e: MouseEvent, action: DefaultAction) => ({
         key: e.button.toString(),
@@ -65,7 +65,7 @@ export function mouseInputWithPosition(
         time: e.timeStamp,
         x: e.x,
         y: e.y
-    }as WithPositionInputEvent) ,option)
+    }as WithPositionInputEvent) ,options)
 }
 
 export function mouseInput(

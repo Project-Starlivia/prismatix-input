@@ -72,10 +72,10 @@ export function createLogStore<
         K extends Exclude<keyof E, "global">,
         O extends object
     >
-        (creator: InputEmitter<O, E[K]>, props: { output: Multiable<K>, option?: O }) => {
+        (creator: InputEmitter<O, E[K]>, props: { output: Multiable<K>, options?: O }) => {
             const _output = multiableToArray(props.output);
             const localSubjects = _output.map(getOrCreateSubject) as Subject<E[K]>[];
-            _addEmitter(creator, localSubjects, props.option);
+            _addEmitter(creator, localSubjects, props.options);
             return { ...api, ...subjectsObject() }
         };
 
@@ -83,12 +83,12 @@ export function createLogStore<
         K extends Exclude<keyof E, "global">,
         O extends object
     >
-    (creator: InputMiddleware<O, E[K], E[K]>, props: { input: Multiable<K>, output: Multiable<K>, option?: O }) => {
+    (creator: InputMiddleware<O, E[K], E[K]>, props: { input: Multiable<K>, output: Multiable<K>, options?: O }) => {
         const _input = multiableToArray(props.input);
         const _output = multiableToArray(props.output);
         const inputSubjects = _input.map(getOrCreateSubject) as Subject<E[K]>[];
         const outputSubjects = _output.map(getOrCreateSubject) as Subject<E[K]>[];
-        _addMiddleware(creator, inputSubjects, outputSubjects, props.option);
+        _addMiddleware(creator, inputSubjects, outputSubjects, props.options);
         return { ...api, ...subjectsObject() }
     }
     

@@ -16,7 +16,7 @@ export interface LogStore<T extends PRXInputEvent = PRXInputEvent> {
 	>(
 		creator: C,
 		s: MultiSubject<T>,
-		option?: O
+		options?: O
 	) => LogStore<T>;
 	addMiddleware: <
 		C extends InputMiddleware<Opt, I, O>,
@@ -27,7 +27,7 @@ export interface LogStore<T extends PRXInputEvent = PRXInputEvent> {
 		creator: C,
 		s: MultiSubject<I>,
 		o: MultiSubject<O>,
-		option?: Opt
+		options?: Opt
 	) => LogStore<T>;
 	dispose: () => void;
 }
@@ -40,15 +40,15 @@ export function createLogStore<T extends PRXInputEvent = PRXInputEvent>(
 		log.length = 0;
 	};
 	const addEmitter = <C extends InputEmitter<O, E>, O extends object = GetOption<C>, E extends PRXInputEvent = GetEvent<C>>
-		(creator: InputEmitter<O, E>, inputSubject: MultiSubject<E>, option?: O) => {
+		(creator: InputEmitter<O, E>, inputSubject: MultiSubject<E>, options?: O) => {
 			const _subjects = [...multiableToArray(inputSubject), globalSubject] as MultiSubject<E>;
-			creator(_subjects, option);
+			creator(_subjects, options);
 			return api;
 		};
 	const addMiddleware = <C extends InputMiddleware<Opt, I, O>, Opt extends object = GetOption<C>, I extends PRXInputEvent = GetEvent<C>, O extends PRXInputEvent = GetEvent<C>>
-		(creator: InputMiddleware<Opt, I, O>, inputSubject: MultiSubject<I>, outputSubject: MultiSubject<O>, option?: Opt) => {
+		(creator: InputMiddleware<Opt, I, O>, inputSubject: MultiSubject<I>, outputSubject: MultiSubject<O>, options?: Opt) => {
 		const _subjects = [...multiableToArray(outputSubject), globalSubject] as MultiSubject<O>;
-			creator(inputSubject, _subjects, option);
+			creator(inputSubject, _subjects, options);
 			return api;
 	}
 	const sub = globalSubject.subscribe((v) => {

@@ -13,11 +13,11 @@ export type PRXInputEvent<
 
 export type InputEmitter<O extends object = EmptyObject, T extends PRXInputEvent = PRXInputEvent> = (
   input: MultiSubject<T>,
-  option?: O
+  options?: O
 ) => { dispose: () => void };
 
 export type InputMiddleware<Opt extends object = EmptyObject, I extends PRXInputEvent = PRXInputEvent, O extends PRXInputEvent = PRXInputEvent> = (
   input: MultiSubject<I>,
   output: MultiSubject<O>,
-  option?: Opt
+  options?: Opt
 ) => { dispose: () => void };

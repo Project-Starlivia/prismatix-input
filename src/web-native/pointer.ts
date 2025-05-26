@@ -5,11 +5,11 @@ import type { Multiable } from "../utils";
 import { isEventBySetUndef, nativeInputBase } from ".";
 import type { WithPositionInputEvent } from "./index";
 
-export type ButtonEvent = 'pointerdown' | 'pointerup';
-export type MoveEvent = 'pointermove';
-export type WrapEvent = 'pointerenter' | 'pointerleave' | 'pointerover' | 'pointerout';
-export type CancelEvent = 'pointercancel';
-type PointerNativeEvent = ButtonEvent | MoveEvent | WrapEvent | CancelEvent;
+export type PointerButtonEvent = 'pointerdown' | 'pointerup';
+export type PointerMoveEvent = 'pointermove';
+export type PointerWrapEvent = 'pointerenter' | 'pointerleave' | 'pointerover' | 'pointerout';
+export type PointerCancelEvent = 'pointercancel';
+type PointerNativeEvent = PointerButtonEvent | PointerMoveEvent | PointerWrapEvent | PointerCancelEvent;
 
 export interface PointerInputOptions extends PRXInputEvent {
     target?: EventTarget;
@@ -34,9 +34,9 @@ const inputTypeAction: Record<PointerNativeEvent, DefaultAction> = {
 export function pointerInputBase<T extends PRXInputEvent>(
     input: MultiSubject<T>,
     mapEvent: (e: PointerEvent, action: DefaultAction) => T,
-    option?: PointerInputOptions,
+    options?: PointerInputOptions,
 ){
-    const { target, events, button, buttons, pointerType, pointerId } = option || {};
+    const { target, events, button, buttons, pointerType, pointerId } = options || {};
     const _target = target || document;
     const _events = events ? 
         multiableToArray(events) : 
@@ -63,7 +63,7 @@ export function pointerInputBase<T extends PRXInputEvent>(
 
 export const pointerInput = (
     input: MultiSubject<PRXInputEvent>,
-    option?: PointerInputOptions
+    options?: PointerInputOptions
 ) => {
     return pointerInputBase<PRXInputEvent>(
         input,
@@ -72,7 +72,7 @@ export const pointerInput = (
             action,
             time: e.timeStamp,
         } as PRXInputEvent),
-        option
+        options
     );
 }
 
@@ -80,7 +80,7 @@ export const pointerInputWithPosition
 : InputEmitter<PointerInputOptions, WithPositionInputEvent>
 = (
     input: MultiSubject<WithPositionInputEvent>,
-    option?: PointerInputOptions
+    options?: PointerInputOptions
 ) => {
     return pointerInputBase<WithPositionInputEvent>(
         input,
@@ -91,6 +91,6 @@ export const pointerInputWithPosition
             x: e.clientX,
             y: e.clientY,
         } as WithPositionInputEvent),
-        option
+        options
     );
 }

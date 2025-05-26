@@ -1,6 +1,6 @@
-import { keyboardInput, type KeyboardInputOptions, type KeyboardInputEvent } from "./src/web-native/keyboard";
+import { keyboardInput, pointerInputWithPosition } from "./src/web-native";
+import type { KeyboardInputOptions, KeyboardInputEvent } from "./src/web-native";
 import { createLogStore, type WithGlobal } from "./src/mitt";
-import { pointerInputWithPosition } from "./src/web-native/pointer";
 import type { WithPositionInputEvent } from "./src/web-native";
 
 type Events = WithGlobal<{
@@ -9,7 +9,7 @@ type Events = WithGlobal<{
 }>;
 
 const store = createLogStore<Events>()
-  .addEmitter(keyboardInput, { output: "keyboard", option: { events: ["keydown"] } as KeyboardInputOptions })
+  .addEmitter(keyboardInput, { output: "keyboard", options: { events: ["keydown"] } as KeyboardInputOptions })
   .addEmitter(pointerInputWithPosition, { output: "mouse" });
 
 console.log(store, store.mouse);
