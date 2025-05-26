@@ -1,8 +1,6 @@
-import { Extension } from "typescript";
 import type { DefaultAction, PRXInputEvent } from "../events";
 import type { MultiSubject } from "../subject";
 import { multiableToArray } from "../utils";
-import type { Multiable } from "../utils";
 
 
 export interface WithPositionInputEvent extends PRXInputEvent {

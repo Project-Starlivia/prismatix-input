@@ -3,7 +3,6 @@ import mitt from "mitt";
 
 import type { Subject } from "./subject";
 import type {InputEmitter, InputMiddleware, PRXInputEvent} from "./events";
-import type { GetEvent, GetOption,  LogStore } from "./log-store";
 import { createLogStore as createBaseLogStore } from "./log-store";
 import { type Multiable, multiableToArray } from './utils';
 
@@ -50,9 +49,6 @@ export function createSubject<
     return { subscribe, next, dispose };
 }
 
-type AcceptableKeys<E, T> = {
-  [K in Exclude<keyof E, "global">]: E[K] extends T ? K : never
-}[Exclude<keyof E, "global">];
 export function createLogStore<
     E extends Record<EventType, T> & { global: T },
     T extends PRXInputEvent = E[keyof E]
@@ -65,9 +61,7 @@ export function createLogStore<
     _subjects.set("global", _globalSubject);
     const { addEmitter: _addEmitter, addMiddleware: _addMiddleware, ..._store  } = createBaseLogStore(_globalSubject);
     const getOrCreateSubject = <K2 extends keyof E>(type: K2): Subject<T> => {
-        const subject = _subjects.get(type) ?? createAndCacheSubject(type);
-
-        return subject;
+        return _subjects.get(type) ?? createAndCacheSubject(type);
     };
     const createAndCacheSubject = (type: keyof E): Subject<T> => {
         const subject = createSubject<E, T>(_emitter, type) as Subject<T>;

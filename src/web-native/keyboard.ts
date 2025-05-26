@@ -14,12 +14,6 @@ export type KeyboardInputOptions = {
     events?: Multiable<KeyboardNativeEvent & KeyboardExtensionEvent>
 }
 
-const inputTypeAction: Record<KeyboardNativeEvent & KeyboardExtensionEvent, DefaultAction> = {
-    "keydown": "start",
-    "keydown-norepeat": "start",
-    "keydown-repeat": "hold",
-    "keyup": "end",
-};
 export interface KeyboardInputEvent extends PRXInputEvent {
     code: string;
 }
@@ -94,8 +88,7 @@ export const keyboardInput
     }
     };
 
-    const api = {
+    return {
         dispose
-    };
-    return api;
+    }
 }

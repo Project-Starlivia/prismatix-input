@@ -1,4 +1,4 @@
-import type {MultiSubject, Subject} from "./subject";
+import type { MultiSubject } from "./subject";
 import type { EmptyObject } from "./utils";
 
 export type DefaultAction = "start" | "hold" | "move" | "end";
