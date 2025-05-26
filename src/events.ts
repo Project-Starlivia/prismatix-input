@@ -1,4 +1,4 @@
-import type { MultiSubject } from "./subject";
+import type {MultiSubject, Subject} from "./subject";
 import type { EmptyObject } from "./utils";
 
 export type DefaultAction = "start" | "hold" | "move" | "end";
@@ -12,6 +12,12 @@ export type PRXInputEvent<
 };
 
 export type InputEmitter<O extends object = EmptyObject, T extends PRXInputEvent = PRXInputEvent> = (
-  s: MultiSubject<T>,
-  o?: O
+  input: MultiSubject<T>,
+  option?: O
+) => { dispose: () => void };
+
+export type InputMiddleware<Opt extends object = EmptyObject, I extends PRXInputEvent = PRXInputEvent, O extends PRXInputEvent = PRXInputEvent> = (
+  input: MultiSubject<I>,
+  output: MultiSubject<O>,
+  option?: Opt
 ) => { dispose: () => void };

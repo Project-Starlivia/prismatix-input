@@ -16,14 +16,14 @@ export const isEventBySetUndef = <T>(set: Set<T> | undefined, value: T): boolean
 }
 
 export function nativeInputBase<T extends PRXInputEvent, ET extends string, EN extends Event, A extends string = DefaultAction>(
-    s: MultiSubject<T>,
+    input: MultiSubject<T>,
     target: EventTarget,
     events: ET[],
     actionMap: Record<ET, A>,
     isEvent: (e: EN) => boolean,
     mapEvent: (e: EN, action: A) => T
 ) {
-    const _subjects = multiableToArray(s);
+    const _subjects = multiableToArray(input);
     
     const listeners = events.map(type => {
         const handler = (e: EN) => {

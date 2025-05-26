@@ -32,11 +32,11 @@ const inputTypeAction: Record<PointerNativeEvent, DefaultAction> = {
 };
 
 export function pointerInputBase<T extends PRXInputEvent>(
-    s: MultiSubject<T>,
+    input: MultiSubject<T>,
     mapEvent: (e: PointerEvent, action: DefaultAction) => T,
-    o?: PointerInputOptions,
+    option?: PointerInputOptions,
 ){
-    const { target, events, button, buttons, pointerType, pointerId } = o || {};
+    const { target, events, button, buttons, pointerType, pointerId } = option || {};
     const _target = target || document;
     const _events = events ? 
         multiableToArray(events) : 
@@ -52,7 +52,7 @@ export function pointerInputBase<T extends PRXInputEvent>(
         isEventBySetUndef(_pointerId, e.pointerId);
 
     return nativeInputBase<T, PointerNativeEvent, PointerEvent>(
-        s,
+        input,
         _target,
         _events,
         inputTypeAction,
@@ -62,28 +62,28 @@ export function pointerInputBase<T extends PRXInputEvent>(
 }
 
 export const pointerInput = (
-    s: MultiSubject<PRXInputEvent>,
-    o?: PointerInputOptions
+    input: MultiSubject<PRXInputEvent>,
+    option?: PointerInputOptions
 ) => {
     return pointerInputBase<PRXInputEvent>(
-        s,
+        input,
         (e: PointerEvent, action: DefaultAction) => ({
             key: e.pointerType,
             action,
             time: e.timeStamp,
         } as PRXInputEvent),
-        o
+        option
     );
 }
 
 export const pointerInputWithPosition
 : InputEmitter<PointerInputOptions, WithPositionInputEvent>
 = (
-    s: MultiSubject<WithPositionInputEvent>,
-    o?: PointerInputOptions
+    input: MultiSubject<WithPositionInputEvent>,
+    option?: PointerInputOptions
 ) => {
     return pointerInputBase<WithPositionInputEvent>(
-        s,
+        input,
         (e: PointerEvent, action: DefaultAction) => ({
             key: e.pointerType,
             action,
@@ -91,6 +91,6 @@ export const pointerInputWithPosition
             x: e.clientX,
             y: e.clientY,
         } as WithPositionInputEvent),
-        o
+        option
     );
 }

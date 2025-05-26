@@ -25,11 +25,11 @@ export interface KeyboardInputEvent extends PRXInputEvent {
 }
 export const keyboardInput
 : InputEmitter<KeyboardInputOptions, KeyboardInputEvent> = (
-    s: MultiSubject<KeyboardInputEvent>,
-    o?: KeyboardInputOptions
+    input: MultiSubject<KeyboardInputEvent>,
+    option?: KeyboardInputOptions
 ) => {
-    const _subjects = multiableToArray(s);
-    const { target, code, key, events } = o || {};
+    const _subjects = multiableToArray(input);
+    const { target, code, key, events } = option || {};
     const _target = target || document;
     const _key = key ? new Set(multiableToArray(key)) : undefined;
     const _code = code ? new Set(multiableToArray(code)) : undefined;

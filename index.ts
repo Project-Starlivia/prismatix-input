@@ -9,8 +9,8 @@ type Events = WithGlobal<{
 }>;
 
 const store = createLogStore<Events>()
-  .addEmitter(keyboardInput, { outEvents: "keyboard", option: { events: ["keydown"] } as KeyboardInputOptions })
-  .addEmitter(pointerInputWithPosition, { outEvents: ["mouse"] as const });
+  .addEmitter(keyboardInput, { output: "keyboard", option: { events: ["keydown"] } as KeyboardInputOptions })
+  .addEmitter(pointerInputWithPosition, { output: "mouse" });
 
 console.log(store, store.mouse);
 store.keyboard.subscribe((v) => {

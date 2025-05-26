@@ -2,7 +2,7 @@ import type { Emitter, EventType } from "mitt";
 import mitt from "mitt";
 
 import type { Subject } from "./subject";
-import type { InputEmitter, PRXInputEvent } from "./events";
+import type {InputEmitter, InputMiddleware, PRXInputEvent} from "./events";
 import type { GetEvent, GetOption,  LogStore } from "./log-store";
 import { createLogStore as createBaseLogStore } from "./log-store";
 import { type Multiable, multiableToArray } from './utils';
@@ -63,7 +63,7 @@ export function createLogStore<
     const _subjects = new Map<keyof E, Subject<T>>();
     const _globalSubject = createSubject<E, T>(_emitter, "global") as Subject<T>;
     _subjects.set("global", _globalSubject);
-    const { addEmitter: _addEmitter, ..._store  } = createBaseLogStore(_globalSubject);
+    const { addEmitter: _addEmitter, addMiddleware: _addMiddleware, ..._store  } = createBaseLogStore(_globalSubject);
     const getOrCreateSubject = <K2 extends keyof E>(type: K2): Subject<T> => {
         const subject = _subjects.get(type) ?? createAndCacheSubject(type);
 
@@ -78,12 +78,25 @@ export function createLogStore<
         K extends Exclude<keyof E, "global">,
         O extends object
     >
-        (creator: InputEmitter<O, E[K]>, props: { outEvents: Multiable<K>, option?: O }) => {
-            const _outEvents = multiableToArray(props.outEvents);
-            const localSubjects = _outEvents.map(getOrCreateSubject) as Subject<E[K]>[];
+        (creator: InputEmitter<O, E[K]>, props: { output: Multiable<K>, option?: O }) => {
+            const _output = multiableToArray(props.output);
+            const localSubjects = _output.map(getOrCreateSubject) as Subject<E[K]>[];
             _addEmitter(creator, localSubjects, props.option);
             return { ...api, ...subjectsObject() }
         };
+
+    const addMiddleware = <
+        K extends Exclude<keyof E, "global">,
+        O extends object
+    >
+    (creator: InputMiddleware<O, E[K], E[K]>, props: { input: Multiable<K>, output: Multiable<K>, option?: O }) => {
+        const _input = multiableToArray(props.input);
+        const _output = multiableToArray(props.output);
+        const inputSubjects = _input.map(getOrCreateSubject) as Subject<E[K]>[];
+        const outputSubjects = _output.map(getOrCreateSubject) as Subject<E[K]>[];
+        _addMiddleware(creator, inputSubjects, outputSubjects, props.option);
+        return { ...api, ...subjectsObject() }
+    }
     
     const dispose = () => {
         for (const subject of _subjects.values()) {
@@ -97,7 +110,7 @@ export function createLogStore<
             return [key, subject];
         })
     ) as { [K in keyof E]: Subject<E[K]> };
-    const api = { ..._store, ...subjectsObject(), addEmitter, dispose };
+    const api = { ..._store, ...subjectsObject(), addEmitter, addMiddleware, dispose };
     return api;
 }
 
