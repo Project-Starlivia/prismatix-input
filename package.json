@@ -1,6 +1,6 @@
 {
   "name": "prismatix-input",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "MIT",
   "type": "module",
   "files": [
@@ -30,6 +30,18 @@
     "./log-store": {
       "import": "./dist/log-store.js",
       "types": "./dist/log-store.d.ts"
+    },
+    "./Middleware/duration": {
+      "import": "./dist/Middleware/duration.js",
+      "types": "./dist/Middleware/duration.d.ts"
+    },
+    "./Middleware/index": {
+      "import": "./dist/Middleware/index.js",
+      "types": "./dist/Middleware/index.d.ts"
+    },
+    "./Middleware/repeat": {
+      "import": "./dist/Middleware/repeat.js",
+      "types": "./dist/Middleware/repeat.d.ts"
     },
     "./mitt": {
       "import": "./dist/mitt.js",
