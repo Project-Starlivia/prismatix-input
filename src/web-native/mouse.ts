@@ -31,7 +31,7 @@ const inputTypeAction: Record<MouseNativeEvent, DefaultAction> = {
     "mouseout": "end",
 };
 
-export function mouseInputBase<T extends PRXInputEvent>(
+export function mouseInputBase<T extends PRXInputEvent<string, string>>(
     input: MultiSubject<T>,
     mapEvent: (e: MouseEvent, action: DefaultAction) => T,
     options?: MouseInputOptions,

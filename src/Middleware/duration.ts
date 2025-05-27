@@ -3,7 +3,10 @@ import {Multiable, multiableToArray} from "../utils";
 import {MultiSubject} from "../subject";
 import { middlewareBase } from "./index";
 
-type WithDurationInputEvent<T extends PRXInputEvent> = T & {
+export type DurationAction = "duration";
+export type DurationInputEvent<
+    T extends PRXInputEvent<string, DurationAction> = PRXInputEvent<string, DurationAction>
+> = T & {
     duration: number;
 }
 
@@ -16,28 +19,26 @@ export type MultiDurationInputOptions = DurationInputOptions & {
     endAction?: Multiable<string>;
 }
 
-const durationBaseInput = <T extends PRXInputEvent, A extends string = DefaultAction>(
+const durationBaseInput = <T extends PRXInputEvent<string, string>>(
     input: MultiSubject<T>,
-    output: MultiSubject<WithDurationInputEvent<T>>,
-    isStart: (key: A) => boolean,
-    isEnd: (key: A) => boolean,
+    output: MultiSubject<DurationInputEvent>,
+    isStart: (e: T) => boolean,
+    isEnd: (e: T) => boolean,
     options?: DurationInputOptions
 ) => {
     const { minDuration, maxDuration } = options || {};
     const _minDuration = minDuration || 0;
     const _maxDuration = maxDuration || Infinity;
 
-
     const filter = (e: T, duration: number) => duration >= _minDuration && duration <= _maxDuration;
 
-    // Create a closure to maintain state across events
     const startedKeys = new Map<string, number>();
 
-    const processEvent = (event: T): WithDurationInputEvent<T> | null => {
-        if(isStart(event.key as A)) {
+    const processEvent = (event: T): DurationInputEvent | null => {
+        if(isStart(event)) {
             startedKeys.set(event.key, event.time);
             return null;
-        } else if(isEnd(event.key as A)) {
+        } else if(isEnd(event)) {
             const startTime = startedKeys.get(event.key);
             if(startTime == undefined) return null;
 
@@ -47,43 +48,45 @@ const durationBaseInput = <T extends PRXInputEvent, A extends string = DefaultAc
             startedKeys.delete(event.key);
 
             if(!filter(event, duration)) return null;
-
             return {
                 ...event,
+                action: "duration",
                 duration
-            } as WithDurationInputEvent<T>;
+            } as DurationInputEvent;
         }
         return null;
     };
 
-    return middlewareBase(input, output, processEvent, options || {});
+    return middlewareBase<
+        T,
+        DurationInputEvent,
+        DurationInputOptions
+    >(input, output, processEvent, options || {});
 }
 
 export const startToEndDurationInput: InputMiddleware<
     DurationInputOptions,
-    PRXInputEvent,
-    WithDurationInputEvent<PRXInputEvent>
-> = (
-    input: MultiSubject<PRXInputEvent>,
-    output: MultiSubject<WithDurationInputEvent<PRXInputEvent>>,
+    PRXInputEvent<string, string>,
+    DurationInputEvent
+> = <T extends PRXInputEvent<string, string>>(
+    input: MultiSubject<T>,
+    output: MultiSubject<DurationInputEvent>,
     options?: DurationInputOptions
-) => {
-    return durationBaseInput(input, output, (key) => key == 'start', (key) => key == 'end', options);
-}
+) => durationBaseInput(input, output, (e) => e.action == 'start', (e) => e.action == 'end', options);
 export const multiDurationInput:
     InputMiddleware<
         DurationInputOptions,
-        PRXInputEvent,
-        WithDurationInputEvent<PRXInputEvent>
-    > = <T extends PRXInputEvent, A extends string = DefaultAction>
+        PRXInputEvent<string, string>,
+        DurationInputEvent
+    > = <T extends PRXInputEvent<string, string>>
 (
     input: MultiSubject<T>,
-    output: MultiSubject<WithDurationInputEvent<T>>,
+    output: MultiSubject<DurationInputEvent>,
     options?: MultiDurationInputOptions
 ) => {
     const { startAction, endAction } = options || {};
     const _startActions = new Set(startAction ? multiableToArray(startAction): ["start"]);
     const _endActions = new Set(endAction ? multiableToArray(endAction): ["end"]);
 
-    return durationBaseInput<T, A>(input, output, (key) => _startActions.has(key), (key) => _endActions.has(key), options);
+    return durationBaseInput(input, output, (e) => _startActions.has(e.action), (e) => _endActions.has(e.action), options);
 };

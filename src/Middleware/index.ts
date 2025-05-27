@@ -1,11 +1,11 @@
-﻿import type { PRXInputEvent } from "../events";
+﻿import type {DefaultAction, PRXInputEvent} from "../events";
 import type { MultiSubject } from "../subject";
 import { multiableToArray } from "../utils";
 
 export function middlewareBase<
-    I extends PRXInputEvent, 
-    O extends PRXInputEvent, 
-    Opt extends object = {}
+    I extends PRXInputEvent<string, string> = PRXInputEvent,
+    O extends PRXInputEvent<string, string> = PRXInputEvent,
+    Opt extends object = {},
 >(
     input: MultiSubject<I>,
     output: MultiSubject<O>,

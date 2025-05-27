@@ -3,7 +3,7 @@ import type { MultiSubject } from "../subject";
 import { multiableToArray } from "../utils";
 
 
-export interface WithPositionInputEvent extends PRXInputEvent {
+export interface WithPositionInputEvent extends PRXInputEvent<string, string> {
     x: number;
     y: number;
 }
@@ -13,7 +13,7 @@ export const isEventBySetUndef = <T>(set: Set<T> | undefined, value: T): boolean
     return set.has(value);
 }
 
-export function nativeInputBase<T extends PRXInputEvent, ET extends string, EN extends Event, A extends string = DefaultAction>(
+export function nativeInputBase<T extends PRXInputEvent<string, string>, ET extends string, EN extends Event, A extends string = DefaultAction>(
     input: MultiSubject<T>,
     target: EventTarget,
     events: ET[],

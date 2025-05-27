@@ -6,22 +6,22 @@ export type RepeatInputOptions = {
     maxInterval?: number;
 }
 
-export type WithRepeatInputEvent<T extends PRXInputEvent> = T & {
+export type RepeatInputEvent<T extends PRXInputEvent<string, string> = PRXInputEvent> = T & {
     repeatCount: number;
 }
 
 
-export const repeatBaseInput: InputMiddleware<
+export const repeatInput: InputMiddleware<
     RepeatInputOptions,
     PRXInputEvent,
-    WithRepeatInputEvent<PRXInputEvent>
-> = <T extends PRXInputEvent>(
+    RepeatInputEvent<PRXInputEvent>
+> = <T extends PRXInputEvent<string, string>>(
     input: MultiSubject<T>,
-    output: MultiSubject<WithRepeatInputEvent<T>>,
+    output: MultiSubject<RepeatInputEvent<T>>,
     options?: RepeatInputOptions
 ) => {
     const { maxInterval } = options || {};
-    const _maxInterval = maxInterval || 1;
+    const _maxInterval = maxInterval || 100;
 
     const activeRepeats = new Map<string, {
         lastTime: number,

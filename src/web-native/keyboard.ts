@@ -14,7 +14,7 @@ export type KeyboardInputOptions = {
     events?: Multiable<KeyboardNativeEvent & KeyboardExtensionEvent>
 }
 
-export interface KeyboardInputEvent extends PRXInputEvent {
+export interface KeyboardInputEvent extends PRXInputEvent<string, string> {
     code: string;
 }
 export const keyboardInput

@@ -3,16 +3,16 @@ import type { MultiSubject, Subject } from "./subject";
 import { multiableToArray } from "./utils";
 
 
-export type GetOption<T> = T extends InputEmitter<infer O, PRXInputEvent> ? O : never;
+export type GetOption<T> = T extends InputEmitter<infer O> ? O : never;
 export type GetEvent<T> = T extends InputEmitter<object, infer E> ? E : never;
 
-export interface LogStore<T extends PRXInputEvent = PRXInputEvent> {
+export interface LogStore<T extends PRXInputEvent<string, string> = PRXInputEvent> {
 	log: T[];
 	clear: () => void;
 	addEmitter: <
 		C extends InputEmitter<O, T>,
 		O extends object = GetOption<C>,
-		T extends PRXInputEvent = GetEvent<C>
+		T extends PRXInputEvent<string, string> = GetEvent<C>
 	>(
 		creator: C,
 		s: MultiSubject<T>,
@@ -21,8 +21,8 @@ export interface LogStore<T extends PRXInputEvent = PRXInputEvent> {
 	addMiddleware: <
 		C extends InputMiddleware<Opt, I, O>,
 		Opt extends object = GetOption<C>,
-		I extends PRXInputEvent = GetEvent<C>,
-		O extends PRXInputEvent = GetEvent<C>
+		I extends PRXInputEvent<string, string> = GetEvent<C>,
+		O extends PRXInputEvent<string, string> = GetEvent<C>
 	>(
 		creator: C,
 		s: MultiSubject<I>,
@@ -32,20 +32,20 @@ export interface LogStore<T extends PRXInputEvent = PRXInputEvent> {
 	dispose: () => void;
 }
 
-export function createLogStore<T extends PRXInputEvent = PRXInputEvent>(
+export function createLogStore<T extends PRXInputEvent<string, string> = PRXInputEvent>(
 	globalSubject: Subject<T>,
 ): LogStore<T> {
 	const log: T[] = [];
 	const clear = () => {
 		log.length = 0;
 	};
-	const addEmitter = <C extends InputEmitter<O, E>, O extends object = GetOption<C>, E extends PRXInputEvent = GetEvent<C>>
+	const addEmitter = <C extends InputEmitter<O, E>, O extends object = GetOption<C>, E extends PRXInputEvent<string, string> = GetEvent<C>>
 		(creator: InputEmitter<O, E>, inputSubject: MultiSubject<E>, options?: O) => {
 			const _subjects = [...multiableToArray(inputSubject), globalSubject] as MultiSubject<E>;
 			creator(_subjects, options);
 			return api;
 		};
-	const addMiddleware = <C extends InputMiddleware<Opt, I, O>, Opt extends object = GetOption<C>, I extends PRXInputEvent = GetEvent<C>, O extends PRXInputEvent = GetEvent<C>>
+	const addMiddleware = <C extends InputMiddleware<Opt, I, O>, Opt extends object = GetOption<C>, I extends PRXInputEvent<string, string> = GetEvent<C>, O extends PRXInputEvent<string, string> = GetEvent<C>>
 		(creator: InputMiddleware<Opt, I, O>, inputSubject: MultiSubject<I>, outputSubject: MultiSubject<O>, options?: Opt) => {
 		const _subjects = [...multiableToArray(outputSubject), globalSubject] as MultiSubject<O>;
 			creator(inputSubject, _subjects, options);

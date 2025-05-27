@@ -2,13 +2,12 @@ import type { Emitter, EventType } from "mitt";
 import mitt from "mitt";
 
 import type { Subject } from "./subject";
-import type {InputEmitter, InputMiddleware, PRXInputEvent} from "./events";
+import type { InputEmitter, InputMiddleware, PRXInputEvent} from "./events";
 import { createLogStore as createBaseLogStore } from "./log-store";
-import { type Multiable, multiableToArray } from './utils';
+import {EmptyObject, type Multiable, multiableToArray} from './utils';
+import {keyboardInput} from "./web-native";
 
-export function createSubject<
-  E extends Record<EventType, T>, T extends PRXInputEvent
->(
+export function createSubject<E extends Record<EventType, T>, T extends PRXInputEvent<string, string> = PRXInputEvent>(
   emitter: Emitter<E>,
   type: keyof E
 ): Subject<E[keyof E]> {
@@ -52,8 +51,7 @@ export function createSubject<
 export function createLogStore<
     E extends Record<EventType, T> & { global: T },
     T extends PRXInputEvent = E[keyof E]
->(emitter?: Emitter<E>)
-    {
+>(emitter?: Emitter<E>) {
     const _emitter = emitter || mitt<E>();
     
     const _subjects = new Map<keyof E, Subject<T>>();
@@ -80,14 +78,15 @@ export function createLogStore<
         };
 
     const addMiddleware = <
-        K extends Exclude<keyof E, "global">,
+        KI extends keyof E,
+        KO extends Exclude<keyof E, "global">,
         O extends object
     >
-    (creator: InputMiddleware<O, E[K], E[K]>, props: { input: Multiable<K>, output: Multiable<K>, options?: O }) => {
+    (creator: InputMiddleware<O, E[KI], E[KO]>, props: { input: Multiable<KI>, output: Multiable<KO>, options?: O }) => {
         const _input = multiableToArray(props.input);
         const _output = multiableToArray(props.output);
-        const inputSubjects = _input.map(getOrCreateSubject) as Subject<E[K]>[];
-        const outputSubjects = _output.map(getOrCreateSubject) as Subject<E[K]>[];
+        const inputSubjects = _input.map(getOrCreateSubject) as Subject<E[KI]>[];
+        const outputSubjects = _output.map(getOrCreateSubject) as Subject<E[KO]>[];
         _addMiddleware(creator, inputSubjects, outputSubjects, props.options);
         return { ...api, ...subjectsObject() }
     }
