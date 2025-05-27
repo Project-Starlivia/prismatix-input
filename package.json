@@ -13,6 +13,7 @@
   },
   "devDependencies": {
     "@types/bun": "^1.2.14",
+    "biome": "^0.3.3",
     "rimraf": "^6.0.1",
     "vite": "^6.3.5"
   },
