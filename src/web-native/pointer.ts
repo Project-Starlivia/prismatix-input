@@ -1,4 +1,4 @@
-import type { DefaultAction, InputEmitter, PRXInputEvent } from "../events";
+import type { DefaultAction, InputEmitterCreator, PRXInputEvent } from "../events";
 import type { MultiSubject } from "../subject";
 import { multiableToArray } from "../utils";
 import type { Multiable } from "../utils";
@@ -77,7 +77,7 @@ export const pointerInput = (
 }
 
 export const pointerInputWithPosition
-: InputEmitter<PointerInputOptions, WithPositionInputEvent>
+: InputEmitterCreator<PointerInputOptions, WithPositionInputEvent>
 = (
     input: MultiSubject<WithPositionInputEvent>,
     options?: PointerInputOptions

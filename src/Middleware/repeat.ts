@@ -1,4 +1,4 @@
-﻿import {InputMiddleware, PRXInputEvent} from "../events";
+﻿import {InputMiddlewareCreator, PRXInputEvent} from "../events";
 import {MultiSubject} from "../subject";
 import { middlewareBase } from "./index";
 
@@ -11,7 +11,7 @@ export type RepeatInputEvent<T extends PRXInputEvent<string, string> = PRXInputE
 }
 
 
-export const repeatInput: InputMiddleware<
+export const repeatInput: InputMiddlewareCreator<
     RepeatInputOptions,
     PRXInputEvent,
     RepeatInputEvent<PRXInputEvent>

@@ -1,4 +1,4 @@
-﻿import {DefaultAction, InputMiddleware, PRXInputEvent} from "../events";
+﻿import {DefaultAction, InputMiddlewareCreator, PRXInputEvent} from "../events";
 import {Multiable, multiableToArray} from "../utils";
 import {MultiSubject} from "../subject";
 import { middlewareBase } from "./index";
@@ -64,7 +64,7 @@ const durationBaseInput = <T extends PRXInputEvent<string, string>>(
     >(input, output, processEvent, options || {});
 }
 
-export const startToEndDurationInput: InputMiddleware<
+export const startToEndDurationInput: InputMiddlewareCreator<
     DurationInputOptions,
     PRXInputEvent<string, string>,
     DurationInputEvent
@@ -74,7 +74,7 @@ export const startToEndDurationInput: InputMiddleware<
     options?: DurationInputOptions
 ) => durationBaseInput(input, output, (e) => e.action == 'start', (e) => e.action == 'end', options);
 export const multiDurationInput:
-    InputMiddleware<
+    InputMiddlewareCreator<
         DurationInputOptions,
         PRXInputEvent<string, string>,
         DurationInputEvent

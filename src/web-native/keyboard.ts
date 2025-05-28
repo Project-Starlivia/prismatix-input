@@ -1,4 +1,4 @@
-import type { DefaultAction, InputEmitter, PRXInputEvent } from "../events";
+import type {DefaultAction, InputEmitter, InputEmitterCreator, PRXInputEvent} from "../events";
 import type { MultiSubject } from "../subject";
 import type { Multiable } from "../utils";
 import { multiableToArray } from "../utils";
@@ -17,8 +17,12 @@ export type KeyboardInputOptions = {
 export interface KeyboardInputEvent extends PRXInputEvent<string, string> {
     code: string;
 }
+
+export  interface KeyboardInputEmitter extends InputEmitter {
+    log: () => void;
+}
 export const keyboardInput
-: InputEmitter<KeyboardInputOptions, KeyboardInputEvent> = (
+: InputEmitterCreator<KeyboardInputOptions, KeyboardInputEvent> = (
     input: MultiSubject<KeyboardInputEvent>,
     options?: KeyboardInputOptions
 ) => {
@@ -89,6 +93,9 @@ export const keyboardInput
     };
 
     return {
-        dispose
+        dispose,
+        log: () => {
+            console.log("log");
+        }
     }
 }
