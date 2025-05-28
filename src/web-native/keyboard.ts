@@ -7,14 +7,14 @@ import { isEventBySetUndef } from ".";
 type KeyboardNativeEvent = "keydown" | "keyup";
 type KeyboardExtensionEvent = "keydown-norepeat" | "keydown-repeat";
 
-export type KeyboardInputOptions = {
+export interface KeyboardInputOptions {
     target?: EventTarget
     key?: Multiable<string>
     code?: Multiable<string>
     events?: Multiable<KeyboardNativeEvent & KeyboardExtensionEvent>
 }
 
-export interface KeyboardInputEvent extends PRXInputEvent<string, string> {
+export interface KeyboardInputEvent extends PRXInputEvent {
     code: string;
 }
 

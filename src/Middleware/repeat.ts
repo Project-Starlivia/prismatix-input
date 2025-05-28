@@ -2,11 +2,11 @@
 import {MultiSubject} from "../subject";
 import { middlewareBase } from "./index";
 
-export type RepeatInputOptions = {
+export interface RepeatInputOptions {
     maxInterval?: number;
 }
 
-export type RepeatInputEvent<T extends PRXInputEvent<string, string> = PRXInputEvent> = T & {
+export interface RepeatInputEvent extends PRXInputEvent {
     repeatCount: number;
 }
 
@@ -14,10 +14,10 @@ export type RepeatInputEvent<T extends PRXInputEvent<string, string> = PRXInputE
 export const repeatInput: InputMiddlewareCreator<
     RepeatInputOptions,
     PRXInputEvent,
-    RepeatInputEvent<PRXInputEvent>
-> = <T extends PRXInputEvent<string, string>>(
+    RepeatInputEvent
+> = <T extends PRXInputEvent>(
     input: MultiSubject<T>,
-    output: MultiSubject<RepeatInputEvent<T>>,
+    output: MultiSubject<RepeatInputEvent>,
     options?: RepeatInputOptions
 ) => {
     const { maxInterval } = options || {};
@@ -40,7 +40,7 @@ export const repeatInput: InputMiddlewareCreator<
                 return {
                     ...event,
                     repeatCount: repeat.repeatCount
-                }
+                } as RepeatInputEvent;
             }
         }
         activeRepeats.set(event.key, {

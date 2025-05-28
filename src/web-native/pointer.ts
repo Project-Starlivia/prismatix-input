@@ -11,7 +11,7 @@ export type PointerWrapEvent = 'pointerenter' | 'pointerleave' | 'pointerover' |
 export type PointerCancelEvent = 'pointercancel';
 type PointerNativeEvent = PointerButtonEvent | PointerMoveEvent | PointerWrapEvent | PointerCancelEvent;
 
-export interface PointerInputOptions extends PRXInputEvent<string, string> {
+export interface PointerInputOptions extends PRXInputEvent {
     target?: EventTarget;
     events?: Multiable<PointerNativeEvent>;
     pointerType?: Multiable<string>;
@@ -31,7 +31,7 @@ const inputTypeAction: Record<PointerNativeEvent, DefaultAction> = {
     'pointercancel': 'end',
 };
 
-export function pointerInputBase<T extends PRXInputEvent<string, string>>(
+export function pointerInputBase<T extends PRXInputEvent>(
     input: MultiSubject<T>,
     mapEvent: (e: PointerEvent, action: DefaultAction) => T,
     options?: PointerInputOptions,

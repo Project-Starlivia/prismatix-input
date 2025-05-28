@@ -3,8 +3,8 @@ import type { MultiSubject } from "../subject";
 import { multiableToArray } from "../utils";
 
 export function middlewareBase<
-    I extends PRXInputEvent<string, string> = PRXInputEvent,
-    O extends PRXInputEvent<string, string> = PRXInputEvent,
+    I extends PRXInputEvent = PRXInputEvent,
+    O extends PRXInputEvent = PRXInputEvent,
     Opt extends object = {},
 >(
     input: MultiSubject<I>,

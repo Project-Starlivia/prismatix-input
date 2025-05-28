@@ -7,14 +7,14 @@ export type GetOption<T> = T extends InputEmitterCreator<infer O> ? O : never;
 export type GetEvent<T> = T extends InputEmitterCreator<object, infer E> ? E : never;
 
 export interface LogStore<
-	T extends PRXInputEvent<string, string> = PRXInputEvent
+	T extends PRXInputEvent = PRXInputEvent
 > {
 	log: T[];
 	clear: () => void;
 	addEmitter: <
 		C extends InputEmitterCreator<O, T>,
 		O extends object = GetOption<C>,
-		T extends PRXInputEvent<string, string> = GetEvent<C>
+		T extends PRXInputEvent = GetEvent<C>
 	>(
 		creator: C,
 		props: {
@@ -28,8 +28,8 @@ export interface LogStore<
 	addMiddleware: <
 		C extends InputMiddlewareCreator<Opt, I, O>,
 		Opt extends object = GetOption<C>,
-		I extends PRXInputEvent<string, string> = GetEvent<C>,
-		O extends PRXInputEvent<string, string> = GetEvent<C>
+		I extends PRXInputEvent = GetEvent<C>,
+		O extends PRXInputEvent = GetEvent<C>
 	>(
 		creator: C,
 		props: {
@@ -45,7 +45,7 @@ export interface LogStore<
 }
 
 export function createLogStore<
-	T extends PRXInputEvent<string, string> = PRXInputEvent
+	T extends PRXInputEvent = PRXInputEvent
 >(
 	globalSubject: Subject<T>,
 ): LogStore<T> {
@@ -64,7 +64,7 @@ export function createLogStore<
 	const addEmitter = <
 		C extends InputEmitterCreator<O, E, IE>,
 		O extends object = GetOption<C>,
-		E extends PRXInputEvent<string, string> = GetEvent<C>,
+		E extends PRXInputEvent = GetEvent<C>,
 		IE extends InputEmitter = InputEmitter
 	>(
 		creator: C,
@@ -96,8 +96,8 @@ export function createLogStore<
 	const addMiddleware = <
 		C extends InputMiddlewareCreator<Opt, I, O, IM>,
 		Opt extends object = GetOption<C>,
-		I extends PRXInputEvent<string, string> = GetEvent<C>,
-		O extends PRXInputEvent<string, string> = GetEvent<C>,
+		I extends PRXInputEvent = GetEvent<C>,
+		O extends PRXInputEvent = GetEvent<C>,
 		IM extends InputMiddleware = InputMiddleware
 	>(
 		creator: C,

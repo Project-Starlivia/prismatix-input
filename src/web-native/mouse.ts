@@ -11,7 +11,7 @@ export type WrapEvent = "mouseenter" | "mouseleave" | "mouseover" | "mouseout";
 
 type MouseNativeEvent = ClickEvent | ButtonEvent | MoveEvent | WrapEvent;
 
-export type MouseInputOptions = {
+export interface MouseInputOptions {
     target?: EventTarget
     events?: Multiable<MouseNativeEvent>,
     button?: Multiable<number>,
@@ -31,7 +31,7 @@ const inputTypeAction: Record<MouseNativeEvent, DefaultAction> = {
     "mouseout": "end",
 };
 
-export function mouseInputBase<T extends PRXInputEvent<string, string>>(
+export function mouseInputBase<T extends PRXInputEvent>(
     input: MultiSubject<T>,
     mapEvent: (e: MouseEvent, action: DefaultAction) => T,
     options?: MouseInputOptions,

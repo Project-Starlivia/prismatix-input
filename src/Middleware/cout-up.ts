@@ -6,17 +6,17 @@ export type CountUpInputOptions = {
     defaultCount?: number;
 }
 
-export type CountUpInputEvent<T extends PRXInputEvent<string, string> = PRXInputEvent> = T & {
+export interface CountUpInputEvent extends PRXInputEvent {
     count: number;
 }
 
-export const countUpInput: InputMiddlewareCreator<
+export const countUpMiddleware: InputMiddlewareCreator<
     CountUpInputOptions,
     PRXInputEvent,
-    CountUpInputEvent<PRXInputEvent>
-> = <T extends PRXInputEvent<string, string>>(
+    CountUpInputEvent
+> = <T extends PRXInputEvent>(
     input: MultiSubject<T>,
-    output: MultiSubject<CountUpInputEvent<T>>,
+    output: MultiSubject<CountUpInputEvent>,
     options?: CountUpInputOptions
 ) => {
     const { defaultCount } = options || {};
