@@ -14,7 +14,7 @@ export function middlewareBase<
 ) {
     const _input = multiableToArray(input);
     const _output = multiableToArray(output);
-    
+
     const unsubscribes = _input.map(inputSubject => 
         inputSubject.subscribe(event => {
             const processedEvent = processEvent(event, options);
@@ -25,15 +25,16 @@ export function middlewareBase<
             }
         })
     );
-    
+
     const dispose = () => {
         for (const unsubscribe of unsubscribes) {
             unsubscribe.unsubscribe();
         }
     };
-    
+
     return { dispose };
 }
 
 export * from './duration';
 export * from './repeat';
+export * from './cout-up';
