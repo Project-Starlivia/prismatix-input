@@ -115,8 +115,7 @@ export function createLogStore<
 			return  {
 				...api,
 				middleware: _middleware as typeof _middleware & IM,
-			};
-	}
+			};	}
 	const removeMiddleware = (middlewareId: string) => {
 		const m = _middleware[middlewareId];
 		if (m) {
