@@ -2,22 +2,22 @@
 import {MultiSubject} from "../subject";
 import { middlewareBase } from "./index";
 
-export type CountUpInputOptions = {
+export type CounterInputOptions = {
     defaultCount?: number;
 }
 
-export interface CountUpInputEvent extends PRXInputEvent {
+export interface CounterInputEvent extends PRXInputEvent {
     count: number;
 }
 
-export const countUpMiddleware: InputMiddlewareCreator<
-    CountUpInputOptions,
+export const counterMiddleware: InputMiddlewareCreator<
+    CounterInputOptions,
     PRXInputEvent,
-    CountUpInputEvent
+    CounterInputEvent
 > = <T extends PRXInputEvent>(
     input: MultiSubject<T>,
-    output: MultiSubject<CountUpInputEvent>,
-    options?: CountUpInputOptions
+    output: MultiSubject<CounterInputEvent>,
+    options?: CounterInputOptions
 ) => {
     const { defaultCount } = options || {};
     let count = defaultCount || 0;

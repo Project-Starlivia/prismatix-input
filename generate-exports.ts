@@ -4,10 +4,9 @@ import path from 'node:path';
 const srcDir = 'dist';
 const files = fs.readdirSync(srcDir, { withFileTypes: true });
 
-const exportsField = {};
-const typesField = {};
+const exportsField = {} as Record<string, { import: string, types: string }>;
 
-function scan(dir, prefix = '') {
+function scan(dir: string, prefix = '') {
   const entries = fs.readdirSync(dir, { withFileTypes: true });
   for (const entry of entries) {
     const name = entry.name;
@@ -18,7 +17,10 @@ function scan(dir, prefix = '') {
     } else if (name.endsWith('.js')) {
         const importPath = `./${path.join('dist', subPath).replace(/\\/g, '/')}`;
         const typePath = importPath.replace(/\.js$/, '.d.ts');
-        const key = `./${subPath.replace(/\\/g, '/').replace(/\.js$/, '')}`;
+        let key = `./${subPath.replace(/\\/g, '/').replace(/\.js$/, '')}`;
+        if (key.endsWith('/index')) {
+          key = key.replace(/\/index$/, '');
+        }
         exportsField[key] = { import: importPath, types: typePath };
     }
   }

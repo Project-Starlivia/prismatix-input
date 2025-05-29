@@ -37,4 +37,4 @@ export function middlewareBase<
 
 export * from './duration';
 export * from './repeat';
-export * from './cout-up';
+export * from './counter';
