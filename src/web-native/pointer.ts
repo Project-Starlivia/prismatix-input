@@ -11,7 +11,7 @@ export type PointerWrapEvent = 'pointerenter' | 'pointerleave' | 'pointerover' |
 export type PointerCancelEvent = 'pointercancel';
 type PointerNativeEvent = PointerButtonEvent | PointerMoveEvent | PointerWrapEvent | PointerCancelEvent;
 
-export interface PointerInputOptions extends PRXInputEvent {
+export interface PointerInputOptions {
     target?: EventTarget;
     events?: Multiable<PointerNativeEvent>;
     pointerType?: Multiable<string>;
