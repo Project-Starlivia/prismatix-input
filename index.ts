@@ -25,5 +25,4 @@ console.log(countUp);
 keyboardInput(keyboard);
 counterMiddleware(keyboard, countUp);
 
-keyboard.subscribe(e => console.log(e));
-countUp.subscribe(e => console.log(e));
+keyboard.subscribe(e => console.log(e.code));
