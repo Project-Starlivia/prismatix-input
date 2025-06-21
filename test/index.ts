@@ -1,14 +1,14 @@
 import mitt from "mitt";
 
-import type { KeyboardInputEvent } from "./src/web-native";
-import type { WithPositionInputEvent } from "./src/web-native";
+import type { KeyboardInputEvent } from "../src/web-native";
+import type { WithPositionInputEvent } from "../src/web-native";
 import type {
     DurationInputEvent,
     CounterInputEvent,
-} from "./src/middleware";
-import { createSubjects } from "./src/mitt";
-import { keyboardInput } from "./src/web-native";
-import { counterMiddleware } from "./src/middleware";
+} from "../src/middleware";
+import { createSubjects } from "../src/mitt";
+import { keyboardInput } from "../src/web-native";
+import { counterMiddleware } from "../src/middleware";
 
 type Events = {
   mouse: WithPositionInputEvent;
