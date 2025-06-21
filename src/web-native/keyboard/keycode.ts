@@ -120,5 +120,9 @@ export const WindowsCodeChrome: Record<string, UsageID> = {
     "F12": "45",
     "NumpadEqual": "67",
     "F13": "68",
+}
 
+
+export const UsageIdMap: Partial<Record<UsageID, { x: number, y: number }>> = {
+    "29": { x: 0.5, y: 0.5 },
 }
