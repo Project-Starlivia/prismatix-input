@@ -21,19 +21,20 @@ export const repeatInput: InputMiddlewareCreator<
     options?: RepeatInputOptions
 ) => {
     const { maxInterval } = options || {};
-    const _maxInterval = maxInterval || 100;
+    const maxInt = maxInterval || 100;
+    const id = `repeat-${Date.now()}`;
 
     const activeRepeats = new Map<string, {
-        lastTime: number,
-        repeatCount: number
+        lastTime: number;
+        repeatCount: number;
     }>();
 
     return middlewareBase(input, output, (event) => {
         const repeat = activeRepeats.get(event.key);
         const now = event.time;
-        if(repeat) {
+        if (repeat) {
             const interval = now - repeat.lastTime;
-            if(interval < _maxInterval) {
+            if (interval < maxInt) {
                 repeat.repeatCount++;
                 repeat.lastTime = now;
                 activeRepeats.set(event.key, repeat);
@@ -47,6 +48,9 @@ export const repeatInput: InputMiddlewareCreator<
             lastTime: now,
             repeatCount: 0
         });
-        return event;
-    })
+        return {
+            ...event,
+            repeatCount: 0
+        } as RepeatInputEvent;
+    }, options, id);
 };

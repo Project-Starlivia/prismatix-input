@@ -30,10 +30,6 @@
       "import": "./dist/events.js",
       "types": "./dist/events.d.ts"
     },
-    "./log-store": {
-      "import": "./dist/log-store.js",
-      "types": "./dist/log-store.d.ts"
-    },
     "./middleware/counter": {
       "import": "./dist/middleware/counter.js",
       "types": "./dist/middleware/counter.d.ts"
@@ -67,8 +63,36 @@
       "types": "./dist/web-native/index.d.ts"
     },
     "./web-native/keyboard": {
-      "import": "./dist/web-native/keyboard.js",
-      "types": "./dist/web-native/keyboard.d.ts"
+      "import": "./dist/web-native/keyboard/index.js",
+      "types": "./dist/web-native/keyboard/index.d.ts"
+    },
+    "./web-native/keyboard/key-mappings": {
+      "import": "./dist/web-native/keyboard/key-mappings.js",
+      "types": "./dist/web-native/keyboard/key-mappings.d.ts"
+    },
+    "./web-native/keyboard/keycode-backup": {
+      "import": "./dist/web-native/keyboard/keycode-backup.js",
+      "types": "./dist/web-native/keyboard/keycode-backup.d.ts"
+    },
+    "./web-native/keyboard/keycode-original": {
+      "import": "./dist/web-native/keyboard/keycode-original.js",
+      "types": "./dist/web-native/keyboard/keycode-original.d.ts"
+    },
+    "./web-native/keyboard/keycode": {
+      "import": "./dist/web-native/keyboard/keycode.js",
+      "types": "./dist/web-native/keyboard/keycode.d.ts"
+    },
+    "./web-native/keyboard/position-mappings": {
+      "import": "./dist/web-native/keyboard/position-mappings.js",
+      "types": "./dist/web-native/keyboard/position-mappings.d.ts"
+    },
+    "./web-native/keyboard/types": {
+      "import": "./dist/web-native/keyboard/types.js",
+      "types": "./dist/web-native/keyboard/types.d.ts"
+    },
+    "./web-native/keyboard/usage-names": {
+      "import": "./dist/web-native/keyboard/usage-names.js",
+      "types": "./dist/web-native/keyboard/usage-names.d.ts"
     },
     "./web-native/mouse": {
       "import": "./dist/web-native/mouse.js",

@@ -57,7 +57,7 @@ export function pointerInputBase<T extends PRXInputEvent>(
         _events,
         inputTypeAction,
         isExec,
-        mapEvent
+        mapEvent,
     );
 }
 

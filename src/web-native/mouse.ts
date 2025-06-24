@@ -43,15 +43,15 @@ export function mouseInputBase<T extends PRXInputEvent>(
             ["click", "dblclick", "contextmenu", "mousedown", "mouseup", "mouseenter", "mouseleave", "mouseover", "mouseout", "mousemove"] as MouseNativeEvent[];
     const _button = button ? new Set(multiableToArray(button)) : undefined;
     const _buttons = buttons ? new Set(multiableToArray(buttons)) : undefined;
-    const isExec = (e: MouseEvent) => isEventBySetUndef(_button, e.button) && isEventBySetUndef(_buttons, e.buttons)
-
+    const isExec = (e: MouseEvent) => isEventBySetUndef(_button, e.button) && isEventBySetUndef(_buttons, e.buttons);
+    
     return nativeInputBase<T, MouseNativeEvent, MouseEvent>(
         input,
         _target,
         _events,
         inputTypeAction,
         isExec,
-        mapEvent
+        mapEvent,
     );
 }
 

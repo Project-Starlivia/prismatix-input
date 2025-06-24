@@ -25,27 +25,27 @@ const durationBaseInput = <T extends PRXInputEvent>(
     options?: DurationInputOptions
 ) => {
     const { minDuration, maxDuration } = options || {};
-    const _minDuration = minDuration || 0;
-    const _maxDuration = maxDuration || Infinity;
+    const minDur = minDuration || 0;
+    const maxDur = maxDuration || Infinity;
 
-    const filter = (e: T, duration: number) => duration >= _minDuration && duration <= _maxDuration;
+    const filter = (e: T, duration: number) => duration >= minDur && duration <= maxDur;
 
     const startedKeys = new Map<string, number>();
 
     const processEvent = (event: T): DurationInputEvent | null => {
-        if(isStart(event)) {
+        if (isStart(event)) {
             startedKeys.set(event.key, event.time);
             return null;
-        } else if(isEnd(event)) {
+        } else if (isEnd(event)) {
             const startTime = startedKeys.get(event.key);
-            if(startTime == undefined) return null;
+            if (startTime === undefined) return null;
 
             const endTime = event.time;
             const duration = endTime - startTime;
 
             startedKeys.delete(event.key);
 
-            if(!filter(event, duration)) return null;
+            if (!filter(event, duration)) return null;
             return {
                 ...event,
                 action: "duration",
@@ -60,7 +60,7 @@ const durationBaseInput = <T extends PRXInputEvent>(
         DurationInputEvent,
         DurationInputOptions
     >(input, output, processEvent, options || {});
-}
+};
 
 export const startToEndDurationInput: InputMiddlewareCreator<
     DurationInputOptions,
@@ -70,21 +70,28 @@ export const startToEndDurationInput: InputMiddlewareCreator<
     input: MultiSubject<T>,
     output: MultiSubject<DurationInputEvent>,
     options?: DurationInputOptions
-) => durationBaseInput(input, output, (e) => e.action == 'start', (e) => e.action == 'end', options);
-export const multiDurationInput:
-    InputMiddlewareCreator<
-        DurationInputOptions,
-        PRXInputEvent,
-        DurationInputEvent
-    > = <T extends PRXInputEvent>
-(
+) => {
+    return durationBaseInput(input, output, (e) => e.action === 'start', (e) => e.action === 'end', options);
+};
+
+export const multiDurationInput: InputMiddlewareCreator<
+    DurationInputOptions,
+    PRXInputEvent,
+    DurationInputEvent
+> = <T extends PRXInputEvent>(
     input: MultiSubject<T>,
     output: MultiSubject<DurationInputEvent>,
     options?: MultiDurationInputOptions
 ) => {
     const { startAction, endAction } = options || {};
-    const _startActions = new Set(startAction ? multiableToArray(startAction): ["start"]);
-    const _endActions = new Set(endAction ? multiableToArray(endAction): ["end"]);
+    const startActions = new Set(startAction ? multiableToArray(startAction) : ["start"]);
+    const endActions = new Set(endAction ? multiableToArray(endAction) : ["end"]);
 
-    return durationBaseInput(input, output, (e) => _startActions.has(e.action), (e) => _endActions.has(e.action), options);
+    return durationBaseInput(
+        input, 
+        output, 
+        (e) => startActions.has(e.action), 
+        (e) => endActions.has(e.action), 
+        options
+    );
 };

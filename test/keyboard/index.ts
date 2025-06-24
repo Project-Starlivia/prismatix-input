@@ -1,11 +1,11 @@
-﻿import {UsageID, UsageIdMap} from "../../src/web-native/keyboard/keycode";
+﻿import {UsageID, KeyboardUsageIdMap, UsageName} from "../../src/web-native/keyboard/keycode";
 
 const body = document.body;
 
 const width = window.innerWidth;
 const height = window.innerHeight;
-for (const key in UsageIdMap) {
-    const info = UsageIdMap[key as UsageID];
+for (const key in KeyboardUsageIdMap) {
+    const info = KeyboardUsageIdMap[key as UsageID];
     if (!info) continue;
     const keyElement = document.createElement("div");
     keyElement.classList.add("key");
@@ -17,7 +17,7 @@ for (const key in UsageIdMap) {
     keyElement.appendChild(aroundElement);
 
     const keyText = document.createElement("label");
-    keyText.innerText = key;
+    keyText.innerText = UsageName[key as UsageID] || key;
     keyElement.appendChild(keyText);
     body.appendChild(keyElement);
 }

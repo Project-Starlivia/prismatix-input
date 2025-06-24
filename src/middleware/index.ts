@@ -10,23 +10,23 @@ export function middlewareBase<
     input: MultiSubject<I>,
     output: MultiSubject<O>,
     processEvent: (event: I, options: Opt) => O | null,
-    options: Opt = {} as Opt
+    options: Opt = {} as Opt,
 ) {
-    const _input = multiableToArray(input);
-    const _output = multiableToArray(output);
+    const inputSubjects = multiableToArray(input);
+    const outputSubjects = multiableToArray(output);
 
-    const unsubscribes = _input.map(inputSubject => 
+    const unsubscribes = inputSubjects.map(inputSubject => 
         inputSubject.subscribe(event => {
             const processedEvent = processEvent(event, options);
             if (processedEvent) {
-                for (const outputSubject of _output) {
+                for (const outputSubject of outputSubjects) {
                     outputSubject.next(processedEvent);
                 }
             }
         })
     );
 
-    const dispose = () => {
+    const dispose = (): void => {
         for (const unsubscribe of unsubscribes) {
             unsubscribe.unsubscribe();
         }

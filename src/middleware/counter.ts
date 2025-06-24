@@ -28,19 +28,20 @@ export const counterMiddleware: InputMiddlewareCreator<
 ): CounterMiddleware => {
     const { defaultCount, counterHandler } = options || {};
     let count = defaultCount || 0;
-    const _counterHandler = counterHandler || ((e, c) => c++);
+    const counterHandlerFn = counterHandler || ((e, c) => c + 1);
 
     const middleware = middlewareBase(input, output, (event) => {
-        count = _counterHandler(event, count);
+        count = counterHandlerFn(event, count);
         return {
             ...event,
             count
         } as CounterInputEvent;
     }, options);
+
     return {
         ...middleware,
         get: () => count,
-        reset: () => count = defaultCount || 0,
-        set: (value: number) => count = value,
-    }
+        reset: (): void => { count = defaultCount || 0; },
+        set: (value: number): void => { count = value; },
+    };
 };

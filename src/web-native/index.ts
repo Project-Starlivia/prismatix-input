@@ -16,12 +16,12 @@ export const isEventBySetUndef = <T>(set: Set<T> | undefined, value: T): boolean
 export function nativeInputBase<T extends PRXInputEvent, ET extends string, EN extends Event, A extends string = DefaultAction>(
     input: MultiSubject<T>,
     target: EventTarget,
-    events: ET[],
+    events: readonly ET[],
     actionMap: Record<ET, A>,
     isEvent: (e: EN) => boolean,
-    mapEvent: (e: EN, action: A) => T
+    mapEvent: (e: EN, action: A) => T,
 ) {
-    const _subjects = multiableToArray(input);
+    const subjects = multiableToArray(input);
 
     const listeners = events.map(type => {
         const handler = (e: EN) => {
@@ -29,21 +29,21 @@ export function nativeInputBase<T extends PRXInputEvent, ET extends string, EN e
             if (!action) throw new Error(`No action for event type: ${type}`);
             if (!isEvent(e)) return;
             const event = mapEvent(e, action);
-            for (const stream of _subjects) {
+            for (const stream of subjects) {
                 stream.next(event);
             }
-        }
+        };
         const fn = (e: Event) => handler(e as EN);
 
         target.addEventListener(type, fn);
         return () => target.removeEventListener(type, fn);
     });
 
-    const dispose = () => {
+    const dispose = (): void => {
         for (const remove of listeners) {
             remove();
         }
-    }
+    };
 
     return { dispose };
 }
