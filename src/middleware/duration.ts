@@ -62,7 +62,7 @@ const durationBaseInput = <T extends PRXInputEvent>(
     >(input, output, processEvent, options || {});
 };
 
-export const startToEndDurationInput: InputMiddlewareCreator<
+export const createStartToEndDurationMiddleware: InputMiddlewareCreator<
     DurationInputOptions,
     PRXInputEvent,
     DurationInputEvent
@@ -74,7 +74,7 @@ export const startToEndDurationInput: InputMiddlewareCreator<
     return durationBaseInput(input, output, (e) => e.action === 'start', (e) => e.action === 'end', options);
 };
 
-export const multiDurationInput: InputMiddlewareCreator<
+export const createMultiDurationMiddleware: InputMiddlewareCreator<
     DurationInputOptions,
     PRXInputEvent,
     DurationInputEvent

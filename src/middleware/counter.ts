@@ -17,7 +17,7 @@ export interface CounterMiddleware extends InputMiddleware {
     set: (value: number) => void;
 }
 
-export const counterMiddleware: InputMiddlewareCreator<
+export const createCounterMiddleware: InputMiddlewareCreator<
     CounterInputOptions,
     PRXInputEvent,
     CounterInputEvent

@@ -6,25 +6,23 @@ import { isEventBySetUndef } from "../";
 
 type KeyboardNativeEvent = "keydown" | "keyup";
 type KeyboardExtensionEvent = "keydown-norepeat" | "keydown-repeat";
+type KeyboardEventType = KeyboardNativeEvent | KeyboardExtensionEvent;
 
 export interface KeyboardInputOptions {
     target?: EventTarget
     key?: Multiable<string>
     code?: Multiable<string>
-    events?: Multiable<KeyboardNativeEvent & KeyboardExtensionEvent>
+    events?: Multiable<KeyboardEventType>
 }
 
 export interface KeyboardInputEvent extends PRXInputEvent {
     code: string;
 }
 
-export  interface KeyboardInputEmitter extends InputEmitter {
-    log: () => void;
-}
-export const keyboardInput: InputEmitterCreator<KeyboardInputOptions, KeyboardInputEvent> = (
+export const createKeyboardInput: InputEmitterCreator<KeyboardInputOptions, KeyboardInputEvent> = (
     input: MultiSubject<KeyboardInputEvent>,
     options?: KeyboardInputOptions
-): KeyboardInputEmitter => {
+): InputEmitter => {
     const subjects = multiableToArray(input);
     const { target, code, key, events } = options || {};
     const eventTarget = target || document;
@@ -35,7 +33,6 @@ export const keyboardInput: InputEmitterCreator<KeyboardInputOptions, KeyboardIn
             ? Array.isArray(events) ? events : [events]
             : ["keydown", "keydown-norepeat", "keydown-repeat", "keyup"]
     );
-    const id = `keyboard-${Date.now()}`;
 
     const keyFilter = (key: string) => isEventBySetUndef(keySet, key);
     const codeFilter = (code: string) => isEventBySetUndef(codeSet, code);
@@ -93,10 +90,6 @@ export const keyboardInput: InputEmitterCreator<KeyboardInputOptions, KeyboardIn
     };
 
     return {
-        id,
         dispose,
-        log: (): void => {
-            console.log(`Keyboard emitter ${id} active`);
-        }
     };
 }

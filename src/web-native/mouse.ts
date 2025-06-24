@@ -44,7 +44,7 @@ export function mouseInputBase<T extends PRXInputEvent>(
     const _button = button ? new Set(multiableToArray(button)) : undefined;
     const _buttons = buttons ? new Set(multiableToArray(buttons)) : undefined;
     const isExec = (e: MouseEvent) => isEventBySetUndef(_button, e.button) && isEventBySetUndef(_buttons, e.buttons);
-    
+
     return nativeInputBase<T, MouseNativeEvent, MouseEvent>(
         input,
         _target,
@@ -55,7 +55,7 @@ export function mouseInputBase<T extends PRXInputEvent>(
     );
 }
 
-export function mouseInputWithPosition(
+export function createMouseInputWithPosition(
     input: MultiSubject<WithPositionInputEvent>,
     options?: MouseInputOptions
 ) {
@@ -68,7 +68,7 @@ export function mouseInputWithPosition(
     }as WithPositionInputEvent) ,options)
 }
 
-export function mouseInput(
+export function createMouseInput(
     s: MultiSubject<PRXInputEvent>,
     o?: MouseInputOptions
 ) {

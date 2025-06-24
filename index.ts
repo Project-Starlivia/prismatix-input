@@ -1,8 +1,8 @@
-import {keyboardInput, pointerInputWithPosition} from "./src/web-native";
+import {createKeyboardInput, createPointerInputWithPosition} from "./src/web-native";
 import type { KeyboardInputOptions, KeyboardInputEvent } from "./src/web-native";
 import {createSubject} from "./src/mitt";
 import type { WithPositionInputEvent } from "./src/web-native";
-import {repeatInput, startToEndDurationInput} from "./src/middleware";
+import {createRepeatMiddleware, createStartToEndDurationMiddleware} from "./src/middleware";
 import type {
     DurationInputEvent,
     RepeatInputEvent
@@ -38,12 +38,6 @@ const testEvent = {
 };
 
 mouseSubject.next(testEvent);
-console.log("After adding test event to mouseSubject - Log entries:", store.log.length);
 
 // Test global subject directly
 globalSubject.next(testEvent);
-console.log("After adding test event to globalSubject - Log entries:", store.log.length);
-
-// Test cleanup
-store.dispose();
-console.log("Store disposed successfully!");

@@ -61,7 +61,7 @@ export function pointerInputBase<T extends PRXInputEvent>(
     );
 }
 
-export const pointerInput = (
+export const createPointerInput = (
     input: MultiSubject<PRXInputEvent>,
     options?: PointerInputOptions
 ) => {
@@ -76,7 +76,7 @@ export const pointerInput = (
     );
 }
 
-export const pointerInputWithPosition
+export const createPointerInputWithPosition
 : InputEmitterCreator<PointerInputOptions, WithPositionInputEvent>
 = (
     input: MultiSubject<WithPositionInputEvent>,

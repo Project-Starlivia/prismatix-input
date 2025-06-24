@@ -1,25 +1,25 @@
-import {keyboardInput, pointerInputWithPosition} from "../src/web-native";
+import {createKeyboardInput, createPointerInputWithPosition} from "../src/web-native";
 import type { KeyboardInputOptions, KeyboardInputEvent } from "../src/web-native";
-import {createSubject} from "../src/mitt";
+import {createAllSubjects, createSubject} from "../src/mitt";
 import type { WithPositionInputEvent } from "../src/web-native";
-import {startToEndDurationInput} from "../src/middleware";
+import {createStartToEndDurationMiddleware} from "../src/middleware";
 import type {
     DurationInputEvent,
 } from "../src/middleware";
 import mitt from "mitt";
+import {Subject} from "../src/subject";
 
 type Events = {
   mouse: WithPositionInputEvent;
   keyboard: KeyboardInputEvent;
   duration: DurationInputEvent;
+  global: KeyboardInputEvent | WithPositionInputEvent | DurationInputEvent;
 };
 
 // Create event emitter and subjects
-const emitter = mitt<Events & { global: KeyboardInputEvent | WithPositionInputEvent | DurationInputEvent }>();
-const globalSubject = createSubject(emitter, 'global');
-const mouseSubject = createSubject(emitter, 'mouse');
-const keyboardSubject = createSubject(emitter, 'keyboard');
-const durationSubject = createSubject(emitter, 'duration');
+const { mouse, keyboard, duration, global } = createAllSubjects<Events>();
+
+createKeyboardInput([keyboard], { events: "keyup" });
 
 // Set up logging
 const logElement = document.getElementById('log') as HTMLElement;

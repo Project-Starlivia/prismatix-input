@@ -1,8 +1,6 @@
-import type { Emitter, EventType } from "mitt";
+import mitt, { Emitter, EventType } from "mitt";
 import type { Subject } from "./subject";
 import type { PRXInputEvent } from "./events";
-import type { Multiable } from "./utils";
-import { multiableToArray } from "./utils";
 
 export function createSubject<E extends Record<EventType, T>, T extends PRXInputEvent = E[keyof E]>(
   emitter: Emitter<E>,
@@ -36,18 +34,21 @@ export function createSubject<E extends Record<EventType, T>, T extends PRXInput
     return { subscribe, next, dispose };
 }
 
-export function createSubjects<
+export function createAllSubjects<
     E extends Record<EventType, T>,
-    T extends PRXInputEvent,
+    T extends PRXInputEvent = E[keyof E]
 >(
-    emitter: Emitter<E>,
-    keys: Multiable<keyof E>,
-) {
-    const _keys = multiableToArray(keys);
-    const _subjects = _keys.reduce((acc, key) => {
-        acc[key] = createSubject(emitter, key);
-        return acc;
-    }, {} as Record<keyof E, Subject<T>>);
+    emitter?: Emitter<E>,
+): { [K in keyof E]: Subject<E[K]> } & { emitter: Emitter<E> } {
+    if(!emitter) emitter = mitt<E>();
 
-    return _subjects as { [K in keyof E]: Subject<E[K]> };
+    const subjects = {} as { [K in keyof E]: Subject<E[K]> };
+
+    const keys = Object.keys(emitter) as (keyof E)[];
+
+    for (const key of keys) {
+        subjects[key] = createSubject<E, T>(emitter, key) as Subject<E[typeof key]>;
+    }
+
+    return { ...subjects, emitter };
 }

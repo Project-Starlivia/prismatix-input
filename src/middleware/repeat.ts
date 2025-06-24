@@ -11,7 +11,7 @@ export interface RepeatInputEvent extends PRXInputEvent {
 }
 
 
-export const repeatInput: InputMiddlewareCreator<
+export const createRepeatMiddleware: InputMiddlewareCreator<
     RepeatInputOptions,
     PRXInputEvent,
     RepeatInputEvent
@@ -22,7 +22,6 @@ export const repeatInput: InputMiddlewareCreator<
 ) => {
     const { maxInterval } = options || {};
     const maxInt = maxInterval || 100;
-    const id = `repeat-${Date.now()}`;
 
     const activeRepeats = new Map<string, {
         lastTime: number;
@@ -52,5 +51,5 @@ export const repeatInput: InputMiddlewareCreator<
             ...event,
             repeatCount: 0
         } as RepeatInputEvent;
-    }, options, id);
+    }, options);
 };
