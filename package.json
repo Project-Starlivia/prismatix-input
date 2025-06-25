@@ -1,6 +1,6 @@
 {
   "name": "prismatix-input",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "license": "MIT",
   "type": "module",
   "files": [
@@ -17,13 +17,13 @@
     "biome": "^0.3.3",
     "rimraf": "^6.0.1",
     "tailwind": "^4.0.0",
+    "@tailwindcss/vite": "^4.1.10",
     "vite": "^6.3.5"
   },
   "peerDependencies": {
     "typescript": "^5.8.3"
   },
   "dependencies": {
-    "@tailwindcss/vite": "^4.1.10",
     "mitt": "^3.0.1"
   },
   "exports": {
