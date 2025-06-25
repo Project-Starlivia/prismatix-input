@@ -38,3 +38,4 @@ export function middlewareBase<
 export * from './duration';
 export * from './repeat';
 export * from './counter';
+export * from './keycode-position';

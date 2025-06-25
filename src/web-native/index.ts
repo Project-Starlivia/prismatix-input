@@ -48,6 +48,6 @@ export function nativeInputBase<T extends PRXInputEvent, ET extends string, EN e
     return { dispose };
 }
 
-export * from './keyboard';
+export * from './keyboard/keyboard';
 export * from './mouse';
 export * from './pointer';

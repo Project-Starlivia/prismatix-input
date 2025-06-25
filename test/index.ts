@@ -1,4 +1,4 @@
-import {createKeyboardInput, createPointerInputWithPosition} from "../src/web-native";
+import {createKeyboardInput, createMouseInput, createPointerInputWithPosition} from "../src/web-native";
 import type { KeyboardInputOptions, KeyboardInputEvent } from "../src/web-native";
 import {createAllSubjects, createSubject} from "../src/mitt";
 import type { WithPositionInputEvent } from "../src/web-native";
@@ -17,24 +17,24 @@ type Events = {
 };
 
 // Create event emitter and subjects
-const { mouse, keyboard, duration, global } = createAllSubjects<Events>();
+const { mouse, keyboard, duration } = createAllSubjects<Events>();
 
-createKeyboardInput([keyboard], { events: "keyup" });
+createKeyboardInput(keyboard);
+createMouseInput(mouse);
 
 // Set up logging
 const logElement = document.getElementById('log') as HTMLElement;
-let logCount = 0;
 
 function updateLog(message: string) {
-    logCount++;
     const timestamp = new Date().toLocaleTimeString();
     logElement.textContent += `[${timestamp}] ${message}\n`;
     logElement.scrollTop = logElement.scrollHeight;
 }
 
-// Make clearLog available globally
-(window as any).clearLog = () => {
-    logElement.textContent = '';
-    logCount = 0;
-    updateLog('Log cleared');
-};
+keyboard.subscribe(event => {
+    updateLog(`Keyboard event: ${JSON.stringify(event)}`);
+});
+
+mouse.subscribe(event => {
+    updateLog(`Mouse event: ${JSON.stringify(event)}`);
+});

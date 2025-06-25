@@ -38,6 +38,10 @@
       "import": "./dist/middleware/duration.js",
       "types": "./dist/middleware/duration.d.ts"
     },
+    "./middleware/keycode-position": {
+      "import": "./dist/middleware/keycode-position.js",
+      "types": "./dist/middleware/keycode-position.d.ts"
+    },
     "./middleware": {
       "import": "./dist/middleware/index.js",
       "types": "./dist/middleware/index.d.ts"

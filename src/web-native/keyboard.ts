@@ -1,8 +1,8 @@
-import type {DefaultAction, InputEmitter, InputEmitterCreator, PRXInputEvent} from "../../events";
-import type { MultiSubject } from "../../subject";
-import type { Multiable } from "../../utils";
-import { multiableToArray } from "../../utils";
-import { isEventBySetUndef } from "../";
+import type {DefaultAction, InputEmitter, InputEmitterCreator, PRXInputEvent} from "../events";
+import type { MultiSubject } from "../subject";
+import type { Multiable } from "../utils";
+import { multiableToArray } from "../utils";
+import { isEventBySetUndef } from "./";
 
 type KeyboardNativeEvent = "keydown" | "keyup";
 type KeyboardExtensionEvent = "keydown-norepeat" | "keydown-repeat";
