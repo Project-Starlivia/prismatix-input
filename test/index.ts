@@ -1,26 +1,24 @@
-import {createKeyboardInput, createMouseInput, createPointerInputWithPosition} from "../src/web-native";
-import type { KeyboardInputOptions, KeyboardInputEvent } from "../src/web-native";
-import {createAllSubjects, createSubject} from "../src/mitt";
-import type { WithPositionInputEvent } from "../src/web-native";
-import {createStartToEndDurationMiddleware} from "../src/middleware";
-import type {
-    DurationInputEvent,
-} from "../src/middleware";
-import mitt from "mitt";
-import {Subject} from "../src/subject";
+import mitt, { Emitter } from "mitt";
+import type {WithPositionInputEvent} from "~/input";
+import {createKeyboardInput, KeyboardInputEvent} from "~/input/keyboard";
+import {DurationInputEvent} from "~/middleware/duration";
+import {createKeycodePositionMiddleware} from "~/middleware/keycode-position";
+import { createSubject } from "~/mitt";
+import { PRXSubject } from "~/types";
 
 type Events = {
-  mouse: WithPositionInputEvent;
+    position: WithPositionInputEvent;
   keyboard: KeyboardInputEvent;
   duration: DurationInputEvent;
   global: KeyboardInputEvent | WithPositionInputEvent | DurationInputEvent;
 };
 
 // Create event emitter and subjects
-const { mouse, keyboard, duration } = createAllSubjects<Events>();
-
+const emitter = mitt<Events>();
+const keyboard = createSubject(emitter, "keyboard") as PRXSubject<KeyboardInputEvent>;
+const position = createSubject(emitter, "position") as PRXSubject<WithPositionInputEvent>;
 createKeyboardInput(keyboard);
-createMouseInput(mouse);
+createKeycodePositionMiddleware(keyboard, position);
 
 // Set up logging
 const logElement = document.getElementById('log') as HTMLElement;
@@ -30,11 +28,16 @@ function updateLog(message: string) {
     logElement.textContent += `[${timestamp}] ${message}\n`;
     logElement.scrollTop = logElement.scrollHeight;
 }
+function clearLog() {
+    logElement.textContent = '';
+}
 
 keyboard.subscribe(event => {
     updateLog(`Keyboard event: ${JSON.stringify(event)}`);
 });
 
-mouse.subscribe(event => {
-    updateLog(`Mouse event: ${JSON.stringify(event)}`);
+position.subscribe(event => {
+    updateLog(`Position event: ${JSON.stringify(event)}`);
 });
+
+

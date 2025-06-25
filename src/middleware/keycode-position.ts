@@ -1,13 +1,13 @@
-﻿import type { InputMiddlewareCreator } from "../events";
-import type { MultiSubject } from "../subject";
-import { middlewareBase } from "./index";
-import {WithPositionInputEvent} from "../web-native";
-import {KeyboardInputEvent} from "../web-native/keyboard";
-import {getUsageIdFromKeyCode} from "../keymap/key-mappings";
-import {PositionUtils} from "../keymap/position-mappings";
+﻿import type { MultiSubject } from "~/types";
+import { PositionUtils } from "~/key-map/position-mappings";
+import { getUsageIdFromKeyCode } from "~/key-map/key-mappings";
+import type { KeyboardInputEvent } from "~/input/keyboard";
+import type { WithPositionInputEvent } from "~/input";
+
+import { middlewareBase, InputMiddlewareCreator } from ".";
 
 export interface KeycodePositionOptions {
-    scaleTarget?: EventTarget | undefined;
+    scaleTarget?: Element | null;
 }
 
 export const createKeycodePositionMiddleware: InputMiddlewareCreator<
@@ -19,7 +19,7 @@ export const createKeycodePositionMiddleware: InputMiddlewareCreator<
     output: MultiSubject<WithPositionInputEvent>,
     options?: KeycodePositionOptions
 ) => {
-    const {scaleTarget} = options || {};
+    const {scaleTarget} = options || { scaleTarget: document.body };
 
     const processEvent = (event: T): WithPositionInputEvent | null => {
         // Get usage ID from key code
@@ -27,11 +27,10 @@ export const createKeycodePositionMiddleware: InputMiddlewareCreator<
         if (!usageId) return null;
         const position = PositionUtils.getPosition(usageId);
         if (!position) return null;
-
         return {
             ...event,
-            x: position.x,
-            y: position.y,
+            x: position.x * (scaleTarget?.clientWidth || 0),
+            y: position.y * (scaleTarget?.clientHeight || 0),
         }
     };
 

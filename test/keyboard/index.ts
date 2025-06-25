@@ -1,4 +1,6 @@
-﻿import {UsageID, KeyboardUsageIdMap, UsageName} from "../../src/web-native/keyboard/keycode";
+﻿import { UsageID } from "~/key-map/types";
+import { UsageName } from "~/key-map/usage-names";
+import { KeyboardUsageIdMap } from "~/key-map/position-mappings";
 
 const body = document.body;
 

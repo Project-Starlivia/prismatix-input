@@ -1,8 +1,7 @@
-import { isEventBySetUndef, nativeInputBase, type WithPositionInputEvent } from ".";
-import type { DefaultAction, PRXInputEvent } from "../events";
-import type { MultiSubject } from "../subject";
-import type { Multiable } from "../utils";
-import { multiableToArray } from "../utils";
+import type { DefaultAction, PRXEvent, MultiSubject } from "~/types";
+import { multiableToArray, Multiable } from "~/utils";
+
+import { isEventBySetUndef, nativeInputBase, WithPositionInputEvent } from ".";
 
 export type ClickEvent = "click" | "dblclick" | "contextmenu";
 export type ButtonEvent = "mousedown" | "mouseup";
@@ -31,7 +30,7 @@ const inputTypeAction: Record<MouseNativeEvent, DefaultAction> = {
     "mouseout": "end",
 };
 
-export function mouseInputBase<T extends PRXInputEvent>(
+export function mouseInputBase<T extends PRXEvent>(
     input: MultiSubject<T>,
     mapEvent: (e: MouseEvent, action: DefaultAction) => T,
     options?: MouseInputOptions,
@@ -69,12 +68,12 @@ export function createMouseInputWithPosition(
 }
 
 export function createMouseInput(
-    s: MultiSubject<PRXInputEvent>,
+    s: MultiSubject<PRXEvent>,
     o?: MouseInputOptions
 ) {
     return mouseInputBase(s, (e: MouseEvent, action: DefaultAction) => ({
         key: e.button.toString(),
         action,
         time: e.timeStamp,
-    }as PRXInputEvent) ,o)
+    }as PRXEvent) ,o)
 }

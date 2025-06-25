@@ -8,7 +8,7 @@ import type {
     RepeatInputEvent
 } from "./src/middleware";
 import mitt from "mitt";
-import type { Subject } from "./src/subject";
+import type { PRXSubject } from "./src/subject";
 
 type Events = {
   mouse: WithPositionInputEvent;

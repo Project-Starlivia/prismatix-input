@@ -1,10 +1,10 @@
-﻿import {DefaultAction, InputMiddlewareCreator, PRXInputEvent} from "../events";
-import {Multiable, multiableToArray} from "../utils";
-import {MultiSubject} from "../subject";
-import { middlewareBase } from "./index";
+﻿import type { PRXEvent, MultiSubject } from "~/types";
+import {Multiable, multiableToArray} from "~/utils";
+
+import { middlewareBase, InputMiddlewareCreator } from ".";
 
 export type DurationAction = "duration";
-export interface DurationInputEvent extends PRXInputEvent {
+export interface DurationInputEvent extends PRXEvent {
     duration: number;
 }
 
@@ -17,7 +17,7 @@ export interface MultiDurationInputOptions extends DurationInputOptions {
     endAction?: Multiable<string>;
 }
 
-const durationBaseInput = <T extends PRXInputEvent>(
+const durationBaseInput = <T extends PRXEvent>(
     input: MultiSubject<T>,
     output: MultiSubject<DurationInputEvent>,
     isStart: (e: T) => boolean,
@@ -64,9 +64,9 @@ const durationBaseInput = <T extends PRXInputEvent>(
 
 export const createStartToEndDurationMiddleware: InputMiddlewareCreator<
     DurationInputOptions,
-    PRXInputEvent,
+    PRXEvent,
     DurationInputEvent
-> = <T extends PRXInputEvent>(
+> = <T extends PRXEvent>(
     input: MultiSubject<T>,
     output: MultiSubject<DurationInputEvent>,
     options?: DurationInputOptions
@@ -76,9 +76,9 @@ export const createStartToEndDurationMiddleware: InputMiddlewareCreator<
 
 export const createMultiDurationMiddleware: InputMiddlewareCreator<
     DurationInputOptions,
-    PRXInputEvent,
+    PRXEvent,
     DurationInputEvent
-> = <T extends PRXInputEvent>(
+> = <T extends PRXEvent>(
     input: MultiSubject<T>,
     output: MultiSubject<DurationInputEvent>,
     options?: MultiDurationInputOptions

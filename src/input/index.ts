@@ -1,26 +1,30 @@
-import type { DefaultAction, PRXInputEvent } from "../events";
-import type { MultiSubject } from "../subject";
-import { multiableToArray } from "../utils";
+import type { DefaultAction, PRXEvent, MultiSubject, Disposable } from "~/types";
+import { multiableToArray, EmptyObject } from "~/utils";
 
+export interface PRXInput extends Disposable {}
 
-export interface WithPositionInputEvent extends PRXInputEvent {
-    x: number;
-    y: number;
-}
+export type PRXInputCreator<
+    O extends object = EmptyObject,
+    T extends PRXEvent = PRXEvent,
+    IE extends PRXInput = PRXInput,
+> = (
+  input: MultiSubject<T>,
+  options?: O
+) => IE;
 
 export const isEventBySetUndef = <T>(set: Set<T> | undefined, value: T): boolean => {
     if (!set) return true;
     return set.has(value);
 }
 
-export function nativeInputBase<T extends PRXInputEvent, ET extends string, EN extends Event, A extends string = DefaultAction>(
+export const nativeInputBase = <T extends PRXEvent, ET extends string, EN extends Event, A extends string = DefaultAction>(
     input: MultiSubject<T>,
     target: EventTarget,
     events: readonly ET[],
     actionMap: Record<ET, A>,
     isEvent: (e: EN) => boolean,
     mapEvent: (e: EN, action: A) => T,
-) {
+) => {
     const subjects = multiableToArray(input);
 
     const listeners = events.map(type => {
@@ -48,6 +52,8 @@ export function nativeInputBase<T extends PRXInputEvent, ET extends string, EN e
     return { dispose };
 }
 
-export * from './keyboard/keyboard';
-export * from './mouse';
-export * from './pointer';
+export interface WithPositionInputEvent extends PRXEvent {
+    x: number;
+    y: number;
+}
+

@@ -1,17 +1,31 @@
-﻿import type {DefaultAction, PRXInputEvent} from "../events";
-import type { MultiSubject } from "../subject";
-import { multiableToArray } from "../utils";
+﻿import type { MultiSubject, PRXEvent, Disposable } from "~/types";
+import { multiableToArray, EmptyObject } from "~/utils";
+
+export interface PRXMiddleware extends Disposable {}
+
+export type InputMiddlewareCreator<
+    Opt extends object = EmptyObject,
+    I extends PRXEvent = PRXEvent,
+    O extends PRXEvent = PRXEvent,
+    IM extends PRXMiddleware = PRXMiddleware
+> = (
+  input: MultiSubject<I>,
+  output: MultiSubject<O>,
+  options?: Opt
+) => IM;
+
+
 
 export function middlewareBase<
-    I extends PRXInputEvent = PRXInputEvent,
-    O extends PRXInputEvent = PRXInputEvent,
+    I extends PRXEvent = PRXEvent,
+    O extends PRXEvent = PRXEvent,
     Opt extends object = {},
 >(
     input: MultiSubject<I>,
     output: MultiSubject<O>,
     processEvent: (event: I, options: Opt) => O | null,
     options: Opt = {} as Opt,
-) {
+): PRXMiddleware {
     const inputSubjects = multiableToArray(input);
     const outputSubjects = multiableToArray(output);
 
@@ -34,8 +48,3 @@ export function middlewareBase<
 
     return { dispose };
 }
-
-export * from './duration';
-export * from './repeat';
-export * from './counter';
-export * from './keycode-position';

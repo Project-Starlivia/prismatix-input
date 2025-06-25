@@ -1,4 +1,4 @@
-﻿import {InputMiddlewareCreator, PRXInputEvent} from "../events";
+﻿import {InputMiddlewareCreator, PRXEvent} from "../types";
 import {MultiSubject} from "../subject";
 import { middlewareBase } from "./index";
 
@@ -6,16 +6,16 @@ export interface RepeatInputOptions {
     maxInterval?: number;
 }
 
-export interface RepeatInputEvent extends PRXInputEvent {
+export interface RepeatInputEvent extends PRXEvent {
     repeatCount: number;
 }
 
 
 export const createRepeatMiddleware: InputMiddlewareCreator<
     RepeatInputOptions,
-    PRXInputEvent,
+    PRXEvent,
     RepeatInputEvent
-> = <T extends PRXInputEvent>(
+> = <T extends PRXEvent>(
     input: MultiSubject<T>,
     output: MultiSubject<RepeatInputEvent>,
     options?: RepeatInputOptions

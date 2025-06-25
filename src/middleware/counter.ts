@@ -1,17 +1,17 @@
-﻿import {InputMiddleware, InputMiddlewareCreator, PRXInputEvent} from "../events";
-import {MultiSubject} from "../subject";
-import { middlewareBase } from "./index";
+﻿import type { PRXEvent, MultiSubject } from "~/types";
 
-export type CounterInputOptions<T extends PRXInputEvent = PRXInputEvent> = {
+import { middlewareBase, InputMiddlewareCreator, PRXMiddleware } from ".";
+
+export type CounterInputOptions<T extends PRXEvent = PRXEvent> = {
     defaultCount?: number;
     counterHandler?: (event: T, counter: number) => number;
 }
 
-export interface CounterInputEvent extends PRXInputEvent {
+export interface CounterInputEvent extends PRXEvent {
     count: number;
 }
 
-export interface CounterMiddleware extends InputMiddleware {
+export interface CounterMiddleware extends PRXMiddleware {
     get: () => number;
     reset: () => void;
     set: (value: number) => void;
@@ -19,9 +19,9 @@ export interface CounterMiddleware extends InputMiddleware {
 
 export const createCounterMiddleware: InputMiddlewareCreator<
     CounterInputOptions,
-    PRXInputEvent,
+    PRXEvent,
     CounterInputEvent
-> = <T extends PRXInputEvent>(
+> = <T extends PRXEvent>(
     input: MultiSubject<T>,
     output: MultiSubject<CounterInputEvent>,
     options?: CounterInputOptions

@@ -1,11 +1,11 @@
 import mitt, { Emitter, EventType } from "mitt";
-import type { Subject } from "./subject";
-import type { PRXInputEvent } from "./events";
 
-export function createSubject<E extends Record<EventType, T>, T extends PRXInputEvent = E[keyof E]>(
+import type { PRXEvent, PRXSubject } from "./types";
+
+export function createSubject<E extends Record<EventType, T>, T extends PRXEvent = E[keyof E]>(
   emitter: Emitter<E>,
   key: keyof E
-): Subject<T> {
+): PRXSubject<E[typeof key]> {
     const subscribers: { cb: (v: E[keyof E]) => void }[] = [];
     const subscribe = (cb: (v: E[keyof E]) => void) => {
         const listener = { cb };
@@ -31,24 +31,5 @@ export function createSubject<E extends Record<EventType, T>, T extends PRXInput
         subscribers.length = 0;
     };
 
-    return { subscribe, next, dispose };
-}
-
-export function createAllSubjects<
-    E extends Record<EventType, T>,
-    T extends PRXInputEvent = E[keyof E]
->(
-    emitter?: Emitter<E>,
-): { [K in keyof E]: Subject<E[K]> } & { emitter: Emitter<E> } {
-    if(!emitter) emitter = mitt<E>();
-
-    const subjects = {} as { [K in keyof E]: Subject<E[K]> };
-
-    const keys = Object.keys(emitter) as (keyof E)[];
-
-    for (const key of keys) {
-        subjects[key] = createSubject<E, T>(emitter, key) as Subject<E[typeof key]>;
-    }
-
-    return { ...subjects, emitter };
+    return { subscribe, next, dispose } as PRXSubject<E[typeof key]>;
 }

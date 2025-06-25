@@ -1,9 +1,7 @@
-import type { DefaultAction, InputEmitterCreator, PRXInputEvent } from "../events";
-import type { MultiSubject } from "../subject";
-import { multiableToArray } from "../utils";
-import type { Multiable } from "../utils";
-import { isEventBySetUndef, nativeInputBase } from ".";
-import type { WithPositionInputEvent } from "./index";
+import type { DefaultAction, PRXEvent, MultiSubject } from "~/types";
+import { multiableToArray, type Multiable } from "~/utils"
+
+import { isEventBySetUndef, nativeInputBase, WithPositionInputEvent, PRXInputCreator } from ".";
 
 export type PointerButtonEvent = 'pointerdown' | 'pointerup';
 export type PointerMoveEvent = 'pointermove';
@@ -31,7 +29,7 @@ const inputTypeAction: Record<PointerNativeEvent, DefaultAction> = {
     'pointercancel': 'end',
 };
 
-export function pointerInputBase<T extends PRXInputEvent>(
+export function pointerInputBase<T extends PRXEvent>(
     input: MultiSubject<T>,
     mapEvent: (e: PointerEvent, action: DefaultAction) => T,
     options?: PointerInputOptions,
@@ -62,22 +60,22 @@ export function pointerInputBase<T extends PRXInputEvent>(
 }
 
 export const createPointerInput = (
-    input: MultiSubject<PRXInputEvent>,
+    input: MultiSubject<PRXEvent>,
     options?: PointerInputOptions
 ) => {
-    return pointerInputBase<PRXInputEvent>(
+    return pointerInputBase<PRXEvent>(
         input,
         (e: PointerEvent, action: DefaultAction) => ({
             key: e.pointerType,
             action,
             time: e.timeStamp,
-        } as PRXInputEvent),
+        } as PRXEvent),
         options
     );
 }
 
 export const createPointerInputWithPosition
-: InputEmitterCreator<PointerInputOptions, WithPositionInputEvent>
+: PRXInputCreator<PointerInputOptions, WithPositionInputEvent>
 = (
     input: MultiSubject<WithPositionInputEvent>,
     options?: PointerInputOptions

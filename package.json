@@ -9,7 +9,8 @@
   "scripts": {
     "dev": "vite",
     "build": "rimraf dist && tsc && bun run generate-exports.ts",
-    "test": "bun test"
+    "test": "bun test",
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@types/bun": "^1.2.14",
@@ -30,6 +31,42 @@
       "import": "./dist/events.js",
       "types": "./dist/events.d.ts"
     },
+    "./input": {
+      "import": "./dist/input/index.js",
+      "types": "./dist/input/index.d.ts"
+    },
+    "./input/keyboard": {
+      "import": "./dist/input/keyboard.js",
+      "types": "./dist/input/keyboard.d.ts"
+    },
+    "./input/mouse": {
+      "import": "./dist/input/mouse.js",
+      "types": "./dist/input/mouse.d.ts"
+    },
+    "./input/pointer": {
+      "import": "./dist/input/pointer.js",
+      "types": "./dist/input/pointer.d.ts"
+    },
+    "./key-map/key-mappings": {
+      "import": "./dist/key-map/key-mappings.js",
+      "types": "./dist/key-map/key-mappings.d.ts"
+    },
+    "./key-map/keycode-original": {
+      "import": "./dist/key-map/keycode-original.js",
+      "types": "./dist/key-map/keycode-original.d.ts"
+    },
+    "./key-map/position-mappings": {
+      "import": "./dist/key-map/position-mappings.js",
+      "types": "./dist/key-map/position-mappings.d.ts"
+    },
+    "./key-map/types": {
+      "import": "./dist/key-map/types.js",
+      "types": "./dist/key-map/types.d.ts"
+    },
+    "./key-map/usage-names": {
+      "import": "./dist/key-map/usage-names.js",
+      "types": "./dist/key-map/usage-names.d.ts"
+    },
     "./middleware/counter": {
       "import": "./dist/middleware/counter.js",
       "types": "./dist/middleware/counter.d.ts"
@@ -38,13 +75,13 @@
       "import": "./dist/middleware/duration.js",
       "types": "./dist/middleware/duration.d.ts"
     },
-    "./middleware/keycode-position": {
-      "import": "./dist/middleware/keycode-position.js",
-      "types": "./dist/middleware/keycode-position.d.ts"
-    },
     "./middleware": {
       "import": "./dist/middleware/index.js",
       "types": "./dist/middleware/index.d.ts"
+    },
+    "./middleware/keycode-position": {
+      "import": "./dist/middleware/keycode-position.js",
+      "types": "./dist/middleware/keycode-position.d.ts"
     },
     "./middleware/repeat": {
       "import": "./dist/middleware/repeat.js",
@@ -61,50 +98,6 @@
     "./utils": {
       "import": "./dist/utils.js",
       "types": "./dist/utils.d.ts"
-    },
-    "./web-native": {
-      "import": "./dist/web-native/index.js",
-      "types": "./dist/web-native/index.d.ts"
-    },
-    "./web-native/keyboard": {
-      "import": "./dist/web-native/keyboard/index.js",
-      "types": "./dist/web-native/keyboard/index.d.ts"
-    },
-    "./web-native/keyboard/key-mappings": {
-      "import": "./dist/web-native/keyboard/key-mappings.js",
-      "types": "./dist/web-native/keyboard/key-mappings.d.ts"
-    },
-    "./web-native/keyboard/keycode-backup": {
-      "import": "./dist/web-native/keyboard/keycode-backup.js",
-      "types": "./dist/web-native/keyboard/keycode-backup.d.ts"
-    },
-    "./web-native/keyboard/keycode-original": {
-      "import": "./dist/web-native/keyboard/keycode-original.js",
-      "types": "./dist/web-native/keyboard/keycode-original.d.ts"
-    },
-    "./web-native/keyboard/keycode": {
-      "import": "./dist/web-native/keyboard/keycode.js",
-      "types": "./dist/web-native/keyboard/keycode.d.ts"
-    },
-    "./web-native/keyboard/position-mappings": {
-      "import": "./dist/web-native/keyboard/position-mappings.js",
-      "types": "./dist/web-native/keyboard/position-mappings.d.ts"
-    },
-    "./web-native/keyboard/types": {
-      "import": "./dist/web-native/keyboard/types.js",
-      "types": "./dist/web-native/keyboard/types.d.ts"
-    },
-    "./web-native/keyboard/usage-names": {
-      "import": "./dist/web-native/keyboard/usage-names.js",
-      "types": "./dist/web-native/keyboard/usage-names.d.ts"
-    },
-    "./web-native/mouse": {
-      "import": "./dist/web-native/mouse.js",
-      "types": "./dist/web-native/mouse.d.ts"
-    },
-    "./web-native/pointer": {
-      "import": "./dist/web-native/pointer.js",
-      "types": "./dist/web-native/pointer.d.ts"
     }
   }
 }

@@ -1,8 +1,7 @@
-import type {DefaultAction, InputEmitter, InputEmitterCreator, PRXInputEvent} from "../events";
-import type { MultiSubject } from "../subject";
-import type { Multiable } from "../utils";
-import { multiableToArray } from "../utils";
-import { isEventBySetUndef } from "./";
+import type {DefaultAction, PRXEvent, MultiSubject} from "~/types";
+import { multiableToArray, type Multiable } from "~/utils";
+
+import { isEventBySetUndef, PRXInput, PRXInputCreator } from ".";
 
 type KeyboardNativeEvent = "keydown" | "keyup";
 type KeyboardExtensionEvent = "keydown-norepeat" | "keydown-repeat";
@@ -15,14 +14,14 @@ export interface KeyboardInputOptions {
     events?: Multiable<KeyboardEventType>
 }
 
-export interface KeyboardInputEvent extends PRXInputEvent {
+export interface KeyboardInputEvent extends PRXEvent {
     code: string;
 }
 
-export const createKeyboardInput: InputEmitterCreator<KeyboardInputOptions, KeyboardInputEvent> = (
+export const createKeyboardInput: PRXInputCreator<KeyboardInputOptions, KeyboardInputEvent> = (
     input: MultiSubject<KeyboardInputEvent>,
     options?: KeyboardInputOptions
-): InputEmitter => {
+): PRXInput => {
     const subjects = multiableToArray(input);
     const { target, code, key, events } = options || {};
     const eventTarget = target || document;
