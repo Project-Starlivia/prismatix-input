@@ -1,6 +1,6 @@
-﻿import {InputMiddlewareCreator, PRXEvent} from "../types";
-import {MultiSubject} from "../subject";
-import { middlewareBase } from "./index";
+﻿import type { PRXEvent, MultiSubject } from "~/types";
+
+import { middlewareBase, InputMiddlewareCreator } from ".";
 
 export interface RepeatInputOptions {
     maxInterval?: number;

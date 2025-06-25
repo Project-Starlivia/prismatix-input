@@ -1,6 +1,6 @@
 {
   "name": "prismatix-input",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "license": "MIT",
   "type": "module",
   "files": [
@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "dev": "vite",
-    "build": "rimraf dist && tsc && bun run generate-exports.ts",
+    "build": "rimraf dist && tsc --project tsconfig.build.json && bun run generate-exports.ts",
     "test": "bun test",
     "typecheck": "tsc --noEmit"
   },
@@ -27,10 +27,6 @@
     "mitt": "^3.0.1"
   },
   "exports": {
-    "./events": {
-      "import": "./dist/events.js",
-      "types": "./dist/events.d.ts"
-    },
     "./input": {
       "import": "./dist/input/index.js",
       "types": "./dist/input/index.d.ts"
@@ -91,9 +87,9 @@
       "import": "./dist/mitt.js",
       "types": "./dist/mitt.d.ts"
     },
-    "./subject": {
-      "import": "./dist/subject.js",
-      "types": "./dist/subject.d.ts"
+    "./types": {
+      "import": "./dist/types.js",
+      "types": "./dist/types.d.ts"
     },
     "./utils": {
       "import": "./dist/utils.js",

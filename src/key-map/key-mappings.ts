@@ -6,6 +6,9 @@ import type { UsageID, KeyCodeMap } from './types';
  * This is the primary mapping used for keyboard input processing
  */
 export const KeyCodeToUsageIdMap: KeyCodeMap = {
+  // Special/Error keys
+  "Unidentified": "07_03",
+
   // Letters
   "KeyA": "07_04",
   "KeyB": "07_05", 
@@ -46,6 +49,13 @@ export const KeyCodeToUsageIdMap: KeyCodeMap = {
   "Digit9": "07_26",
   "Digit0": "07_27",
 
+  // Control keys
+  "Enter": "07_28",
+  "Escape": "07_29",
+  "Backspace": "07_2A",
+  "Tab": "07_2B",
+  "Space": "07_2C",
+
   // Special characters and punctuation
   "Minus": "07_2D",
   "Equal": "07_2E",
@@ -58,13 +68,6 @@ export const KeyCodeToUsageIdMap: KeyCodeMap = {
   "Comma": "07_36",
   "Period": "07_37",
   "Slash": "07_38",
-
-  // Control keys
-  "Enter": "07_28",
-  "Escape": "07_29",
-  "Backspace": "07_2A",
-  "Tab": "07_2B",
-  "Space": "07_2C",
   "CapsLock": "07_39",
 
   // Function keys
@@ -80,7 +83,6 @@ export const KeyCodeToUsageIdMap: KeyCodeMap = {
   "F10": "07_43",
   "F11": "07_44",
   "F12": "07_45",
-  "F13": "07_68",
 
   // Navigation keys
   "PrintScreen": "07_46",
@@ -98,9 +100,9 @@ export const KeyCodeToUsageIdMap: KeyCodeMap = {
   "ArrowUp": "07_52",
 
   // Numpad keys
-  "NumLock": "07_53",
+  "NumpadMultiply": "07_53",
   "NumpadDivide": "07_54",
-  "NumpadMultiply": "07_55",
+  "NumpadDecimal": "07_55",
   "NumpadSubtract": "07_56",
   "NumpadAdd": "07_57",
   "NumpadEnter": "07_58",
@@ -114,8 +116,8 @@ export const KeyCodeToUsageIdMap: KeyCodeMap = {
   "Numpad8": "07_60",
   "Numpad9": "07_61",
   "Numpad0": "07_62",
-  "NumpadDecimal": "07_63",
   "NumpadEqual": "07_67",
+  "F13": "07_68",
 
   // Modifier keys
   "ControlLeft": "07_E0",
@@ -128,12 +130,9 @@ export const KeyCodeToUsageIdMap: KeyCodeMap = {
   "MetaRight": "07_E7",
 
   // International and special keys
-  "IntlBackslash": "07_64",
-  "ContextMenu": "07_65",
-  "Power": "07_66",
   "IntlRo": "07_87",
   "KanaMode": "07_88",
-  "IntlYen": "07_89",
+  "IntlBackslash": "07_89",
   "Convert": "07_8A",
   "NonConvert": "07_8B",
   "Lang1": "07_90",
@@ -161,7 +160,7 @@ export function getUsageIdFromKeyCode(keyCode: string): UsageID | undefined {
   if (keyCodeCache.has(keyCode)) {
     return keyCodeCache.get(keyCode);
   }
-  
+
   const usageId = KeyCodeToUsageIdMap[keyCode];
   if (usageId) {
     keyCodeCache.set(keyCode, usageId);
@@ -176,7 +175,7 @@ export function getKeyCodeFromUsageId(usageId: UsageID): string | undefined {
   if (usageIdCache.has(usageId)) {
     return usageIdCache.get(usageId);
   }
-  
+
   const keyCode = UsageIdToKeyCodeMap[usageId];
   if (keyCode) {
     usageIdCache.set(usageId, keyCode);
