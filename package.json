@@ -1,6 +1,6 @@
 {
   "name": "prismatix-input",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "license": "MIT",
   "type": "module",
   "files": [
@@ -8,16 +8,17 @@
   ],
   "scripts": {
     "dev": "vite",
-    "build": "rimraf dist && tsc --project tsconfig.build.json && bun run generate-exports.ts",
+    "build": "rimraf dist && tsc --project tsconfig.build.json && tsc-alias -p tsconfig.build.json && bun run generate-exports.ts",
     "test": "bun test",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
+    "@tailwindcss/vite": "^4.1.10",
     "@types/bun": "^1.2.14",
     "biome": "^0.3.3",
     "rimraf": "^6.0.1",
     "tailwind": "^4.0.0",
-    "@tailwindcss/vite": "^4.1.10",
+    "tsc-alias": "^1.8.16",
     "vite": "^6.3.5"
   },
   "peerDependencies": {
