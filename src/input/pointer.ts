@@ -86,8 +86,8 @@ export const createPointerInputWithPosition
             key: e.pointerType,
             action,
             time: e.timeStamp,
-            x: e.clientX,
-            y: e.clientY,
+            x: e.offsetX,
+            y: e.offsetY,
         } as WithPositionInputEvent),
         options
     );

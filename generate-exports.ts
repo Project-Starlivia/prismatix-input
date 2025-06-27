@@ -1,9 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-const srcDir = 'dist';
-const files = fs.readdirSync(srcDir, { withFileTypes: true });
-
 const exportsField = {} as Record<string, { import: string, types: string }>;
 
 function scan(dir: string, prefix = '') {

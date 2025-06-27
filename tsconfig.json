@@ -1,10 +1,15 @@
 {
   "compilerOptions": {
-    "outDir": "dist",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "rootDir": "./src",
     "declaration": true,
+    "esModuleInterop": true,
+    "strict": true,
+    "outDir": "dist",
     "baseUrl": ".",
     "paths": {
-      "~/*": ["src/*"]
+      "~/*": ["./src/*"]
     }
   },
   "include": ["src", "test"]
