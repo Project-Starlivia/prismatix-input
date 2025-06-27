@@ -1,6 +1,6 @@
 {
   "name": "prismatix-input",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "license": "MIT",
   "type": "module",
   "files": [
@@ -84,9 +84,9 @@
       "import": "./dist/middleware/repeat.js",
       "types": "./dist/middleware/repeat.d.ts"
     },
-    "./mitt": {
-      "import": "./dist/mitt.js",
-      "types": "./dist/mitt.d.ts"
+    "./mitt-ex": {
+      "import": "./dist/mitt-ex.js",
+      "types": "./dist/mitt-ex.d.ts"
     },
     "./types": {
       "import": "./dist/types.js",

@@ -1,6 +1,6 @@
 ﻿import {defineConfig} from "vite";
-import tailwind from "@tailwindcss/vite";
-import path from "node:path";
+import tailwindcss from "@tailwindcss/vite";
+import * as path from "node:path";
 
 export default defineConfig({
     resolve: {
@@ -9,6 +9,6 @@ export default defineConfig({
         }
     },
     plugins: [
-        tailwind(),
+        tailwindcss(),
     ],
 });

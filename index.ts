@@ -1,14 +1,9 @@
-import {createKeyboardInput, createPointerInputWithPosition} from "./src/web-native";
-import type { KeyboardInputOptions, KeyboardInputEvent } from "./src/web-native";
-import {createSubject} from "./src/mitt";
-import type { WithPositionInputEvent } from "./src/web-native";
-import {createRepeatMiddleware, createStartToEndDurationMiddleware} from "./src/middleware";
-import type {
-    DurationInputEvent,
-    RepeatInputEvent
-} from "./src/middleware";
-import mitt from "mitt";
-import type { PRXSubject } from "./src/subject";
+import mitt, { Emitter } from "mitt";
+import {WithPositionInputEvent} from "~/input";
+import { KeyboardInputEvent } from "~/input/keyboard";
+import {DurationInputEvent} from "~/middleware/duration";
+import {createSubject} from "~/mitt";
+
 
 type Events = {
   mouse: WithPositionInputEvent;

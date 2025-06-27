@@ -3,7 +3,7 @@ import type {WithPositionInputEvent} from "~/input";
 import {createKeyboardInput, KeyboardInputEvent} from "~/input/keyboard";
 import {DurationInputEvent} from "~/middleware/duration";
 import {createKeycodePositionMiddleware} from "~/middleware/keycode-position";
-import { createSubject } from "~/mitt";
+import { createSubject } from "~/mitt-ex";
 import { PRXSubject } from "~/types";
 
 type Events = {

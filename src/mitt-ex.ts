@@ -1,4 +1,4 @@
-import mitt, { Emitter, EventType } from "mitt";
+import { Emitter, EventType } from "mitt";
 
 import type { PRXEvent, PRXSubject } from "./types";
 
