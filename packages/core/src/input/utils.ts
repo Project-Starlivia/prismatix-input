@@ -8,8 +8,8 @@ export const isEventBySetUndef = <T>(set: Set<T> | undefined, value: T): boolean
 }
 
 export class NativeInputBase<T extends PRXEvent, ET extends string, EN extends Event, A extends string = DefaultAction> implements PRXInput {
-    private subjects: PRXSubject<T>[];
-    private listeners: (() => void)[];
+    private readonly subjects: PRXSubject<T>[];
+    private readonly listeners: (() => void)[];
 
     constructor(
         input: MultiSubject<T>,

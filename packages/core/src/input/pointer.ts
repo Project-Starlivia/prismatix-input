@@ -13,10 +13,12 @@ type PointerNativeEvent = PointerButtonEvent | PointerMoveEvent | PointerWrapEve
 export interface PointerInputOptions {
     target?: EventTarget;
     events?: Multiable<PointerNativeEvent>;
-    pointerType?: Multiable<string>;
-    pointerId?: Multiable<number>;
-    button?: Multiable<number>;
-    buttons?: Multiable<number>;
+    filters?: {
+        pointerType?: Multiable<string>;
+        pointerId?: Multiable<number>;
+        button?: Multiable<number>;
+        buttons?: Multiable<number>;
+    }
 }
 
 const inputTypeAction: Record<PointerNativeEvent, DefaultAction> = {
@@ -36,7 +38,8 @@ export class PointerInputBase<T extends PRXEvent> extends NativeInputBase<T, Poi
         mapEvent: (e: PointerEvent, action: DefaultAction) => T,
         options?: PointerInputOptions,
     ) {
-        const { target, events, button, buttons, pointerType, pointerId } = options || {};
+        const { target, events, filters } = options || {};
+        const { pointerType, pointerId, button, buttons } = filters || {};
         const _target = target || document;
         const _events = events ? 
             multiableToArray(events) : 

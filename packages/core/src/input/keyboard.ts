@@ -1,8 +1,8 @@
-import {UtilKeyCodeToUsageIdMap} from "../key-map/code-usage";
-import {UtilUsageIdToPositionMap} from "../key-map/usage-position";
-import type { PositionMap, KeyCodeMap } from "../key-map/types";
-import type {DefaultAction, PRXEvent, MultiSubject, PRXSubject} from "../types";
-import { multiableToArray, type Multiable } from "../utils";
+import {UtilKeyCodeToUsageIdMap} from "~/key-map/code-usage";
+import {UtilUsageIdToPositionMap} from "~/key-map/usage-position";
+import type { PositionMap, KeyCodeMap } from "~/key-map/types";
+import type {DefaultAction, PRXEvent, MultiSubject, PRXSubject} from "~/types";
+import { multiableToArray, type Multiable } from "~/utils";
 
 import { isEventBySetUndef } from "./utils";
 import type {InputEventPosition, PRXInput} from "./types";
@@ -13,9 +13,11 @@ type KeyboardEventType = KeyboardNativeEvent | KeyboardExtensionEvent;
 
 export interface KeyboardInputOptions {
     target?: EventTarget
-    key?: Multiable<string>
-    code?: Multiable<string>
     events?: Multiable<KeyboardEventType>
+    filters?: {
+        key?: Multiable<string>
+        code?: Multiable<string>
+    }
 }
 
 export interface KeyboardInputEvent extends PRXEvent {
@@ -36,7 +38,8 @@ export abstract class KeyboardInputBase<T extends PRXEvent> implements PRXInput 
         options?: KeyboardInputOptions
     ) {
         this.subjects = multiableToArray(input) as PRXSubject<T>[];
-        const { target, code, key, events } = options || {};
+        const { target, events, filters} = options || {};
+        const { key, code } = filters || {};
         this.eventTarget = target || document;
         this.keySet = key ? new Set(multiableToArray(key)) : undefined;
         this.codeSet = code ? new Set(multiableToArray(code)) : undefined;
@@ -161,9 +164,11 @@ export class KeyboardInputFull extends KeyboardInputBase<InputEventKeyboardFull>
 }
 
 export interface KeyboardInputWithKeyMapOptions extends KeyboardInputOptions {
-    keyCodeMap?: KeyCodeMap,
-    positionMap?: PositionMap,
-    defaultPosition?: number
+    keyMap?: {
+        keyCodeMap?: KeyCodeMap,
+        positionMap?: PositionMap,
+        defaultPosition?: number
+    }
 }
 
 export class KeyboardInputWithKeyMap extends KeyboardInputBase<InputEventPosition> {
@@ -200,8 +205,9 @@ export class KeyboardInputWithKeyMap extends KeyboardInputBase<InputEventPositio
         );
 
         // Use constructor parameters first, then fall back to options, then defaults
-        this.keyCodeMap = options?.keyCodeMap || UtilKeyCodeToUsageIdMap;
-        this.positionMap = options?.positionMap || UtilUsageIdToPositionMap;
-        this.defaultPosition = options?.defaultPosition ?? NaN;
+        const { keyCodeMap, positionMap, defaultPosition } = options?.keyMap || {};
+        this.keyCodeMap = keyCodeMap || UtilKeyCodeToUsageIdMap;
+        this.positionMap = positionMap || UtilUsageIdToPositionMap;
+        this.defaultPosition = defaultPosition || NaN;
     }
 }
