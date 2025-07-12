@@ -1,8 +1,8 @@
-import type { DefaultAction, PRXEvent, MultiSubject } from "~/types";
-import { multiableToArray, Multiable } from "~/utils";
+import type { DefaultAction, PRXEvent, MultiSubject } from "../types";
+import { multiableToArray, Multiable } from "../utils";
 
 import { isEventBySetUndef, NativeInputBase } from "./utils";
-import type { InputEventPosition, PRXInput } from "~/input/types";
+import type { InputEventPosition, PRXInput } from "./types";
 
 export type ClickEvent = "click" | "dblclick" | "contextmenu";
 export type ButtonEvent = "mousedown" | "mouseup";

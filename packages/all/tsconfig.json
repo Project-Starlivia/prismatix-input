@@ -1,0 +1,23 @@
+﻿{
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "rootDir": "./src",
+    "declaration": true,
+    "esModuleInterop": true,
+    "strict": true,
+    "outDir": "dist",
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./src/*"],
+      "@prismatix-input/core": ["../core/dist/index.d.ts"],
+      "@prismatix-input/core/*": ["../core/dist/*"],
+      "@prismatix-input/mitt": ["../mitt/dist/index.d.ts"],
+      "@prismatix-input/mitt/*": ["../mitt/dist/*"],
+      "@prismatix-input/rxjs": ["../rxjs/dist/index.d.ts"],
+      "@prismatix-input/rxjs/*": ["../rxjs/dist/*"]
+    }
+  },
+  "include": ["src"],
+  "exclude": ["test"]
+}

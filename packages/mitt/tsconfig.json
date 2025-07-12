@@ -1,0 +1,19 @@
+﻿{
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "rootDir": "./src",
+    "declaration": true,
+    "esModuleInterop": true,
+    "strict": true,
+    "outDir": "dist",
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./src/*"],
+      "@prismatix-input/core": ["../core/dist/index.d.ts"],
+      "@prismatix-input/core/*": ["../core/dist/*"]
+    }
+  },
+  "include": ["src"],
+  "exclude": ["test"]
+}

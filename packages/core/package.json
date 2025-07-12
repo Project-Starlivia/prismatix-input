@@ -1,0 +1,74 @@
+{
+  "name": "@prismatix-input/core",
+  "version": "0.2.0",
+  "license": "MIT",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "rimraf dist && tsc && bun run ../../generate-exports.ts",
+    "test": "bun test",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "rimraf": "^6.0.1",
+    "tsc-alias": "^1.8.16"
+  },
+  "peerDependencies": {
+    "typescript": "^5.8.3"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./input": {
+      "import": "./dist/input/index.js",
+      "types": "./dist/input/index.d.ts"
+    },
+    "./input/keyboard": {
+      "import": "./dist/input/keyboard.js",
+      "types": "./dist/input/keyboard.d.ts"
+    },
+    "./input/mouse": {
+      "import": "./dist/input/mouse.js",
+      "types": "./dist/input/mouse.d.ts"
+    },
+    "./input/pointer": {
+      "import": "./dist/input/pointer.js",
+      "types": "./dist/input/pointer.d.ts"
+    },
+    "./input/types": {
+      "import": "./dist/input/types.js",
+      "types": "./dist/input/types.d.ts"
+    },
+    "./key-map/code-usage": {
+      "import": "./dist/key-map/code-usage.js",
+      "types": "./dist/key-map/code-usage.d.ts"
+    },
+    "./key-map": {
+      "import": "./dist/key-map/index.js",
+      "types": "./dist/key-map/index.d.ts"
+    },
+    "./key-map/types": {
+      "import": "./dist/key-map/types.js",
+      "types": "./dist/key-map/types.d.ts"
+    },
+    "./key-map/usage-names": {
+      "import": "./dist/key-map/usage-names.js",
+      "types": "./dist/key-map/usage-names.d.ts"
+    },
+    "./key-map/usage-position": {
+      "import": "./dist/key-map/usage-position.js",
+      "types": "./dist/key-map/usage-position.d.ts"
+    },
+    "./types": {
+      "import": "./dist/types.js",
+      "types": "./dist/types.d.ts"
+    }
+  }
+}

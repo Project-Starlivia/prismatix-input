@@ -1,5 +1,5 @@
-import type { DefaultAction, PRXEvent, MultiSubject } from "~/types";
-import { multiableToArray, type Multiable } from "~/utils"
+import type { DefaultAction, PRXEvent, MultiSubject } from "../types";
+import { multiableToArray, type Multiable } from "../utils"
 
 import { isEventBySetUndef, NativeInputBase } from "./utils";
 import type { InputEventPosition, PRXInput } from "./types";

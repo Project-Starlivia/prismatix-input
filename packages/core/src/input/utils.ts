@@ -1,6 +1,6 @@
-import type {DefaultAction, PRXEvent, MultiSubject, PRXSubject} from "~/types";
-import { multiableToArray } from "~/utils";
-import type { PRXInput } from "~/input/types";
+import type {DefaultAction, PRXEvent, MultiSubject, PRXSubject} from "../types";
+import { multiableToArray } from "../utils";
+import type { PRXInput } from "./types";
 
 export const isEventBySetUndef = <T>(set: Set<T> | undefined, value: T): boolean => {
     if (!set) return true;

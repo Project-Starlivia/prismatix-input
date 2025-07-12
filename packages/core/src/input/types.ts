@@ -1,5 +1,4 @@
-﻿import {EmptyObject} from "~/utils";
-import type {PRXDisposable, PRXEvent, MultiSubject} from "~/types";
+﻿import type {PRXDisposable, PRXEvent} from "../types";
 
 export interface PRXInput extends PRXDisposable {}
 

@@ -1,7 +1,25 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
+// 除外するファイルパスの配列
+const excludePaths = [
+    'utils.js',
+    'input/utils.js'
+];
+
 const exportsField = {} as Record<string, { import: string, types: string }>;
+
+function isExcluded(relativePath: string): boolean {
+  return excludePaths.some(excludePath => {
+    // 正規化されたパスで比較
+    const normalizedPath = relativePath.replace(/\\/g, '/');
+    const normalizedExcludePath = excludePath.replace(/\\/g, '/');
+
+    // 完全一致または、除外パスがディレクトリの場合はその配下もチェック
+    return normalizedPath === normalizedExcludePath || 
+           normalizedPath.startsWith(normalizedExcludePath + '/');
+  });
+}
 
 function scan(dir: string, prefix = '') {
   const entries = fs.readdirSync(dir, { withFileTypes: true });
@@ -9,6 +27,12 @@ function scan(dir: string, prefix = '') {
     const name = entry.name;
     const fullPath = path.join(dir, name);
     const subPath = path.join(prefix, name);
+
+    // 除外チェック
+    if (isExcluded(subPath)) {
+      continue;
+    }
+
     if (entry.isDirectory()) {
       scan(fullPath, subPath);
     } else if (name.endsWith('.js')) {
@@ -24,6 +48,7 @@ function scan(dir: string, prefix = '') {
 }
 scan('dist');
 
-const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+const pkgContent = fs.readFileSync('package.json', 'utf8').replace(/^\uFEFF/, ''); // Remove BOM
+const pkg = JSON.parse(pkgContent);
 pkg.exports = exportsField;
 fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2));

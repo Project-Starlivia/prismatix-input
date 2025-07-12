@@ -1,6 +1,4 @@
-﻿import { NameMap } from "~/key-map/types";
-
-export const UsageName: NameMap = {
+export var UsageName = {
     // Generic Desktop Page (0x01)
     "01_00": "Undefined",
     "01_01": "Pointer",
@@ -258,7 +256,6 @@ export const UsageName: NameMap = {
     "01_FD": "Reserved",
     "01_FE": "Reserved",
     "01_FF": "Reserved",
-
     // Simulation Controls Page (0x02)
     "02_00": "Undefined",
     "02_01": "Flight Simulation Device",
@@ -324,7 +321,6 @@ export const UsageName: NameMap = {
     "02_3D": "Reserved",
     "02_3E": "Reserved",
     "02_3F": "Reserved",
-
     // VR Controls Page (0x03)
     "03_00": "Undefined",
     "03_01": "Belt",
@@ -390,7 +386,6 @@ export const UsageName: NameMap = {
     "03_3D": "Reserved",
     "03_3E": "Reserved",
     "03_3F": "Reserved",
-
     // Sport Controls Page (0x04)
     "04_00": "Undefined",
     "04_01": "Baseball Bat",
@@ -488,7 +483,6 @@ export const UsageName: NameMap = {
     "04_5D": "Reserved",
     "04_5E": "Reserved",
     "04_5F": "Reserved",
-
     // Game Controls Page (0x05)
     "05_00": "Undefined",
     "05_01": "3D Game Controller",
@@ -554,7 +548,6 @@ export const UsageName: NameMap = {
     "05_3D": "Reserved",
     "05_3E": "Reserved",
     "05_3F": "Reserved",
-
     // Generic Device Controls Page (0x06)
     "06_00": "Undefined",
     "06_01": "Background Controls",
@@ -625,7 +618,6 @@ export const UsageName: NameMap = {
     "06_42": "Reserved",
     "06_43": "Reserved",
     "06_44": "Reserved",
-
     // Keyboard/Keypad Page (0x07)
     "07_00": "Keyboard No event indicated",
     "07_01": "Keyboard ErrorRollOver",
@@ -860,7 +852,6 @@ export const UsageName: NameMap = {
     "07_E6": "Keyboard RightAlt",
     "07_E7": "Keyboard Right GUI",
     "07_E8": "Reserved",
-
     // LED Page (0x08)
     "08_00": "Undefined",
     "08_01": "Num Lock",
@@ -958,7 +949,6 @@ export const UsageName: NameMap = {
     "08_5D": "Reserved",
     "08_5E": "Reserved",
     "08_5F": "Reserved",
-
     // Button Page (0x09)
     "09_00": "No Button Pressed",
     "09_01": "Button 1 (primary/trigger)",
@@ -1216,7 +1206,6 @@ export const UsageName: NameMap = {
     "09_FD": "Button 253",
     "09_FE": "Button 254",
     "09_FF": "Button 255",
-
     // Ordinal Page (0x0A)
     "0A_00": "Undefined",
     "0A_01": "Instance 1",
@@ -1474,7 +1463,6 @@ export const UsageName: NameMap = {
     "0A_FD": "Instance 253",
     "0A_FE": "Instance 254",
     "0A_FF": "Instance 255",
-
     // Telephony Device Page (0x0B)
     "0B_00": "Undefined",
     "0B_01": "Phone",
@@ -1636,7 +1624,6 @@ export const UsageName: NameMap = {
     "0B_9D": "Phone Control Host Caller ID",
     "0B_9E": "Phone Control Host Do Not Disturb",
     "0B_9F": "Reserved",
-
     // Consumer Page (0x0C)
     "0C_00": "Unassigned",
     "0C_01": "Consumer Control",
@@ -1894,7 +1881,6 @@ export const UsageName: NameMap = {
     "0C_FD": "Medical Alarm",
     "0C_FE": "Reserved",
     "0C_FF": "Reserved",
-
     // Digitizer Page (0x0D)
     "0D_00": "Undefined",
     "0D_01": "Digitizer",
@@ -1992,7 +1978,6 @@ export const UsageName: NameMap = {
     "0D_5D": "Preferred Color is Locked",
     "0D_5E": "Preferred Line Width",
     "0D_5F": "Preferred Line Width is Locked",
-
     // Haptics Page (0x0E)
     "0E_00": "Undefined",
     "0E_01": "Simple Haptic Controller",
@@ -2042,7 +2027,6 @@ export const UsageName: NameMap = {
     "0E_2D": "Reserved",
     "0E_2E": "Reserved",
     "0E_2F": "Reserved",
-
     // Physical Interface Device Page (0x0F)
     "0F_00": "Undefined",
     "0F_01": "Physical Interface Device",
@@ -2140,7 +2124,6 @@ export const UsageName: NameMap = {
     "0F_5D": "DC Device Pause",
     "0F_5E": "DC Device Continue",
     "0F_5F": "Device Paused",
-
     // Unicode Page (0x10)
     "10_00": "Unicode Char 0",
     "10_01": "Unicode Char 1",
@@ -2174,7 +2157,6 @@ export const UsageName: NameMap = {
     "10_1D": "Unicode Char 29",
     "10_1E": "Unicode Char 30",
     "10_1F": "Unicode Char 31",
-
     // Eye and Head Trackers Page (0x12)
     "12_00": "Undefined",
     "12_01": "Eye Tracker",
@@ -2240,7 +2222,6 @@ export const UsageName: NameMap = {
     "12_3D": "Reserved",
     "12_3E": "Reserved",
     "12_3F": "Reserved",
-
     // Auxiliary Display Page (0x14)
     "14_00": "Undefined",
     "14_01": "Alphanumeric Display",
@@ -2434,7 +2415,6 @@ export const UsageName: NameMap = {
     "14_BD": "Reserved",
     "14_BE": "Reserved",
     "14_BF": "Reserved",
-
     // Sensor Page (0x20)
     "20_00": "Undefined",
     "20_01": "Sensor",
@@ -2692,7 +2672,6 @@ export const UsageName: NameMap = {
     "20_FD": "Reserved",
     "20_FE": "Reserved",
     "20_FF": "Reserved",
-
     // Medical Instrument Page (0x40)
     "40_00": "Undefined",
     "40_01": "Medical Ultrasound",
@@ -2950,7 +2929,6 @@ export const UsageName: NameMap = {
     "40_FD": "Reserved",
     "40_FE": "Reserved",
     "40_FF": "Reserved",
-
     // Braille Display Page (0x41)
     "41_00": "Undefined",
     "41_01": "Braille Display",
@@ -3208,7 +3186,6 @@ export const UsageName: NameMap = {
     "41_FD": "Reserved",
     "41_FE": "Reserved",
     "41_FF": "Reserved",
-
     // Lighting And Illumination Page (0x59)
     "59_00": "Undefined",
     "59_01": "LampArray",
@@ -3338,7 +3315,6 @@ export const UsageName: NameMap = {
     "59_7D": "Reserved",
     "59_7E": "Reserved",
     "59_7F": "Reserved",
-
     // Monitor Page (0x80)
     "80_00": "Undefined",
     "80_01": "Monitor Control",
@@ -3596,7 +3572,6 @@ export const UsageName: NameMap = {
     "80_FD": "Reserved",
     "80_FE": "Reserved",
     "80_FF": "Reserved",
-
     // Power Page (0x84)
     "84_00": "Undefined",
     "84_01": "iName",
@@ -3726,7 +3701,6 @@ export const UsageName: NameMap = {
     "84_7D": "Reserved",
     "84_7E": "Reserved",
     "84_7F": "Reserved",
-
     // Battery System Page (0x85)
     "85_00": "Undefined",
     "85_01": "SMBBatteryMode",
@@ -3872,7 +3846,6 @@ export const UsageName: NameMap = {
     "85_8D": "Reserved",
     "85_8E": "Reserved",
     "85_8F": "Reserved",
-
     // Bar Code Scanner Page (0x8C)
     "8C_00": "Undefined",
     "8C_01": "Bar Code Badge Reader",
@@ -3938,7 +3911,6 @@ export const UsageName: NameMap = {
     "8C_3D": "Reserved",
     "8C_3E": "Reserved",
     "8C_3F": "Reserved",
-
     // Scale Page (0x8D)
     "8D_00": "Undefined",
     "8D_01": "Weighing Device",
@@ -4020,7 +3992,6 @@ export const UsageName: NameMap = {
     "8D_4D": "Reserved",
     "8D_4E": "Reserved",
     "8D_4F": "Reserved",
-
     // Magnetic Stripe Reader Page (0x8E)
     "8E_00": "Undefined",
     "8E_01": "MSR Device Read-Only",
@@ -4070,7 +4041,6 @@ export const UsageName: NameMap = {
     "8E_2D": "Reserved",
     "8E_2E": "Reserved",
     "8E_2F": "Reserved",
-
     // Camera Control Page (0x90)
     "90_00": "Undefined",
     "90_01": "Camera Auto-focus",
@@ -4120,7 +4090,6 @@ export const UsageName: NameMap = {
     "90_2D": "Reserved",
     "90_2E": "Reserved",
     "90_2F": "Reserved",
-
     // Arcade Page (0x91)
     "91_00": "Undefined",
     "91_01": "General Purpose IO Card",
@@ -4250,4 +4219,4 @@ export const UsageName: NameMap = {
     "91_7D": "Reserved",
     "91_7E": "Reserved",
     "91_7F": "Reserved"
-}
+};

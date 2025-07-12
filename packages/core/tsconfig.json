@@ -2,10 +2,12 @@
   "compilerOptions": {
     "module": "ESNext",
     "moduleResolution": "Node",
+    "rootDir": "./src",
     "declaration": true,
     "esModuleInterop": true,
     "strict": true,
-    "baseUrl": ".",
+    "outDir": "dist"
   },
-  "include": ["generate-exports.ts"],
+  "include": ["src"],
+  "exclude": ["test"]
 }

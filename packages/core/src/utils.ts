@@ -5,5 +5,3 @@ export function multiableToArray<T>(multi: Multiable<T>): readonly T[] {
 }
 
 export type EmptyObject = Record<string, never>;
-
-export const EMPTY_OBJECT: EmptyObject = Object.freeze({});

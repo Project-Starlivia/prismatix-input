@@ -1,8 +1,8 @@
-import {UtilKeyCodeToUsageIdMap} from "~/key-map/code-usage";
-import {UtilUsageIdToPositionMap} from "~/key-map/usage-position";
-import type { PositionMap, KeyCodeMap } from "~/key-map/types";
-import type {DefaultAction, PRXEvent, MultiSubject, PRXSubject} from "~/types";
-import { multiableToArray, type Multiable } from "~/utils";
+import {UtilKeyCodeToUsageIdMap} from "../key-map/code-usage";
+import {UtilUsageIdToPositionMap} from "../key-map/usage-position";
+import type { PositionMap, KeyCodeMap } from "../key-map/types";
+import type {DefaultAction, PRXEvent, MultiSubject, PRXSubject} from "../types";
+import { multiableToArray, type Multiable } from "../utils";
 
 import { isEventBySetUndef } from "./utils";
 import type {InputEventPosition, PRXInput} from "./types";

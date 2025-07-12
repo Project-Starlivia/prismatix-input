@@ -1,86 +1,25 @@
 {
-  "name": "prismatix-input",
+  "name": "prismatix-input-workspace",
   "version": "0.1.13",
   "license": "MIT",
-  "type": "module",
-  "files": [
-    "dist"
+  "private": true,
+  "workspaces": [
+    "packages/*"
   ],
   "scripts": {
-    "dev": "vite",
-    "build": "rimraf dist && tsc --project tsconfig.build.json && tsc-alias -p tsconfig.build.json && bun run generate-exports.ts",
+    "build": "bun run build:core && bun run build:mitt && bun run build:rxjs && bun run build:all",
+    "build:core": "cd packages/core && bun run build",
+    "build:mitt": "cd packages/mitt && bun run build",
+    "build:rxjs": "cd packages/rxjs && bun run build",
+    "build:all": "cd packages/all && bun run build",
     "test": "bun test",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
-    "@tailwindcss/vite": "^4.1.10",
     "rimraf": "^6.0.1",
-    "tsc-alias": "^1.8.16",
-    "vite": "^6.3.5"
+    "tsc-alias": "^1.8.16"
   },
   "peerDependencies": {
     "typescript": "^5.8.3"
-  },
-  "dependencies": {
-    "mitt": "^3.0.1",
-    "rxjs": "^7.8.2"
-  },
-  "exports": {
-    "./input": {
-      "import": "./dist/input/index.js",
-      "types": "./dist/input/index.d.ts"
-    },
-    "./input/keyboard": {
-      "import": "./dist/input/keyboard.js",
-      "types": "./dist/input/keyboard.d.ts"
-    },
-    "./input/mouse": {
-      "import": "./dist/input/mouse.js",
-      "types": "./dist/input/mouse.d.ts"
-    },
-    "./input/pointer": {
-      "import": "./dist/input/pointer.js",
-      "types": "./dist/input/pointer.d.ts"
-    },
-    "./input/types": {
-      "import": "./dist/input/types.js",
-      "types": "./dist/input/types.d.ts"
-    },
-    "./input/utils": {
-      "import": "./dist/input/utils.js",
-      "types": "./dist/input/utils.d.ts"
-    },
-    "./key-map/code-usage": {
-      "import": "./dist/key-map/code-usage.js",
-      "types": "./dist/key-map/code-usage.d.ts"
-    },
-    "./key-map/types": {
-      "import": "./dist/key-map/types.js",
-      "types": "./dist/key-map/types.d.ts"
-    },
-    "./key-map/usage-names": {
-      "import": "./dist/key-map/usage-names.js",
-      "types": "./dist/key-map/usage-names.d.ts"
-    },
-    "./key-map/usage-position": {
-      "import": "./dist/key-map/usage-position.js",
-      "types": "./dist/key-map/usage-position.d.ts"
-    },
-    "./mitt-ex": {
-      "import": "./dist/mitt-ex.js",
-      "types": "./dist/mitt-ex.d.ts"
-    },
-    "./rxjs-ex": {
-      "import": "./dist/rxjs-ex.js",
-      "types": "./dist/rxjs-ex.d.ts"
-    },
-    "./types": {
-      "import": "./dist/types.js",
-      "types": "./dist/types.d.ts"
-    },
-    "./utils": {
-      "import": "./dist/utils.js",
-      "types": "./dist/utils.d.ts"
-    }
   }
 }
