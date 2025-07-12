@@ -1,7 +1,8 @@
 import type { DefaultAction, PRXEvent, MultiSubject } from "~/types";
 import { multiableToArray, type Multiable } from "~/utils"
 
-import { isEventBySetUndef, nativeInputBase, WithPositionInputEvent, PRXInputCreator } from ".";
+import { isEventBySetUndef, nativeInputBase } from ".";
+import type { PRXInputCreator, WithPositionInputEvent } from "~/input/types";
 
 export type PointerButtonEvent = 'pointerdown' | 'pointerup';
 export type PointerMoveEvent = 'pointermove';

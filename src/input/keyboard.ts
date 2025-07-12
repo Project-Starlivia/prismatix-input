@@ -1,7 +1,8 @@
-import type {DefaultAction, PRXEvent, MultiSubject} from "~/types";
+import type { DefaultAction, PRXEvent, MultiSubject } from "~/types";
 import { multiableToArray, type Multiable } from "~/utils";
 
-import { isEventBySetUndef, PRXInput, PRXInputCreator } from ".";
+import { isEventBySetUndef } from ".";
+import type {PRXInput, PRXInputCreator} from "~/input/types";
 
 type KeyboardNativeEvent = "keydown" | "keyup";
 type KeyboardExtensionEvent = "keydown-norepeat" | "keydown-repeat";

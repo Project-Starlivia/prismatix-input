@@ -14,10 +14,7 @@
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.10",
-    "@types/bun": "^1.2.14",
-    "biome": "^0.3.3",
     "rimraf": "^6.0.1",
-    "tailwind": "^4.0.0",
     "tsc-alias": "^1.8.16",
     "vite": "^6.3.5"
   },
@@ -25,7 +22,8 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
-    "mitt": "^3.0.1"
+    "mitt": "^3.0.1",
+    "rxjs": "^7.8.2"
   },
   "exports": {
     "./input": {

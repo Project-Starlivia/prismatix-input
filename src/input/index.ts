@@ -1,16 +1,5 @@
-import type { DefaultAction, PRXEvent, MultiSubject, Disposable } from "~/types";
-import { multiableToArray, EmptyObject } from "~/utils";
-
-export interface PRXInput extends Disposable {}
-
-export type PRXInputCreator<
-    O extends object = EmptyObject,
-    T extends PRXEvent = PRXEvent,
-    IE extends PRXInput = PRXInput,
-> = (
-  input: MultiSubject<T>,
-  options?: O
-) => IE;
+import type { DefaultAction, PRXEvent, MultiSubject } from "~/types";
+import { multiableToArray } from "~/utils";
 
 export const isEventBySetUndef = <T>(set: Set<T> | undefined, value: T): boolean => {
     if (!set) return true;
@@ -51,9 +40,3 @@ export const nativeInputBase = <T extends PRXEvent, ET extends string, EN extend
 
     return { dispose };
 }
-
-export interface WithPositionInputEvent extends PRXEvent {
-    x: number;
-    y: number;
-}
-

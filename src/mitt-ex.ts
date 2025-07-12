@@ -2,7 +2,7 @@ import { Emitter, EventType } from "mitt";
 
 import type { PRXEvent, PRXSubject } from "./types";
 
-export function createSubject<E extends Record<EventType, T>, T extends PRXEvent = E[keyof E]>(
+export function createSubject<E extends Record<EventType, T>, T = E[keyof E]>(
   emitter: Emitter<E>,
   key: keyof E
 ): PRXSubject<E[typeof key]> {
