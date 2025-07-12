@@ -1,6 +1,6 @@
 ﻿import { Emitter, EventType } from "mitt";
 
-import type { PRXEvent, PRXSubject } from "@prismatix-input/core";
+import type { PRXSubject } from "@prismatix-input/core";
 
 export function createSubject<E extends Record<EventType, T>, T = E[keyof E]>(
     emitter: Emitter<E>,

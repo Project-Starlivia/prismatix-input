@@ -1,4 +1,4 @@
-﻿{
+{
   "compilerOptions": {
     "module": "ESNext",
     "moduleResolution": "Node",
@@ -9,7 +9,7 @@
     "outDir": "dist",
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./src/*"],
+      "~/*": ["./src/*"]
     }
   },
   "include": ["src"],

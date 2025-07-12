@@ -1,4 +1,4 @@
-import type { EmptyObject, Multiable } from "./utils";
+import type { Multiable } from "./utils";
 
 export type DefaultAction = "start" | "hold" | "move" | "end";
 

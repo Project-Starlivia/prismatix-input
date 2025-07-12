@@ -1,5 +1,5 @@
 ﻿// Keyboard Position Mappings - Extracted from keycode.ts for better maintainability
-import type { PositionMap, UsageID } from './types';
+import type { PositionMap } from './types';
 
 /**
  * Function keys row positions (F1-F12, Escape)

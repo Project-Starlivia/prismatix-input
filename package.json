@@ -13,7 +13,11 @@
     "build:rxjs": "cd packages/rxjs && bun run build",
     "build:all": "cd packages/all && bun run build",
     "test": "bun test",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit && bun run typecheck:core && bun run typecheck:mitt && bun run typecheck:rxjs && bun run typecheck:all",
+    "typecheck:core": "cd packages/core && tsc --noEmit",
+    "typecheck:mitt": "cd packages/mitt && tsc --noEmit",
+    "typecheck:rxjs": "cd packages/rxjs && tsc --noEmit",
+    "typecheck:all": "cd packages/all && tsc --noEmit"
   },
   "devDependencies": {
     "rimraf": "^6.0.1",

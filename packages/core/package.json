@@ -10,7 +10,7 @@
     "access": "public"
   },
   "scripts": {
-    "build": "rimraf dist && tsc && bun run ../../generate-exports.ts",
+    "build": "rimraf dist && tsc && tsc-alias && bun run ../../generate-exports.ts",
     "test": "bun test",
     "typecheck": "tsc --noEmit"
   },
