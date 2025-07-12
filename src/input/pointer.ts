@@ -1,8 +1,8 @@
 import type { DefaultAction, PRXEvent, MultiSubject } from "~/types";
 import { multiableToArray, type Multiable } from "~/utils"
 
-import { isEventBySetUndef, nativeInputBase } from ".";
-import type { PRXInputCreator, WithPositionInputEvent } from "~/input/types";
+import { isEventBySetUndef, NativeInputBase } from "./utils";
+import type { InputEventPosition, PRXInput } from "./types";
 
 export type PointerButtonEvent = 'pointerdown' | 'pointerup';
 export type PointerMoveEvent = 'pointermove';
@@ -30,66 +30,90 @@ const inputTypeAction: Record<PointerNativeEvent, DefaultAction> = {
     'pointercancel': 'end',
 };
 
-export function pointerInputBase<T extends PRXEvent>(
-    input: MultiSubject<T>,
-    mapEvent: (e: PointerEvent, action: DefaultAction) => T,
-    options?: PointerInputOptions,
-){
-    const { target, events, button, buttons, pointerType, pointerId } = options || {};
-    const _target = target || document;
-    const _events = events ? 
-        multiableToArray(events) : 
-            ['pointerdown', 'pointerup', 'pointermove', 'pointerenter', 'pointerleave', 'pointerover', 'pointerout', 'pointercancel'] as PointerNativeEvent[];
-    const _button = button ? new Set(multiableToArray(button)) : undefined;
-    const _buttons = buttons ? new Set(multiableToArray(buttons)) : undefined;
-    const _pointerType = pointerType ? new Set(multiableToArray(pointerType)) : undefined;
-    const _pointerId = pointerId ? new Set(multiableToArray(pointerId)) : undefined;
-    const isExec = (e: PointerEvent) => 
-        isEventBySetUndef(_button, e.button) && 
-        isEventBySetUndef(_buttons, e.buttons) && 
-        isEventBySetUndef(_pointerType, e.pointerType) && 
-        isEventBySetUndef(_pointerId, e.pointerId);
+export class PointerInputBase<T extends PRXEvent> extends NativeInputBase<T, PointerNativeEvent, PointerEvent> {
+    constructor(
+        input: MultiSubject<T>,
+        mapEvent: (e: PointerEvent, action: DefaultAction) => T,
+        options?: PointerInputOptions,
+    ) {
+        const { target, events, button, buttons, pointerType, pointerId } = options || {};
+        const _target = target || document;
+        const _events = events ? 
+            multiableToArray(events) : 
+                ['pointerdown', 'pointerup', 'pointermove', 'pointerenter', 'pointerleave', 'pointerover', 'pointerout', 'pointercancel'] as PointerNativeEvent[];
+        const _button = button ? new Set(multiableToArray(button)) : undefined;
+        const _buttons = buttons ? new Set(multiableToArray(buttons)) : undefined;
+        const _pointerType = pointerType ? new Set(multiableToArray(pointerType)) : undefined;
+        const _pointerId = pointerId ? new Set(multiableToArray(pointerId)) : undefined;
+        const isExec = (e: PointerEvent) => 
+            isEventBySetUndef(_button, e.button) && 
+            isEventBySetUndef(_buttons, e.buttons) && 
+            isEventBySetUndef(_pointerType, e.pointerType) && 
+            isEventBySetUndef(_pointerId, e.pointerId);
 
-    return nativeInputBase<T, PointerNativeEvent, PointerEvent>(
-        input,
-        _target,
-        _events,
-        inputTypeAction,
-        isExec,
-        mapEvent,
-    );
+        super(
+            input,
+            _target,
+            _events,
+            inputTypeAction,
+            isExec,
+            mapEvent,
+        );
+    }
 }
 
-export const createPointerInput = (
-    input: MultiSubject<PRXEvent>,
-    options?: PointerInputOptions
-) => {
-    return pointerInputBase<PRXEvent>(
-        input,
-        (e: PointerEvent, action: DefaultAction) => ({
-            key: e.pointerType,
-            action,
-            time: e.timeStamp,
-        } as PRXEvent),
-        options
-    );
+
+export class PointerInput extends PointerInputBase<PRXEvent> {
+    constructor(
+        input: MultiSubject<PRXEvent>,
+        options?: PointerInputOptions
+    ) {
+        super(
+            input,
+            (e: PointerEvent, action: DefaultAction) => ({
+                key: e.pointerType,
+                action,
+                time: e.timeStamp,
+            } as PRXEvent),
+            options
+        );
+    }
 }
 
-export const createPointerInputWithPosition
-: PRXInputCreator<PointerInputOptions, WithPositionInputEvent>
-= (
-    input: MultiSubject<WithPositionInputEvent>,
-    options?: PointerInputOptions
-) => {
-    return pointerInputBase<WithPositionInputEvent>(
-        input,
-        (e: PointerEvent, action: DefaultAction) => ({
-            key: e.pointerType,
-            action,
-            time: e.timeStamp,
-            x: e.offsetX,
-            y: e.offsetY,
-        } as WithPositionInputEvent),
-        options
-    );
+export class PointerInputWithPosition extends PointerInputBase<InputEventPosition> {
+    constructor(
+        input: MultiSubject<InputEventPosition>,
+        options?: PointerInputOptions
+    ) {
+        super(
+            input,
+            (e: PointerEvent, action: DefaultAction) => ({
+                key: e.pointerType,
+                action,
+                time: e.timeStamp,
+                x: e.offsetX,
+                y: e.offsetY,
+            }),
+            options
+        );
+    }
+}
+
+export interface InputEventPointerFull extends PRXEvent, PointerEvent { }
+export class PointerInputFull extends PointerInputBase<InputEventPointerFull>{
+    constructor(
+        input: MultiSubject<InputEventPointerFull>,
+        options?: PointerInputOptions
+    ) {
+        super(
+            input,
+            (e: PointerEvent, action: DefaultAction) => ({
+                key: e.pointerType,
+                action,
+                time: e.timeStamp,
+                ...e
+            }),
+            options
+        );
+    }
 }

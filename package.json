@@ -42,17 +42,17 @@
       "import": "./dist/input/pointer.js",
       "types": "./dist/input/pointer.d.ts"
     },
-    "./key-map/key-mappings": {
-      "import": "./dist/key-map/key-mappings.js",
-      "types": "./dist/key-map/key-mappings.d.ts"
+    "./input/types": {
+      "import": "./dist/input/types.js",
+      "types": "./dist/input/types.d.ts"
     },
-    "./key-map/keycode-original": {
-      "import": "./dist/key-map/keycode-original.js",
-      "types": "./dist/key-map/keycode-original.d.ts"
+    "./input/utils": {
+      "import": "./dist/input/utils.js",
+      "types": "./dist/input/utils.d.ts"
     },
-    "./key-map/position-mappings": {
-      "import": "./dist/key-map/position-mappings.js",
-      "types": "./dist/key-map/position-mappings.d.ts"
+    "./key-map/code-usage": {
+      "import": "./dist/key-map/code-usage.js",
+      "types": "./dist/key-map/code-usage.d.ts"
     },
     "./key-map/types": {
       "import": "./dist/key-map/types.js",
@@ -62,29 +62,17 @@
       "import": "./dist/key-map/usage-names.js",
       "types": "./dist/key-map/usage-names.d.ts"
     },
-    "./middleware/counter": {
-      "import": "./dist/middleware/counter.js",
-      "types": "./dist/middleware/counter.d.ts"
-    },
-    "./middleware/duration": {
-      "import": "./dist/middleware/duration.js",
-      "types": "./dist/middleware/duration.d.ts"
-    },
-    "./middleware": {
-      "import": "./dist/middleware/index.js",
-      "types": "./dist/middleware/index.d.ts"
-    },
-    "./middleware/keycode-position": {
-      "import": "./dist/middleware/keycode-position.js",
-      "types": "./dist/middleware/keycode-position.d.ts"
-    },
-    "./middleware/repeat": {
-      "import": "./dist/middleware/repeat.js",
-      "types": "./dist/middleware/repeat.d.ts"
+    "./key-map/usage-position": {
+      "import": "./dist/key-map/usage-position.js",
+      "types": "./dist/key-map/usage-position.d.ts"
     },
     "./mitt-ex": {
       "import": "./dist/mitt-ex.js",
       "types": "./dist/mitt-ex.d.ts"
+    },
+    "./rxjs-ex": {
+      "import": "./dist/rxjs-ex.js",
+      "types": "./dist/rxjs-ex.d.ts"
     },
     "./types": {
       "import": "./dist/types.js",

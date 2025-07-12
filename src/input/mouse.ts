@@ -1,8 +1,8 @@
 import type { DefaultAction, PRXEvent, MultiSubject } from "~/types";
 import { multiableToArray, Multiable } from "~/utils";
 
-import { isEventBySetUndef, nativeInputBase } from ".";
-import type { WithPositionInputEvent } from "~/input/types";
+import { isEventBySetUndef, NativeInputBase } from "./utils";
+import type { InputEventPosition, PRXInput } from "~/input/types";
 
 export type ClickEvent = "click" | "dblclick" | "contextmenu";
 export type ButtonEvent = "mousedown" | "mouseup";
@@ -14,8 +14,10 @@ type MouseNativeEvent = ClickEvent | ButtonEvent | MoveEvent | WrapEvent;
 export interface MouseInputOptions {
     target?: EventTarget
     events?: Multiable<MouseNativeEvent>,
-    button?: Multiable<number>,
-    buttons?: Multiable<number>,
+    filters?: {
+        button?: Multiable<number>,
+        buttons?: Multiable<number>,
+    }
 }
 
 const inputTypeAction: Record<MouseNativeEvent, DefaultAction> = {
@@ -31,50 +33,105 @@ const inputTypeAction: Record<MouseNativeEvent, DefaultAction> = {
     "mouseout": "end",
 };
 
-export function mouseInputBase<T extends PRXEvent>(
-    input: MultiSubject<T>,
-    mapEvent: (e: MouseEvent, action: DefaultAction) => T,
-    options?: MouseInputOptions,
-){
-    const { target, events, button, buttons } = options || {};
-    const _target = target || document;
-    const _events = events ? 
-        multiableToArray(events) : 
-            ["click", "dblclick", "contextmenu", "mousedown", "mouseup", "mouseenter", "mouseleave", "mouseover", "mouseout", "mousemove"] as MouseNativeEvent[];
-    const _button = button ? new Set(multiableToArray(button)) : undefined;
-    const _buttons = buttons ? new Set(multiableToArray(buttons)) : undefined;
-    const isExec = (e: MouseEvent) => isEventBySetUndef(_button, e.button) && isEventBySetUndef(_buttons, e.buttons);
+export class MouseInputBase<T extends PRXEvent> extends NativeInputBase<T, MouseNativeEvent, MouseEvent> {
+    constructor(
+        input: MultiSubject<T>,
+        mapEvent: (e: MouseEvent, action: DefaultAction) => T,
+        options?: MouseInputOptions,
+    ) {
+        const { target, events, filters } = options || {};
+        const { button, buttons } = filters || {};
+        const _target = target || document;
+        const _events = events ? 
+            multiableToArray(events) : 
+                ["click", "dblclick", "contextmenu", "mousedown", "mouseup", "mouseenter", "mouseleave", "mouseover", "mouseout", "mousemove"] as MouseNativeEvent[];
+        const _button = button ? new Set(multiableToArray(button)) : undefined;
+        const _buttons = buttons ? new Set(multiableToArray(buttons)) : undefined;
+        const isExec = (e: MouseEvent) => isEventBySetUndef(_button, e.button) && isEventBySetUndef(_buttons, e.buttons);
 
-    return nativeInputBase<T, MouseNativeEvent, MouseEvent>(
-        input,
-        _target,
-        _events,
-        inputTypeAction,
-        isExec,
-        mapEvent,
-    );
+        super(
+            input,
+            _target,
+            _events,
+            inputTypeAction,
+            isExec,
+            mapEvent,
+        );
+    }
 }
 
-export function createMouseInputWithPosition(
-    input: MultiSubject<WithPositionInputEvent>,
-    options?: MouseInputOptions
-) {
-    return mouseInputBase(input, (e: MouseEvent, action: DefaultAction) => ({
-        key: e.button.toString(),
-        action,
-        time: e.timeStamp,
-        x: e.x,
-        y: e.y
-    }as WithPositionInputEvent) ,options)
+export class MouseInput extends MouseInputBase<PRXEvent> {
+    constructor(
+        input: MultiSubject<PRXEvent>,
+        options?: MouseInputOptions
+    ) {
+        super(
+            input,
+            (e, action) => ({
+                key: e.button.toString(),
+                action,
+                time: e.timeStamp,
+            } as PRXEvent),
+            options
+        );
+    }
 }
 
-export function createMouseInput(
-    s: MultiSubject<PRXEvent>,
-    o?: MouseInputOptions
-) {
-    return mouseInputBase(s, (e: MouseEvent, action: DefaultAction) => ({
-        key: e.button.toString(),
-        action,
-        time: e.timeStamp,
-    }as PRXEvent) ,o)
+export interface InputEventButtons extends PRXEvent {
+    buttons: number;
+}
+export class MouseInputButtons extends MouseInputBase<InputEventButtons> {
+    constructor(
+        input: MultiSubject<InputEventButtons>,
+        options?: MouseInputOptions
+    ) {
+        super(
+            input,
+            (e, action) => ({
+                key: e.button.toString(),
+                action,
+                time: e.timeStamp,
+                buttons: e.buttons
+            }),
+            options
+        );
+    }
+}
+
+export class MouseInputPosition extends MouseInputBase<InputEventPosition> {
+    constructor(
+        input: MultiSubject<InputEventPosition>,
+        options?: MouseInputOptions
+    ) {
+        super(
+            input,
+            (e: MouseEvent, action: DefaultAction) => ({
+                key: e.button.toString(),
+                action,
+                time: e.timeStamp,
+                x: e.x,
+                y: e.y
+            }),
+            options
+        );
+    }
+}
+
+export interface InputEventMouseFull extends PRXEvent, MouseEvent { }
+export class MouseInputFull extends MouseInputBase<InputEventMouseFull> {
+    constructor(
+        input: MultiSubject<InputEventMouseFull>,
+        options?: MouseInputOptions
+    ) {
+        super(
+            input,
+            (e, action) => ({
+                key: e.button.toString(),
+                time: e.timeStamp,
+                action,
+                ...e
+            }),
+            options
+        );
+    }
 }

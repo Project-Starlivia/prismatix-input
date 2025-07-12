@@ -11,17 +11,17 @@ export interface PRXEvent<
   readonly time: number;
 }
 
-export interface Disposable {
+export interface PRXDisposable {
   dispose(): void;
 }
 
 export interface PRXSubject<T> {
-    subscribe(callback: (value: T) => void): Subscription;
+    subscribe(callback: (value: T) => void): PRXSubscription;
     next(value: T): void;
     dispose(): void;
 }
 
-export interface Subscription {
+export interface PRXSubscription {
     unsubscribe(): void;
 }
 
