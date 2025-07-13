@@ -288,6 +288,10 @@ subject.pipe(
 ).subscribe(event => console.log(event));
 ```
 
+### Custom Integration
+
+You can also create your own custom integration by implementing the required subject interface. This allows you to integrate with any event system or state management solution of your choice.
+
 ## License
 
 MIT
