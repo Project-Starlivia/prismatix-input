@@ -1,5 +1,5 @@
 ﻿import { Subject } from "rxjs";
-import type { PRXSubject } from "@prismatix-input/core";
+import type { PRXSubject } from "@starlivia/prismatix-input-core";
 
 export function createSubject<T>(){
     const subject = new Subject<T>();

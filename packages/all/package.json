@@ -1,5 +1,5 @@
 ﻿{
-  "name": "prismatix-input",
+  "name": "@starlivia/prismatix-input",
   "version": "0.2.0",
   "license": "MIT",
   "type": "module",
@@ -22,9 +22,9 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
-    "@prismatix-input/core": "^0.2.0",
-    "@prismatix-input/mitt": "^0.2.0",
-    "@prismatix-input/rxjs": "^0.2.0"
+    "@starlivia/prismatix-input-core": "^0.2.0",
+    "@starlivia/prismatix-input-mitt": "^0.2.0",
+    "@starlivia/prismatix-input-rxjs": "^0.2.0"
   },
   "exports": {
     ".": {

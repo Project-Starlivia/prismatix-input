@@ -10,8 +10,8 @@
     "baseUrl": ".",
     "paths": {
       "~/*": ["./src/*"],
-      "@prismatix-input/core": ["../core/dist/index.d.ts"],
-      "@prismatix-input/core/*": ["../core/dist/*"]
+      "@starlivia/prismatix-input-core": ["../core/dist/index.d.ts"],
+      "@starlivia/prismatix-input-core/*": ["../core/dist/*"]
     }
   },
   "include": ["src"],

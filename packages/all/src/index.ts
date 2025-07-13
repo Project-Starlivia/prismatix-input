@@ -1,5 +1,5 @@
-﻿import * as mitt from '@prismatix-input/mitt';
-import * as rxjs from '@prismatix-input/rxjs';
+﻿import * as mitt from '@starlivia/prismatix-input-mitt';
+import * as rxjs from '@starlivia/prismatix-input-rxjs';
 
-export * from '@prismatix-input/core';
+export * from '@starlivia/prismatix-input-core';
 export { mitt, rxjs };

@@ -10,12 +10,12 @@
     "baseUrl": ".",
     "paths": {
       "~/*": ["./src/*"],
-      "@prismatix-input/core": ["../core/dist/index.d.ts"],
-      "@prismatix-input/core/*": ["../core/dist/*"],
-      "@prismatix-input/mitt": ["../mitt/dist/index.d.ts"],
-      "@prismatix-input/mitt/*": ["../mitt/dist/*"],
-      "@prismatix-input/rxjs": ["../rxjs/dist/index.d.ts"],
-      "@prismatix-input/rxjs/*": ["../rxjs/dist/*"]
+      "@starlivia/prismatix-input-core": ["../core/dist/index.d.ts"],
+      "@starlivia/prismatix-input-core/*": ["../core/dist/*"],
+      "@starlivia/prismatix-input-mitt": ["../mitt/dist/index.d.ts"],
+      "@starlivia/prismatix-input-mitt/*": ["../mitt/dist/*"],
+      "@starlivia/prismatix-input-rxjs": ["../rxjs/dist/index.d.ts"],
+      "@starlivia/prismatix-input-rxjs/*": ["../rxjs/dist/*"]
     }
   },
   "include": ["src"],
