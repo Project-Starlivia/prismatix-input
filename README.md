@@ -1,4 +1,4 @@
-# @starlivia/prismatix-input
+# prismatix-input
 
 To install dependencies:
 
