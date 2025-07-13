@@ -20,10 +20,6 @@ export interface KeyboardInputOptions {
     }
 }
 
-export interface KeyboardInputEvent extends PRXEvent {
-    code: string;
-}
-
 export abstract class KeyboardInputBase<T extends PRXEvent> implements PRXInput {
     protected readonly subjects: PRXSubject<T>[];
     protected eventTarget: EventTarget;
@@ -109,9 +105,9 @@ export abstract class KeyboardInputBase<T extends PRXEvent> implements PRXInput 
     }
 }
 
-export class KeyboardInput extends KeyboardInputBase<KeyboardInputEvent> {
+export class KeyboardInput extends KeyboardInputBase<PRXEvent> {
     constructor(
-        input: MultiSubject<KeyboardInputEvent>,
+        input: MultiSubject<PRXEvent>,
         options?: KeyboardInputOptions
     ) {
         super(
@@ -120,16 +116,19 @@ export class KeyboardInput extends KeyboardInputBase<KeyboardInputEvent> {
                 key: e.key,
                 action,
                 time: e.timeStamp,
-                code: e.code,
-            } as KeyboardInputEvent),
+            }),
             options
         );
     }
 }
 
-export class KeyboardInputCode extends KeyboardInputBase<PRXEvent> {
+export interface InputEventCode extends PRXEvent {
+    code: string;
+}
+
+export class KeyboardInputCode extends KeyboardInputBase<InputEventCode> {
     constructor(
-        input: MultiSubject<PRXEvent>,
+        input: MultiSubject<InputEventCode>,
         options?: KeyboardInputOptions
     ) {
         super(
@@ -138,7 +137,8 @@ export class KeyboardInputCode extends KeyboardInputBase<PRXEvent> {
                 key: e.code,
                 action,
                 time: e.timeStamp,
-            } as PRXEvent),
+                code: e.code
+            }),
             options
         );
     }
