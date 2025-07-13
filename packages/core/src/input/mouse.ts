@@ -45,8 +45,8 @@ export class MouseInputBase<T extends PRXEvent> extends NativeInputBase<T, Mouse
         const _events = events ? 
             multiableToArray(events) : 
                 ["click", "dblclick", "contextmenu", "mousedown", "mouseup", "mouseenter", "mouseleave", "mouseover", "mouseout", "mousemove"] as MouseNativeEvent[];
-        const _button = button ? new Set(multiableToArray(button)) : undefined;
-        const _buttons = buttons ? new Set(multiableToArray(buttons)) : undefined;
+        const _button = button !== undefined ? new Set(multiableToArray(button)) : undefined;
+        const _buttons = buttons !== undefined ? new Set(multiableToArray(buttons)) : undefined;
         const isExec = (e: MouseEvent) => isEventBySetUndef(_button, e.button) && isEventBySetUndef(_buttons, e.buttons);
 
         super(

@@ -12,7 +12,8 @@
   "scripts": {
     "build": "rimraf dist && tsc",
     "test": "bun test",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "clean": "rimraf dist"
   },
   "devDependencies": {
     "rimraf": "^6.0.1",
