@@ -32,7 +32,19 @@
     "typecheck:rxjs": "cd packages/rxjs && tsc --noEmit",
     "typecheck:all": "cd packages/all && tsc --noEmit",
     "dev": "bun run test:watch",
-    "ci": "bun run typecheck && bun run test && bun run build"
+    "ci": "bun run typecheck && bun run test && bun run build",
+    "publish": "bun run publish:packages",
+    "publish:packages": "bun run publish:core && bun run publish:mitt && bun run publish:rxjs && bun run publish:all",
+    "publish:core": "cd packages/core && npm publish",
+    "publish:mitt": "cd packages/mitt && npm publish",
+    "publish:rxjs": "cd packages/rxjs && npm publish",
+    "publish:all": "cd packages/all && npm publish",
+    "publish:dry-run": "bun run publish:dry-run:packages",
+    "publish:dry-run:packages": "bun run publish:dry-run:core && bun run publish:dry-run:mitt && bun run publish:dry-run:rxjs && bun run publish:dry-run:all",
+    "publish:dry-run:core": "cd packages/core && npm publish --dry-run",
+    "publish:dry-run:mitt": "cd packages/mitt && npm publish --dry-run",
+    "publish:dry-run:rxjs": "cd packages/rxjs && npm publish --dry-run",
+    "publish:dry-run:all": "cd packages/all && npm publish --dry-run"
   },
   "devDependencies": {
     "rimraf": "^6.0.1",
