@@ -1,6 +1,6 @@
 ﻿{
   "name": "@starlivia/prismatix-input-mitt",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "license": "MIT",
   "type": "module",
   "files": [
@@ -14,6 +14,9 @@
     "test": "bun test",
     "typecheck": "tsc --noEmit",
     "clean": "rimraf dist"
+  },
+  "author": {
+    "name": "henohenon"
   },
   "devDependencies": {
     "rimraf": "^6.0.1",

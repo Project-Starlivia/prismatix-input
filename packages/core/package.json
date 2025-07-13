@@ -1,6 +1,6 @@
 {
   "name": "@starlivia/prismatix-input-core",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "license": "MIT",
   "type": "module",
   "files": [
@@ -25,6 +25,9 @@
     "prebuild": "bun run typecheck",
     "postbuild": "echo 'Build completed successfully'",
     "ci": "bun run typecheck && bun run test && bun run build"
+  },
+  "author": {
+    "name": "henohenon"
   },
   "devDependencies": {
     "rimraf": "^6.0.1",
