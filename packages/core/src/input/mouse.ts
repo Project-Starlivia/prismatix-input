@@ -104,13 +104,12 @@ export class MouseInputPosition extends MouseInputBase<InputEventPosition> {
         options?: MouseInputOptions
     ) {
         super(
-            input,
-            (e: MouseEvent, action: DefaultAction) => ({
+            input,            (e: MouseEvent, action: DefaultAction) => ({
                 key: e.button.toString(),
                 action,
                 time: e.timeStamp,
-                x: e.x,
-                y: e.y
+                x: e.clientX,
+                y: e.clientY
             }),
             options
         );

@@ -420,12 +420,11 @@ describe("Mouse Input Event Mapping", () => {
       addEventListener: (type: string, listener: (event: Event) => void) => {
         if (type === "mouseup") {
           listener({
-            type: "mouseup",
-            button: 1,
+            type: "mouseup",            button: 1,
             buttons: 4,
             timeStamp: 456,
-            x: 150,
-            y: 250
+            clientX: 150,
+            clientY: 250
           } as any);
         }
       },
@@ -456,12 +455,11 @@ describe("Mouse Input Event Mapping", () => {
       addEventListener: (type: string, listener: (event: Event) => void) => {
         if (type === "mousemove") {
           listener({
-            type: "mousemove",
-            button: 2,
+            type: "mousemove",            button: 2,
             buttons: 2,
             timeStamp: 789,
-            x: 300,
-            y: 400
+            clientX: 300,
+            clientY: 400
           } as any);
         }
       },

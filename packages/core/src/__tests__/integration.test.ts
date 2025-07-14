@@ -324,15 +324,13 @@ describe("Integration Tests - Mouse Position Input", () => {
 
   afterEach(() => {
     mouseInput.dispose();
-  });
-
-  it("should include position data in events", () => {
+  });  it("should include position data in events", () => {
     // Simulate a mousemove event with position
     mockTarget.simulateEvent("mousemove", {
       button: 0,
       buttons: 0,
-      x: 150,
-      y: 250,
+      clientX: 150,
+      clientY: 250,
       timeStamp: 123
     });
 
@@ -345,14 +343,12 @@ describe("Integration Tests - Mouse Position Input", () => {
       x: 150,
       y: 250
     });
-  });
-
-  it("should handle mousedown with position", () => {
+  });  it("should handle mousedown with position", () => {
     mockTarget.simulateEvent("mousedown", {
       button: 1,
       buttons: 4,
-      x: 300,
-      y: 400,
+      clientX: 300,
+      clientY: 400,
       timeStamp: 456
     });
 
