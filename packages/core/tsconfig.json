@@ -13,5 +13,5 @@
     }
   },
   "include": ["src"],
-  "exclude": ["src/**/__tests__", "src/**/*.test.ts", "src/**/*.test.js"]
+  "exclude": ["src/**/__tests__", "src/**/*.test.ts", "src/**/*.test.js", "generate-exports.ts"]
 }

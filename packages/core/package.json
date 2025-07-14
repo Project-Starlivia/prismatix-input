@@ -10,9 +10,9 @@
     "access": "public"
   },
   "scripts": {
-    "build": "bun run clean && bun run compile && bun run generate-exports",
+    "build": "bun run clean && bun run compile",
     "compile": "tsc && tsc-alias",
-    "generate-exports": "bun run ../../generate-exports.ts",
+    "generate-exports": "bun run ./generate-exports.ts",
     "clean": "rimraf dist",
     "test": "bun test",
     "test:watch": "bun test --watch",
@@ -23,7 +23,7 @@
     "typecheck:watch": "tsc --noEmit --watch",
     "dev": "bun run test:watch",
     "prebuild": "bun run typecheck",
-    "postbuild": "echo 'Build completed successfully'",
+    "postbuild": "bun run generate-exports",
     "ci": "bun run typecheck && bun run test && bun run build"
   },
   "author": {
