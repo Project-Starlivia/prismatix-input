@@ -1,4 +1,4 @@
-﻿{
+{
   "name": "@starlivia/prismatix-input",
   "version": "0.2.1",
   "license": "MIT",
@@ -10,7 +10,8 @@
     "access": "public"
   },
   "scripts": {
-    "build": "rimraf dist && tsc",
+    "build": "bun run regenerate-reexport && bun run clean && tsc && tsc-alias && bun run ../../regenerate-exports.ts all",
+    "regenerate-reexport": "bun run ./regenerate-reexport.ts",
     "test": "bun test",
     "typecheck": "tsc --noEmit",
     "clean": "rimraf dist"
@@ -31,9 +32,65 @@
     "@starlivia/prismatix-input-rxjs": "^0.2.0"
   },
   "exports": {
+    "./core": {
+      "import": "./dist/core/index.js",
+      "types": "./dist/core/index.d.ts"
+    },
+    "./core/input": {
+      "import": "./dist/core/input.js",
+      "types": "./dist/core/input.d.ts"
+    },
+    "./core/input/keyboard": {
+      "import": "./dist/core/input/keyboard.js",
+      "types": "./dist/core/input/keyboard.d.ts"
+    },
+    "./core/input/mouse": {
+      "import": "./dist/core/input/mouse.js",
+      "types": "./dist/core/input/mouse.d.ts"
+    },
+    "./core/input/pointer": {
+      "import": "./dist/core/input/pointer.js",
+      "types": "./dist/core/input/pointer.d.ts"
+    },
+    "./core/input/types": {
+      "import": "./dist/core/input/types.js",
+      "types": "./dist/core/input/types.d.ts"
+    },
+    "./core/key-map/code-usage": {
+      "import": "./dist/core/key-map/code-usage.js",
+      "types": "./dist/core/key-map/code-usage.d.ts"
+    },
+    "./core/key-map": {
+      "import": "./dist/core/key-map.js",
+      "types": "./dist/core/key-map.d.ts"
+    },
+    "./core/key-map/types": {
+      "import": "./dist/core/key-map/types.js",
+      "types": "./dist/core/key-map/types.d.ts"
+    },
+    "./core/key-map/usage-names": {
+      "import": "./dist/core/key-map/usage-names.js",
+      "types": "./dist/core/key-map/usage-names.d.ts"
+    },
+    "./core/key-map/usage-position": {
+      "import": "./dist/core/key-map/usage-position.js",
+      "types": "./dist/core/key-map/usage-position.d.ts"
+    },
+    "./core/types": {
+      "import": "./dist/core/types.js",
+      "types": "./dist/core/types.d.ts"
+    },
     ".": {
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
+    },
+    "./mitt": {
+      "import": "./dist/mitt/index.js",
+      "types": "./dist/mitt/index.d.ts"
+    },
+    "./rxjs": {
+      "import": "./dist/rxjs/index.js",
+      "types": "./dist/rxjs/index.d.ts"
     }
   }
 }

@@ -1,11 +1,11 @@
-﻿{
+{
   "compilerOptions": {
     "module": "ESNext",
     "moduleResolution": "Node",
     "declaration": true,
     "esModuleInterop": true,
     "strict": true,
-    "baseUrl": ".",
+    "baseUrl": "."
   },
-  "include": ["generate-exports.ts"],
+  "include": ["regenerate-exports.ts"]
 }

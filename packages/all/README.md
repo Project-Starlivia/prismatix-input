@@ -156,7 +156,7 @@ import { MouseInput } from '@starlivia/prismatix-input-core/input/mouse';
 
 new MouseInput(subject, {
     target?: EventTarget,           // Default: document
-    events?: MouseEvent[],          // Default: all mouse events
+    events?: string[],          // Default: all mouse events
     filters?: {
         button?: number[],          // Filter by mouse buttons
         buttons?: number[]          // Filter by button combinations
@@ -212,7 +212,7 @@ import { PointerInput } from '@starlivia/prismatix-input-core/input/pointer';
 
 new PointerInput(subject, {
     target?: EventTarget,           // Default: document
-    events?: PointerEvent[],        // Default: all pointer events
+    events?: string[],        // Default: all pointer events
     filters?: {
         pointerType?: string[],     // Filter by pointer type ('mouse', 'pen', 'touch')
         pointerId?: number[],       // Filter by pointer ID

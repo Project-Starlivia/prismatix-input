@@ -1,7 +1,7 @@
-﻿{
+{
   "compilerOptions": {
     "module": "ESNext",
-    "moduleResolution": "Node",
+    "moduleResolution": "bundler",
     "rootDir": "./src",
     "declaration": true,
     "esModuleInterop": true,
@@ -9,11 +9,11 @@
     "outDir": "dist",
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./src/*"],
-      "@starlivia/prismatix-input-core": ["../core/dist/index.d.ts"],
-      "@starlivia/prismatix-input-core/*": ["../core/dist/*"]
+      "~/*": ["./src/*"]
     }
   },
   "include": ["src"],
-  "exclude": ["src/**/__tests__", "src/**/*.test.ts", "src/**/*.test.js"]
+  "exclude": ["src/**/__tests__", "src/**/*.test.ts", "src/**/*.test.js",
+    "regenerate-exports.ts"
+  ]
 }

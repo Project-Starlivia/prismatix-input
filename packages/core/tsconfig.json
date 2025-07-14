@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "module": "ESNext",
-    "moduleResolution": "Node",
+    "moduleResolution": "bundler",
     "rootDir": "./src",
     "declaration": true,
     "esModuleInterop": true,
@@ -13,5 +13,7 @@
     }
   },
   "include": ["src"],
-  "exclude": ["src/**/__tests__", "src/**/*.test.ts", "src/**/*.test.js", "generate-exports.ts"]
+  "exclude": ["src/**/__tests__", "src/**/*.test.ts", "src/**/*.test.js",
+    "regenerate-exports.ts"
+  ]
 }

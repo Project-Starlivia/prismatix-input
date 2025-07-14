@@ -1,4 +1,4 @@
-﻿{
+{
   "name": "@starlivia/prismatix-input-mitt",
   "version": "0.2.1",
   "license": "MIT",
@@ -10,7 +10,7 @@
     "access": "public"
   },
   "scripts": {
-    "build": "rimraf dist && tsc",
+    "build": "rimraf dist && tsc && tsc-alias && bun run ../../regenerate-exports.ts mitt",
     "test": "bun test",
     "typecheck": "tsc --noEmit",
     "clean": "rimraf dist"

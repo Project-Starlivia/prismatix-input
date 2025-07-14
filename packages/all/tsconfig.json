@@ -1,7 +1,7 @@
-﻿{
+{
   "compilerOptions": {
     "module": "ESNext",
-    "moduleResolution": "Node",
+    "moduleResolution": "bundler",
     "rootDir": "./src",
     "declaration": true,
     "esModuleInterop": true,
@@ -9,15 +9,9 @@
     "outDir": "dist",
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./src/*"],
-      "@starlivia/prismatix-input-core": ["../core/dist/index.d.ts"],
-      "@starlivia/prismatix-input-core/*": ["../core/dist/*"],
-      "@starlivia/prismatix-input-mitt": ["../mitt/dist/index.d.ts"],
-      "@starlivia/prismatix-input-mitt/*": ["../mitt/dist/*"],
-      "@starlivia/prismatix-input-rxjs": ["../rxjs/dist/index.d.ts"],
-      "@starlivia/prismatix-input-rxjs/*": ["../rxjs/dist/*"]
+      "~/*": ["./src/*"]
     }
   },
   "include": ["src"],
-  "exclude": ["src/**/__tests__", "src/**/*.test.ts", "src/**/*.test.js"]
+  "exclude": ["src/**/__tests__", "src/**/*.test.ts", "src/**/*.test.js", "regenerate-reexport.ts"]
 }
