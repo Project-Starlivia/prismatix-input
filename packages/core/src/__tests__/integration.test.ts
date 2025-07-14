@@ -1,7 +1,6 @@
 ﻿import { describe, it, expect, beforeEach, afterEach } from "bun:test";
 import { KeyboardInput, KeyboardInputCode } from "../input/keyboard";
 import { MouseInput, MouseInputPosition } from "../input/mouse";
-import type { KeyboardInputEvent } from "../input/keyboard";
 import type { PRXEvent } from "../types";
 import type { InputEventPosition } from "../input/types";
 
@@ -66,12 +65,10 @@ class MockSubject<T> {
 
 describe("Integration Tests - Keyboard Input", () => {
   let mockTarget: MockEventTarget;
-  let mockSubject: MockSubject<KeyboardInputEvent>;
-  let keyboardInput: KeyboardInput;
-
-  beforeEach(() => {
+  let mockSubject: MockSubject<PRXEvent>;
+  let keyboardInput: KeyboardInput;  beforeEach(() => {
     mockTarget = new MockEventTarget();
-    mockSubject = new MockSubject<KeyboardInputEvent>();
+    mockSubject = new MockSubject<PRXEvent>();
     keyboardInput = new KeyboardInput(mockSubject as any, {
       target: mockTarget,
       events: ["keydown", "keyup"]
@@ -92,10 +89,8 @@ describe("Integration Tests - Keyboard Input", () => {
     });
 
     const events = mockSubject.getEvents();
-    expect(events).toHaveLength(1);
-    expect(events[0]).toEqual({
+    expect(events).toHaveLength(1);    expect(events[0]).toEqual({
       key: "a",
-      code: "KeyA",
       action: "hold",
       time: 123
     });
@@ -111,10 +106,8 @@ describe("Integration Tests - Keyboard Input", () => {
     });
 
     const events = mockSubject.getEvents();
-    expect(events).toHaveLength(1);
-    expect(events[0]).toEqual({
+    expect(events).toHaveLength(1);    expect(events[0]).toEqual({
       key: "Enter",
-      code: "Enter",
       action: "end",
       time: 456
     });
@@ -176,11 +169,9 @@ describe("Integration Tests - Keyboard Input", () => {
       code: "KeyC",
       repeat: false,
       timeStamp: 200
-    });
-
-    const events = mockSubject.getEvents();
+    });    const events = mockSubject.getEvents();
     expect(events).toHaveLength(1);
-    expect(events[0].code).toBe("KeyA");
+    expect(events[0].key).toBe("a");
   });
 
   it("should handle repeat events correctly", () => {

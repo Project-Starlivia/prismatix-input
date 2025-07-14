@@ -1,6 +1,6 @@
 ﻿import { describe, it, expect, beforeEach } from "bun:test";
 import { KeyboardInputBase, KeyboardInput, KeyboardInputCode } from "../keyboard";
-import type { KeyboardInputEvent, KeyboardInputOptions } from "../keyboard";
+import type { KeyboardInputOptions } from "../keyboard";
 import type { PRXEvent, MultiSubject } from "../../types";
 
 // Mock subject for testing
@@ -21,11 +21,11 @@ class MockSubject<T> {
 }
 
 describe("Keyboard Input Filters", () => {
-  let mockSubject: MockSubject<KeyboardInputEvent>;
+  let mockSubject: MockSubject<PRXEvent>;
   let mockTarget: EventTarget;
 
   beforeEach(() => {
-    mockSubject = new MockSubject<KeyboardInputEvent>();
+    mockSubject = new MockSubject<PRXEvent>();
     mockTarget = {
       addEventListener: () => {},
       removeEventListener: () => {},
@@ -165,11 +165,11 @@ describe("Keyboard Input Filters", () => {
 });
 
 describe("Keyboard Input Event Mapping", () => {
-  let mockSubject: MockSubject<KeyboardInputEvent>;
+  let mockSubject: MockSubject<PRXEvent>;
   let mockTarget: EventTarget;
 
   beforeEach(() => {
-    mockSubject = new MockSubject<KeyboardInputEvent>();
+    mockSubject = new MockSubject<PRXEvent>();
     mockTarget = {
       addEventListener: () => {},
       removeEventListener: () => {},
@@ -190,13 +190,11 @@ describe("Keyboard Input Event Mapping", () => {
       repeat: false
     } as KeyboardEvent;
 
-    const result = keyboardBase.mapEvent(mockEvent, "start");
-    expect(result).toEqual({
-      key: "a",
-      action: "start",
-      time: 123,
-      code: "KeyA"
-    });
+    const result = keyboardBase.mapEvent(mockEvent, "start");      expect(result).toEqual({
+        key: "a",
+        action: "start",
+        time: 123
+      });
   });
 
   it("should handle different actions", () => {
