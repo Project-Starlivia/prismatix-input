@@ -1,14 +1,6 @@
 ﻿# @starlivia/prismatix-input-core
 
-Core package for unified and extensible web input handling.
-
-## Features
-
-- **Unified Input Handling**: Handle keyboard, mouse, and pointer inputs consistently
-- **TypeScript Support**: Full TypeScript support with type definitions
-- **Key Mapping**: Convert keyboard inputs to screen positions with keyMap support
-- **Flexible Filtering**: Filter events by various criteria
-- **Lightweight**: Modular design with no external dependencies
+Core package for [@starlivia/prismatix-input](https://www.npmjs.com/package/@starlivia/prismatix-input)
 
 ## Installation
 
