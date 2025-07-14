@@ -13,7 +13,7 @@ A simple library for unified and extensible web input handling.
 
 ## Playground
 
-[Try samples on stackblitz](https://stackblitz.com/edit/prismatix-input-playground?file=src%2Fmain.ts)
+[Try samples on PLAYCODE](https://playcode.io/2460172)
 
 ## Installation
 
