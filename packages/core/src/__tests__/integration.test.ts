@@ -366,14 +366,14 @@ describe("Integration Tests - Mouse Position Input", () => {
 
 describe("Integration Tests - Multiple Subjects", () => {
   let mockTarget: MockEventTarget;
-  let mockSubject1: MockSubject<KeyboardInputEvent>;
-  let mockSubject2: MockSubject<KeyboardInputEvent>;
+  let mockSubject1: MockSubject<PRXEvent>;
+  let mockSubject2: MockSubject<PRXEvent>;
   let keyboardInput: KeyboardInput;
 
   beforeEach(() => {
     mockTarget = new MockEventTarget();
-    mockSubject1 = new MockSubject<KeyboardInputEvent>();
-    mockSubject2 = new MockSubject<KeyboardInputEvent>();
+    mockSubject1 = new MockSubject<PRXEvent>();
+    mockSubject2 = new MockSubject<PRXEvent>();
     keyboardInput = new KeyboardInput([mockSubject1, mockSubject2] as any, {
       target: mockTarget,
       events: ["keydown"]
@@ -404,11 +404,11 @@ describe("Integration Tests - Multiple Subjects", () => {
 
 describe("Integration Tests - Disposal", () => {
   let mockTarget: MockEventTarget;
-  let mockSubject: MockSubject<KeyboardInputEvent>;
+  let mockSubject: MockSubject<PRXEvent>;
 
   beforeEach(() => {
     mockTarget = new MockEventTarget();
-    mockSubject = new MockSubject<KeyboardInputEvent>();
+    mockSubject = new MockSubject<PRXEvent>();
   });
 
   it("should stop receiving events after disposal", () => {
