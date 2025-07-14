@@ -6,5 +6,5 @@ export function createSubject<T>(){
     return { ...subject, ...convertSubject(subject) };
 }
 export function convertSubject<T>(subject: Subject<T>): PRXSubject<T>{
-    return { subscribe: subject.subscribe, next: subject.next, dispose: subject.complete } as PRXSubject<T>;
+    return { subscribe: subject.subscribe.bind(subject), next: subject.next.bind(subject), dispose: () => subject.complete() } as PRXSubject<T>;
 }
